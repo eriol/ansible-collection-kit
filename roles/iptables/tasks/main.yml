@@ -1,0 +1,69 @@
+- name: install iptables
+  apt:
+    name: iptables
+    state: present
+    update_cache: yes
+  become: True
+
+- name: use legacy version of iptables
+  alternatives:
+    name: "{{ item }}"
+    path: "/usr/sbin/{{ item }}-legacy"
+  with_items:
+    - iptables
+    - ip6tables
+  become: True
+
+- name: flush all the iptables rules
+  iptables:
+    flush: true
+  become: True
+
+- name: firewall rule - allow incoming loopback traffic
+  iptables:
+    chain: INPUT
+    in_interface: lo
+    jump: ACCEPT
+  become: True
+
+- name: firewall rule - allow outgoing loopback traffic
+  iptables:
+    chain: OUTPUT
+    out_interface: lo
+    jump: ACCEPT
+  become: True
+
+- name: firewall rule - allow established connections
+  iptables:
+    chain: INPUT
+    ctstate: ESTABLISHED,RELATED
+    jump: ACCEPT
+  become: True
+
+- name: firewall rule - allow incoming SSH
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 22
+    ctstate: NEW,ESTABLISHED
+    jump: ACCEPT
+  become: True
+
+- name: firewall rule - allow outgoing SSH
+  iptables:
+    chain: OUTPUT
+    protocol: tcp
+    source_port: 22
+    ctstate: ESTABLISHED
+    jump: ACCEPT
+  become: True
+
+- name: set the policy for main chains to DROP
+  iptables:
+    chain: "{{ item }}"
+    policy: DROP
+  with_items:
+    - INPUT
+    - FORWARD
+    - OUTPUT
+  become: True
