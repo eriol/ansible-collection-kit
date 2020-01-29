@@ -36,3 +36,9 @@
     - FORWARD
     - OUTPUT
   become: True
+
+- name: install iptables-persistent and netfilter-persistent
+  apt:
+    name: ['iptables-persistent', 'netfilter-persistent']
+    state: present
+  become: True
