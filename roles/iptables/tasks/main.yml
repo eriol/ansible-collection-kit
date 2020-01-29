@@ -23,6 +23,10 @@
 
 - import_tasks: rules-ssh.yml
 
+- import_tasks: rules-dns.yml
+
+- import_tasks: rules-http.yml
+
 - name: set the policy for main chains to DROP
   iptables:
     chain: "{{ item }}"
