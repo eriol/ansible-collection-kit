@@ -14,10 +14,13 @@
     - ip6tables
   become: True
 
-- name: flush all the iptables rules
-  iptables:
-    flush: true
-  become: True
+# TODO: find a better way, because if enabled the following task make this
+# not idempotent.
+#
+# - name: flush all the iptables rules
+#   iptables:
+#     flush: true
+#   become: True
 
 - import_tasks: rules-generic.yml
 
