@@ -2,4 +2,5 @@
 - name: tests for ansible on mornie.org
   hosts: all
   roles:
-    - {role: ../roles/iptables}
+    - { role: ../roles/iptables }
+    - { role: ../roles/ssh }

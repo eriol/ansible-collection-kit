@@ -1,0 +1,12 @@
+---
+- name: install openssh-server
+  apt:
+    name: openssh-server
+    state: present
+    update_cache: yes
+  become: True
+
+- name: ensure openssh-server is running
+  systemd:
+    state: started
+    name: sshd
