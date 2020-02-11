@@ -1,0 +1,5 @@
+---
+cmd_timeout: 10
+network_interface: eth0
+seq_timeout: 15
+filter_ip: "-s %IP%"

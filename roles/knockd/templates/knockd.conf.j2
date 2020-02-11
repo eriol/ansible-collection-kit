@@ -1,0 +1,11 @@
+[options]
+    logfile = /var/log/knockd.log
+    Interface = {{ network_interface }}
+
+[SSH]
+    sequence = {{ ports | join(",") }}
+    seq_timeout = {{ seq_timeout }}
+    tcpflags = syn
+    start_command = /usr/sbin/iptables -A INPUT {{ filter_ip }} -p tcp --syn --dport 22 -j ACCEPT
+    cmd_timeout = {{ cmd_timeout }}
+    stop_command = /usr/sbin/iptables -D INPUT {{ filter_ip }} -p tcp --syn --dport 22 -j ACCEPT

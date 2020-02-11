@@ -1,0 +1,6 @@
+---
+- name: start knockd
+  systemd:
+    name: knockd.service
+    state: started
+  become: True
