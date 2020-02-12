@@ -3,15 +3,15 @@
   apt:
     name: fail2ban
     state: present
-    update_cache: yes
-  become: True
+    update_cache: true
+  become: true
 
 - name: set customization.local config file
   template:
     src: templates/customization.local.j2
     dest: /etc/fail2ban/jail.d/customization.local
     mode: 0640
-  become: True
+  become: true
   notify: restart fail2ban
 
 - name: set custom sshd filter config file
@@ -19,5 +19,5 @@
     src: templates/sshd-custom-filter.conf.j2
     dest: /etc/fail2ban/filter.d/sshd-custom.conf
     mode: 0640
-  become: True
+  become: true
   notify: restart fail2ban

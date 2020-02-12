@@ -3,8 +3,8 @@
   apt:
     name: openssh-server
     state: present
-    update_cache: yes
-  become: True
+    update_cache: true
+  become: true
 
 - name: ensure openssh-server is running
   systemd:
@@ -38,4 +38,4 @@
       line: "UseDNS no"
     - regexp: "^#?X11Forwarding"
       line: "X11Forwarding no"
-  become: True
+  become: true

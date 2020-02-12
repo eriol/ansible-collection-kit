@@ -3,8 +3,8 @@
   apt:
     name: iptables
     state: present
-    update_cache: yes
-  become: True
+    update_cache: true
+  become: true
 
 - name: use legacy version of iptables
   alternatives:
@@ -13,7 +13,7 @@
   with_items:
     - iptables
     - ip6tables
-  become: True
+  become: true
 
 # TODO: find a better way, because if enabled the following task make this
 # not idempotent.
@@ -21,7 +21,7 @@
 # - name: flush all the iptables rules
 #   iptables:
 #     flush: true
-#   become: True
+#   become: true
 
 - import_tasks: rules-generic.yml
 
@@ -39,10 +39,10 @@
     - INPUT
     - FORWARD
     - OUTPUT
-  become: True
+  become: true
 
 - name: install iptables-persistent and netfilter-persistent
   apt:
     name: ['iptables-persistent', 'netfilter-persistent']
     state: present
-  become: True
+  become: true

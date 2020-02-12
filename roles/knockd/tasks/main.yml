@@ -3,20 +3,20 @@
   apt:
     name: knockd
     state: present
-    update_cache: yes
-  become: True
+    update_cache: true
+  become: true
 
 - name: set the knockd config file
   template:
     src: templates/knockd.conf.j2
     dest: /etc/knockd.conf
     mode: 0640
-  become: True
+  become: true
 
 - name: enable knockd
   lineinfile:
     path: /etc/default/knockd
     regexp: "^START_KNOCKD"
     line: "START_KNOCKD=1"
-  become: True
+  become: true
   notify: start knockd

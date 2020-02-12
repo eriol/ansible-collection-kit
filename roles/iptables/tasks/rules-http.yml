@@ -6,7 +6,7 @@
     destination_port: 80
     ctstate: NEW,ESTABLISHED
     jump: ACCEPT
-  become: True
+  become: true
 
 - name: firewall rule - allow established incoming HTTP
   iptables:
@@ -15,4 +15,4 @@
     source_port: 80
     ctstate: ESTABLISHED
     jump: ACCEPT
-  become: True
+  become: true

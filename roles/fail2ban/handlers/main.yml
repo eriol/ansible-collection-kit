@@ -3,4 +3,4 @@
   systemd:
     name: fail2ban.service
     state: restarted
-  become: True
+  become: true
