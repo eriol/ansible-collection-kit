@@ -1,0 +1,9 @@
+# Fail2Ban configuration file
+#
+# Custom regex to ban failed pubkey login attempts.
+
+[Definition]
+
+failregex = sshd(?:\[\d+\])?: Connection closed by .* <HOST> port .*preauth.*\s*$
+
+ignoreregex =
