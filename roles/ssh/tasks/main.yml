@@ -14,8 +14,8 @@
 - name: harden openssh-server
   lineinfile:
     path: /etc/ssh/sshd_config
-    regexp: "{{item.regexp}}"
-    line: "{{item.line}}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
     state: present
   with_items:
     - regexp: "^#?AllowAgentForwarding"
