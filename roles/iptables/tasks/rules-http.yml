@@ -3,7 +3,7 @@
   iptables:
     chain: OUTPUT
     protocol: tcp
-    destination_port: 80
+    destination_port: "80"
     ctstate: NEW,ESTABLISHED
     jump: ACCEPT
   become: true
@@ -12,7 +12,7 @@
   iptables:
     chain: INPUT
     protocol: tcp
-    source_port: 80
+    source_port: "80"
     ctstate: ESTABLISHED
     jump: ACCEPT
   become: true

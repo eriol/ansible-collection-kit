@@ -3,7 +3,7 @@
   iptables:
     chain: OUTPUT
     protocol: udp
-    destination_port: 53
+    destination_port: "53"
     ctstate: NEW,ESTABLISHED
     jump: ACCEPT
   become: true
@@ -12,7 +12,7 @@
   iptables:
     chain: INPUT
     protocol: udp
-    source_port: 53
+    source_port: "53"
     ctstate: ESTABLISHED
     jump: ACCEPT
   become: true

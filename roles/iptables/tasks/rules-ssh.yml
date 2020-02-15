@@ -13,7 +13,7 @@
   iptables:
     chain: OUTPUT
     protocol: tcp
-    source_port: 22
+    source_port: "22"
     ctstate: ESTABLISHED
     jump: ACCEPT
   become: true
