@@ -1,13 +1,19 @@
 ---
-# No need to enable this since we are using port knocking.
-# - name: firewall rule - allow incoming SSH
-#   iptables:
-#     chain: INPUT
-#     protocol: tcp
-#     destination_port: 22
-#     ctstate: NEW,ESTABLISHED
-#     jump: ACCEPT
-#   become: True
+- name: check if dport 22 is managed by knockd
+  shell:
+    cmd: cat /etc/knockd.conf
+  register: knockd_conf
+  become: true
+
+- name: firewall rule - allow incoming SSH
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: "22"
+    ctstate: NEW,ESTABLISHED
+    jump: ACCEPT
+  become: true
+  when: knockd_conf.stdout.find("dport 22") == -1
 
 - name: firewall rule - allow outgoing SSH
   iptables:
