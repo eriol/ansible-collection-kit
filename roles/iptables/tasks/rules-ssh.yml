@@ -1,5 +1,5 @@
 ---
-- name: check if dport 22 is managed by knockd
+- name: get content of /etc/knockd.conf
   shell:
     cmd: cat /etc/knockd.conf
   register: knockd_conf
