@@ -2,7 +2,7 @@
 - name: tests for ansible on mornie.org
   hosts: all
   roles:
-    - { role: ../roles/knockd, ports: [3333,4444,5555], network_interface: eth1, filter_ip: "" }
-    - { role: ../roles/iptables }
-    - { role: ../roles/ssh }
-    - { role: ../roles/fail2ban }
+    - {role: ../roles/knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}
+    - {role: ../roles/iptables}
+    - {role: ../roles/ssh}
+    - {role: ../roles/fail2ban}
