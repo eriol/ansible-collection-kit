@@ -1,9 +1,19 @@
 ---
-- name: get content of /etc/knockd.conf
-  shell:
-    cmd: cat /etc/knockd.conf
+- name: check if knockd conf exists
+  stat:
+    path: /etc/knockd.conf
   register: knockd_conf
+
+- name: check if dport 22 is managed by knockd
+  lineinfile:
+    path: /etc/knockd.conf
+    regexp: "dport 22"
+    state: present
+  check_mode: true
   become: true
+  register: is_dport_22_managed
+  failed_when: is_dport_22_managed is changed
+  when: knockd_conf.stat.exists
 
 - name: firewall rule - allow incoming SSH
   iptables:
@@ -13,7 +23,7 @@
     ctstate: NEW,ESTABLISHED
     jump: ACCEPT
   become: true
-  when: knockd_conf.stdout.find("dport 22") == -1
+  when: is_dport_22_managed.skipped is defined and is_dport_22_managed.skipped
 
 - name: firewall rule - allow outgoing SSH
   iptables:
