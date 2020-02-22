@@ -1,0 +1,30 @@
+---
+- name: check if hardware random number generator exists
+  stat:
+    path: /dev/hwrng
+  register: dev_hwrng
+
+- name: install haveged
+  apt:
+    name: haveged
+    update_cache: true
+  become: true
+  when: not dev_hwrng.stat.exists
+
+- name: install rng-tools
+  apt:
+    name: rng-tools
+  become: true
+  when: dev_hwrng.stat.exists
+
+- name: install ca-certificates
+  apt:
+    name: ca-certificates
+  become: true
+
+- name: install apparmor
+  apt:
+    name:
+      - apparmor-profiles
+      - apparmor-utils
+  become: true
