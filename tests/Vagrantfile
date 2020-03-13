@@ -4,6 +4,9 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "debian/buster64"
   config.vm.network "private_network", ip: "10.10.10.10"
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  end
 
   config.vm.provision "ansible" do |ansible|
     ansible.compatibility_mode = "2.0"
