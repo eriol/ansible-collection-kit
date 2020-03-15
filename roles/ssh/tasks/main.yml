@@ -40,3 +40,17 @@
     - regexp: "^#?X11Forwarding"
       line: "X11Forwarding no"
   become: true
+  notify: systemctl restart sshd
+
+# TODO: make an ansible module to perform knocking.
+# - name: flush handlers
+#   meta: flush_handlers
+
+# - name: check that openssh-server is listening
+#   wait_for:
+#     host: "{{ inventory_hostname }}"
+#     port: 22
+#     timeout: 5
+#     search_regex: OpenSSH
+#     delay: 2
+#   delegate_to: localhost
