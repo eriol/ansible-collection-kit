@@ -9,3 +9,4 @@
     - {role: ../roles/iptables}
     - {role: ../roles/ssh}
     - {role: ../roles/fail2ban}
+    - {role: ../roles/weechat}

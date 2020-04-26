@@ -1,0 +1,11 @@
+---
+- name: systemctl daemon-reload
+  systemd:
+    daemon_reload: true
+  become: true
+
+- name: systemctl restart weechat
+  systemd:
+    name: weechat
+    state: restarted
+  become: true
