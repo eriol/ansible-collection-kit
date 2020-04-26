@@ -1,5 +1,5 @@
 ---
-- name: start knockd
+- name: systemctl start knockd
   systemd:
     name: knockd.service
     state: started

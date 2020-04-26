@@ -19,4 +19,4 @@
     regexp: "^START_KNOCKD"
     line: "START_KNOCKD=1"
   become: true
-  notify: start knockd
+  notify: systemctl start knockd
