@@ -5,8 +5,8 @@
     - {role: ../roles/common}
     # The easy ports sequece is just for test. Also don't disable strict IP
     # filtering on production.
-    - {role: ../roles/knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}
-    - {role: ../roles/iptables}
+    # - {role: ../roles/knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}
+    - {role: ../roles/nftables}
     - {role: ../roles/ssh}
     - {role: ../roles/fail2ban}
     - {role: ../roles/weechat}

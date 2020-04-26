@@ -1,0 +1,24 @@
+---
+- name: install nftables
+  apt:
+    name: nftables
+    state: present
+    update_cache: true
+    cache_valid_time: 600
+  become: true
+
+- name: install nftables.conf
+  copy:
+    src: etc/nftables.conf
+    dest: /etc/nftables.conf
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: start nftables
+  systemd:
+    name: nftables.service
+    state: started
+    enabled: true
+  become: true
