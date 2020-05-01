@@ -1,0 +1,24 @@
+---
+
+- name: ensure /var/lib/dehydrated/certs esists for each domain
+  file:
+    path: "/var/lib/dehydrated/certs/{{ item.cname }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+    recurse: true
+  become: true
+  loop: "{{ domains }}"
+
+# It's fine to use rsa:2048 since this role is used only for testing.
+- name: create certificates for each domain
+  shell: |
+    openssl req -x509 -nodes -newkey rsa:2048 -days 365 -sha256 \
+      -keyout /var/lib/dehydrated/certs/{{ item.cname }}/privkey.pem \
+      -out /var/lib/dehydrated/certs/{{ item.cname }}/fullchain.pem \
+      -subj "/CN={{ item.cname }}"
+    cp /var/lib/dehydrated/certs/{{ item.cname }}/fullchain.pem \
+       /var/lib/dehydrated/certs/{{ item.cname }}/chain.pem
+  become: true
+  loop: "{{ domains }}"
