@@ -1,0 +1,13 @@
+---
+
+- name: systemctl restart dovecot
+  systemd:
+    name: dovecot.service
+    state: restarted
+  become: true
+
+- name: systemctl restart postfix
+  systemd:
+    name: postfix.service
+    state: restarted
+  become: true

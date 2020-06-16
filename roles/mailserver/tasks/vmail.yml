@@ -1,0 +1,20 @@
+---
+
+- name: ensure vmail user exists
+  user:
+    name: "{{ vmail_user }}"
+    uid: "{{ vmail_uid }}"
+    group: "{{ vmail_group }}"
+    home: "{{ vmail_dir }}"
+    shell: /usr/sbin/nologin
+    system: true
+  become: true
+
+- name: restrict vmail directory to vmail user and group
+  file:
+    path: "{{ vmail_dir }}"
+    state: directory
+    owner: "{{ vmail_user }}"
+    group: "{{ vmail_group }}"
+    mode: "0770"
+  become: true

@@ -1,0 +1,50 @@
+---
+
+- name: install postfix
+  apt:
+    name:
+      - postfix
+      - postfix-sqlite
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+
+- name: configure mailname
+  copy:
+    content: "{{ mailname }}"
+    dest: /etc/mailname
+  become: true
+
+- name: install postfix master.cf
+  template:
+    src: etc/postfix/master.cf.j2
+    dest: /etc/postfix/master.cf
+  register: postfix_master_cf
+  become: true
+
+- name: install postfix main.cf
+  template:
+    src: etc/postfix/main.cf.j2
+    dest: /etc/postfix/main.cf
+  register: postfix_main_cf
+  become: true
+
+- name: install configuration for virtual tables
+  template:
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
+    group: postfix
+    mode: 0640
+  loop:
+    - etc/postfix/sqlite_virtual_alias_maps.cf
+    - etc/postfix/sqlite_virtual_domains_maps.cf
+    - etc/postfix/sqlite_virtual_mailbox_maps.cf
+  become: true
+
+- name: reload postfix on config change
+  systemd:
+    name: postfix
+    state: reloaded
+  when: postfix_master_cf.changed or postfix_main_cf.changed
+  become: true

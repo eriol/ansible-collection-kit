@@ -1,0 +1,54 @@
+---
+
+# TODO: create an ansible module for this.
+
+- name: install sqlite3
+  apt:
+    name: sqlite3
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+
+- name: import schema
+  shell: |
+    sqlite3 /etc/dovecot/authdb.sqlite << EOF
+      CREATE TABLE alias (
+          address VARCHAR(255) NOT NULL PRIMARY KEY,
+          goto TEXT NOT NULL,
+          domain VARCHAR(128) NOT NULL,
+          created DATETIME NOT NULL default '0000-00-00 00:00:00',
+          modified DATETIME NOT NULL default '0000-00-00 00:00:00',
+          active CHAR(1) NOT NULL default 'Y'
+      );
+      CREATE TABLE domain (
+          domain VARCHAR(128) NOT NULL PRIMARY KEY,
+          description VARCHAR(255) NOT NULL,
+          aliases INT(10) NOT NULL default 0,
+          mailboxes INT(10) NOT NULL default 0,
+          maxquota BIGINT(20) NOT NULL default 0,
+          transport VARCHAR(255) default NULL,
+          backupmx TINYINT(1) NOT NULL default 0,
+          created DATETIME NOT NULL default '0000-00-00 00:00:00',
+          modified DATETIME NOT NULL default '0000-00-00 00:00:00',
+          active CHAR(1) NOT NULL default 'Y'
+      );
+      CREATE TABLE mailbox (
+          username VARCHAR(255) NOT NULL PRIMARY KEY,
+          password VARCHAR(255) NOT NULL,
+          domain VARCHAR(128) NOT NULL,
+          name VARCHAR(255) NOT NULL,
+          quota BIGINT(20) NOT NULL default 0,
+          created DATETIME NOT NULL default '0000-00-00 00:00:00',
+          modified DATETIME NOT NULL default '0000-00-00 00:00:00',
+          active CHAR(1) NOT NULL default 'Y'
+      );
+    EOF
+  become: true
+
+- name: ensure /etc/dovecot/authdb.sqlite is owned by dovecot
+  file:
+    path: "{{ mailserver_auth_database }}"
+    owner: dovecot
+    group: root
+    mode: "0600"
+  become: true

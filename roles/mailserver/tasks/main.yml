@@ -1,0 +1,6 @@
+---
+
+- import_tasks: vmail.yml
+- import_tasks: postfix.yml
+- import_tasks: dovecot.yml
+- import_tasks: rspamd.yml

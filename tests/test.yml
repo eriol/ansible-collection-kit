@@ -3,7 +3,7 @@
   hosts: all
   vars:
     domains:
-      - cname: localhost
+      - cname: mail.example.org
   roles:
     - {role: ../roles/common}
     # The easy ports sequece is just for test. Also don't disable strict IP
@@ -13,4 +13,5 @@
     - {role: ../roles/ssh}
     - {role: ../roles/fail2ban}
     - {role: ../roles/snake-oil-dehydrated}
+    - {role: ../roles/mailserver}
     - {role: ../roles/weechat}

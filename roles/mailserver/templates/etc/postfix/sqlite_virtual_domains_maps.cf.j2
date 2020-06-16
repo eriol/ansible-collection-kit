@@ -1,0 +1,2 @@
+dbpath = {{ mailserver_auth_database }}
+query = SELECT domain FROM domain where domain = '%s' AND backupmx = '0' AND active = 'Y'
