@@ -19,3 +19,9 @@
     - milter_headers.conf
     - redis.conf
   become: true
+
+- name: reload rspamd
+  systemd:
+    name: rspamd
+    state: reloaded
+  become: true
