@@ -1,17 +1,18 @@
 ---
-- name: tests for ansible on mornie.org
+- name: generic tests for all the roles
   hosts: all
   vars:
+    ansible_python_interpreter: /usr/bin/python3
     domains:
       - cname: mail.example.org
   roles:
-    - {role: ../roles/common}
+    - {role: ../common}
     # The easy ports sequece is just for test. Also don't disable strict IP
     # filtering on production.
-    # - {role: ../roles/knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}
-    - {role: ../roles/nftables}
-    - {role: ../roles/ssh}
-    - {role: ../roles/fail2ban}
-    - {role: ../roles/snake-oil-dehydrated}
-    - {role: ../roles/mailserver}
-    - {role: ../roles/weechat}
+    # - {role: ../knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}
+    - {role: ../nftables}
+    - {role: ../ssh}
+    - {role: ../fail2ban}
+    - {role: ../snake-oil-dehydrated}
+    - {role: ../mailserver}
+    - {role: ../weechat}
