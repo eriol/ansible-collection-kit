@@ -9,23 +9,19 @@
     name: haveged
     update_cache: true
     cache_valid_time: 3600
-  become: true
   when: not dev_hwrng.stat.exists
 
 - name: install rng-tools
   apt:
     name: rng-tools
-  become: true
   when: dev_hwrng.stat.exists
 
 - name: install ca-certificates
   apt:
     name: ca-certificates
-  become: true
 
 - name: install apparmor
   apt:
     name:
       - apparmor-profiles
       - apparmor-utils
-  become: true
