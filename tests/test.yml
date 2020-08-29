@@ -7,6 +7,7 @@
       - cname: mail.example.org
   roles:
     - {role: ../common, become: true}
+    - {role: ../hostname, become: true}
     # The easy ports sequece is just for test. Also don't disable strict IP
     # filtering on production.
     # - {role: ../knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}

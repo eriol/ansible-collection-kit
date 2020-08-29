@@ -1,0 +1,10 @@
+---
+- name: set the desired hostname
+  hostname:
+    name: "{{ desired_hostname }}"
+
+- name: update 127.0.1.1 entry in /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    regexp: "^127.0.0.1\t"
+    line: "^127.0.0.1\t {{ desired_hostname }}"
