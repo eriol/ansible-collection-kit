@@ -14,6 +14,6 @@
     - {role: ../roles/nftables}
     - {role: ../roles/ssh}
     - {role: ../roles/fail2ban}
-    - {role: ../roles/snake-oil-dehydrated}
+    - {role: ../roles/snake_oil_dehydrated}
     - {role: ../roles/mailserver}
     - {role: ../roles/weechat}
