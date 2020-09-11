@@ -14,5 +14,8 @@ collections:
     version: main
 ```
 
-and then, using ansible >= 2.10, run
-`ansible-galaxy collection install -r requirements.yml`.
+and then, using ansible >= 2.10, run:
+
+```
+ansible-galaxy collection install -r requirements.yml
+```
