@@ -1,0 +1,22 @@
+---
+wikijs_version: 2.5.132
+wikijs_tarball: wiki-js.tar.gz
+
+wikijs_download_url: "https://github.com/Requarks/wiki/releases/download/{{ wikijs_version }}/{{ wikijs_tarball }}"
+wikijs_tarball_sha256: 80ae1f6d82adee7a90d17a689a6a9c9092b2ba46419f642d8eefb0471b46c24a
+wikijs_dir: /srv/wikijs
+
+wikijs_port: 3000
+
+wikijs_db_type: postgres
+wikijs_db_host: localhost
+wikijs_db_port: 5432
+wikijs_db_user: wikijs
+wikijs_db_pass: wikijsrocks
+wikijs_db_db: wiki
+wikijs_db_ssl: false
+# SQLite only:
+wikijs_db_storage: database.sqlite
+
+wikijs_bind_ip: 0.0.0.0
+wikijs_log_level: info

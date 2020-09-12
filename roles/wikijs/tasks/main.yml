@@ -1,0 +1,101 @@
+---
+- name: install nodejs
+  apt:
+    name:
+      - nodejs
+      # See note on step "fetch native bindings for SQLite3".
+      # - npm
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: ensure wikijs group exits
+  group:
+    name: wikijs
+
+- name: ensure wikijs user exists and has restrictive settings
+  user:
+    name: wikijs
+    groups: wikijs
+    password: "*"
+    shell: /usr/sbin/nologin
+
+- name: check if the directory where we deploy Wiki.js exists
+  stat:
+    path: "{{ wikijs_dir }}"
+  register: deploy_directory
+
+- name: backup sqlite database to /tmp
+  command:
+    cmd: mv "{{ wikijs_dir }}/{{ wikijs_db_storage }}" /tmp
+    creates: "/tmp/{{ wikijs_db_storage }}"
+    removes: "{{ wikijs_dir }}/{{ wikijs_db_storage }}"
+  when: deploy_directory.stat.exists and wikijs_db_type == "sqlite"
+
+- name: remove previous installation of Wiki.js if exists
+  file:
+    path: "{{ wikijs_dir }}"
+    state: absent
+  when: deploy_directory.stat.exists
+
+- name: ensure that the directory where we deploy Wiki.js exists
+  file:
+    path: "{{ wikijs_dir }}"
+    state: directory
+    owner: wikijs
+    group: wikijs
+    mode: "0750"
+
+- name: download Wiki.js in /tmp
+  get_url:
+    url: "{{ wikijs_download_url }}"
+    dest: /tmp
+    checksum: "sha256:{{ wikijs_tarball_sha256 }}"
+
+- name: unarchive Wiki.js
+  unarchive:
+    src: "/tmp/{{ wikijs_tarball }}"
+    dest: "{{ wikijs_dir }}"
+    remote_src: true
+
+- name: install config.yml
+  template:
+    src: config.yml.j2
+    dest: "{{ wikijs_dir }}/config.yml"
+
+# This step is in the install guide but it's discouraged by upstream in another
+# part of the guide. It also take too much time end it's not worth it since
+# sqlite is used only for testing or deploy where performance are not so
+# critical (i.e single user deploy).
+# - name: fetch native bindings for SQLite3
+#   command:
+#     cmd: npm rebuild sqlite3
+#     chdir: "{{ wikijs_dir }}"
+#   when: wikijs_db_type == "sqlite"
+
+- name: check if a sqlite database backup exists
+  stat:
+    path: "/tmp/{{ wikijs_db_storage }}"
+  when: wikijs_db_type == "sqlite"
+  register: sqlite_database_backup
+
+- name: restore the backup of sqlite database
+  command:
+    cmd: mv "/tmp/{{ wikijs_db_storage }}" "{{ wikijs_dir }}"
+    creates: "{{ wikijs_dir }}/{{ wikijs_db_storage }}"
+    removes: "/tmp/{{ wikijs_db_storage }}"
+  when: sqlite_database_backup.stat.exists and wikijs_db_type == "sqlite"
+
+- name: install wikijs systemd unit file
+  template:
+    src: etc/systemd/system/wikijs.service.j2
+    dest: /etc/systemd/system/wikijs.service
+
+- name: enable wikijs.service
+  systemd:
+    name: wikijs
+    enabled: true
+
+- name: ensure Wiki.js is running
+  systemd:
+    name: wikijs
+    state: started
