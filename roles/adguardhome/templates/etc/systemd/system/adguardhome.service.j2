@@ -1,0 +1,14 @@
+# Managed by Ansible
+[Unit]
+Description=AdGuard Home
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart="{{ adguardhome_dir }}/AdGuardHome"
+User=adguardhome
+Group=adguardhome
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

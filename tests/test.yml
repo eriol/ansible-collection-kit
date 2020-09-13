@@ -21,3 +21,4 @@
     # Uncomment to test wikijs role: it's commented since the tarball that we
     # have to download is more than 60MB.
     # - {role: ../roles/wikijs, become: true, wikijs_db_type: sqlite}
+    - {role: ../roles/adguardhome}

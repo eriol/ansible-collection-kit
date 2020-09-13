@@ -1,0 +1,11 @@
+---
+- name: systemctl daemon-reload
+  systemd:
+    daemon_reload: true
+  become: true
+
+- name: systemctl restart adguardhome
+  systemd:
+    name: adguardhome.service
+    state: restarted
+  become: true

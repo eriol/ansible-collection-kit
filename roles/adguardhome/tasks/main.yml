@@ -1,0 +1,93 @@
+---
+- name: ensure adguardhome group exits
+  group:
+    name: adguardhome
+  become: true
+
+- name: ensure adguardhome user exists and has restrictive settings
+  user:
+    name: adguardhome
+    groups: adguardhome
+    password: "*"
+    shell: /usr/sbin/nologin
+  become: true
+
+- name: ensure that the directory where we deploy AdGuard Home exists
+  file:
+    path: "{{ adguardhome_dir }}"
+    state: directory
+    owner: adguardhome
+    group: adguardhome
+    mode: "0750"
+  become: true
+
+# TODO: download only if not installed or a new version.
+
+- name: download locally AdGuard Home in /tmp
+  get_url:
+    url: "{{ adguardhome_download_url }}"
+    dest: /tmp
+    checksum: "sha256:{{ adguardhome_tarball_sha256 }}"
+  delegate_to: localhost
+
+- name: unarchive locally AdGuard Home
+  unarchive:
+    src: "/tmp/{{ adguardhome_tarball }}"
+    dest: /tmp
+    remote_src: true
+  delegate_to: localhost
+
+- name: copy AdGuard Home binary
+  copy:
+    src: /tmp/AdGuardHome/AdGuardHome
+    dest: "{{ adguardhome_dir }}"
+    owner: adguardhome
+    group: adguardhome
+    mode: "0750"
+  become: true
+
+# NOTE: python3-passlib must be installed or this will fail silently.
+- name: set the AdGuardHome config file
+  template:
+    src: templates/AdGuardHome.yaml.j2
+    dest: "{{ adguardhome_dir }}/AdGuardHome.yaml"
+    owner: adguardhome
+    group: adguardhome
+    mode: 0640
+  become: true
+  notify: systemctl restart adguardhome
+
+- name: set cap_net_bind_service=+ep on AdGuardHome binary
+  capabilities:
+    path: "{{ adguardhome_dir }}/AdGuardHome"
+    capability: cap_net_bind_service=+ep
+  become: true
+
+- name: write AdGuard Home version file
+  copy:
+    content: "{{ adguardhome_version }}"
+    dest: "{{ adguardhome_file_version_dir }}"
+    owner: adguardhome
+    group: adguardhome
+    mode: "0640"
+  become: true
+
+- name: install adguardhome systemd unit file
+  template:
+    src: etc/systemd/system/adguardhome.service.j2
+    dest: /etc/systemd/system/adguardhome.service
+  notify:
+    - systemctl daemon-reload
+  become: true
+
+- name: systemctl enable adguardhome
+  systemd:
+    name: adguardhome
+    enabled: true
+  become: true
+
+- name: ensure AdGuard Home is running
+  systemd:
+    name: adguardhome
+    state: started
+  become: true
