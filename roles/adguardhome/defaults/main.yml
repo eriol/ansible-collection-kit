@@ -11,7 +11,6 @@ adguardhome_tarball_sha256: "{{ lookup('vars', 'adguardhome_tarball_'+ansible_ar
 adguardhome_download_url: "https://github.com/AdguardTeam/AdGuardHome/releases/download/{{ adguardhome_version }}/{{ adguardhome_tarball }}"
 
 adguardhome_dir: /srv/AdGuardHome
-adguardhome_file_version_dir: "{{ adguardhome_dir }}/version"
 
 adguardhome_user: admin
 adguardhome_password: changeme

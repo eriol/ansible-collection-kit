@@ -63,15 +63,6 @@
     capability: cap_net_bind_service=+ep
   become: true
 
-- name: write AdGuard Home version file
-  copy:
-    content: "{{ adguardhome_version }}"
-    dest: "{{ adguardhome_file_version_dir }}"
-    owner: adguardhome
-    group: adguardhome
-    mode: "0640"
-  become: true
-
 - name: install adguardhome systemd unit file
   template:
     src: etc/systemd/system/adguardhome.service.j2
