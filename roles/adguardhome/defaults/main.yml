@@ -1,7 +1,7 @@
 ---
 adguardhome_version: v0.103.3
 adguardhome_tarball_armv7l: AdGuardHome_linux_armv7.tar.gz
-adguardhome_tarball_armv7l_sha256: c1a6028568440803126dd35e0d4324784eee6e350b2dc85890e36ae037449b16
+adguardhome_tarball_armv7l_sha256: 8dcfeca7a345ff3451f8ba20100aaef8bb9f8d05dfb2d9b619c019000fa00edc
 adguardhome_tarball_x86_64: AdGuardHome_linux_amd64.tar.gz
 adguardhome_tarball_x86_64_sha256: 077fb5262129535f3fdc47379fdd573a68aade62cdbdac02919b69de777df3ea
 
