@@ -2,6 +2,7 @@
 - name: ensure adguardhome group exits
   group:
     name: adguardhome
+    system: true
   become: true
 
 - name: ensure adguardhome user exists and has restrictive settings
@@ -9,6 +10,8 @@
     name: adguardhome
     groups: adguardhome
     password: "*"
+    create_home: false
+    system: true
     shell: /usr/sbin/nologin
   become: true
 
