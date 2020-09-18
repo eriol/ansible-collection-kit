@@ -1,0 +1,66 @@
+---
+- name: install yarn
+  apt:
+    name: yarnpkg
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: create a link for yarn executable
+  file:
+    src: /usr/lib/nodejs/yarn/bin/yarn.js
+    dest: /usr/bin/yarn
+    state: link
+
+- name: ensure n8n group exits
+  group:
+    name: n8n
+    system: true
+
+- name: ensure n8n user exists and has restrictive settings
+  user:
+    name: n8n
+    groups: n8n
+    password: "*"
+    home: "{{ n8n_dir }}"
+    system: true
+    shell: /usr/sbin/nologin
+
+# This is needed to make yarn install n8n.
+- name: ensure the fake package.json exists
+  copy:
+    src: package.json
+    dest: "{{ n8n_dir }}/package.json"
+
+- name: install n8n
+  yarn:
+    name: n8n
+    path: "{{ n8n_dir }}"
+
+- name: ensure n8n install directory is owned by n8n
+  file:
+    path: "{{ n8n_dir }}"
+    state: directory
+    recurse: true
+    owner: n8n
+    group: n8n
+
+- name: install n8n systemd unit file
+  template:
+    src: etc/systemd/system/n8n.service.j2
+    dest: /etc/systemd/system/n8n.service
+  notify:
+    - systemctl daemon-reload
+  become: true
+
+- name: systemctl enable n8n
+  systemd:
+    name: n8n
+    enabled: true
+  become: true
+
+- name: ensure n8n is running
+  systemd:
+    name: n8n
+    state: started
+  become: true

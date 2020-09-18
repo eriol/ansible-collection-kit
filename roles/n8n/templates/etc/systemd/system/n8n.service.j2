@@ -1,0 +1,14 @@
+# Managed by Ansible
+[Unit]
+Description=n8n extendable workflow automation
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart="{{ n8n_dir }}/node_modules/n8n/bin/n8n"
+User=n8n
+Group=n8n
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
