@@ -15,4 +15,5 @@ beehive_download_url: "https://github.com/muesli/beehive/releases/download/{{ be
 beehive_dir: /srv/beehive
 
 beehive_bind: 127.0.0.1:8181
-beehive_canonical_url: "http://{{ beehive_bind }}"
+# Can't reuse beehive_bind variable, since we may want to use a domain.
+beehive_canonical_url: "http://127.0.0.1:8181"
