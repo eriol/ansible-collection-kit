@@ -22,4 +22,5 @@
     # have to download is more than 60MB.
     # - {role: ../roles/wikijs, become: true, wikijs_db_type: sqlite}
     - {role: ../roles/adguardhome}
-    - {role: ../roles/n8n, become: true}
+    # - {role: ../roles/n8n, become: true}
+    - {role: ../roles/beehive, become: true, beehive_bind: 10.10.10.10:8181}

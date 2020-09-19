@@ -1,0 +1,9 @@
+---
+- name: systemctl daemon-reload
+  systemd:
+    daemon_reload: true
+
+- name: systemctl restart beehive
+  systemd:
+    name: beehive.service
+    state: restarted

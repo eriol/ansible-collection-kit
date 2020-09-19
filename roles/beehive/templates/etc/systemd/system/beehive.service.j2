@@ -1,0 +1,15 @@
+# Managed by Ansible
+[Unit]
+Description=beehive
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+WorkingDirectory={{ beehive_dir }}
+ExecStart={{ beehive_dir }}/beehive -bind {{ beehive_bind }} --canonicalurl {{ beehive_canonical_url }}
+User=beehive
+Group=beehive
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
