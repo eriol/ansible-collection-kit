@@ -1,5 +1,6 @@
 ---
-pwd: your_secret_password
+rpi_users_user: pi
+rpi_users_pwd: your_secret_password
 
-ssh_dir: "{{ lookup('env','HOME') + '/.ssh/' }}"
-key_file: "{{ ssh_dir + 'id_rsa.pub' }}"
+rpi_users_ssh_dir: "{{ lookup('env','HOME') + '/.ssh/' }}"
+rpi_users_key_file: "{{ ssh_dir + 'id_rsa.pub' }}"

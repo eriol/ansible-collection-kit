@@ -1,14 +1,12 @@
 ---
-# The pi user is hardcoded here on purpose.
-
-- name: change password for default pi user
+- name: change password for default user
   user:
-    name: pi
+    name: rpi_users_user
     update_password: always
-    password: "{{ pwd | password_hash('sha512') }}"
+    password: "{{ rpi_users_pwd | password_hash('sha512') }}"
 
-- name: set authorized key for user pi copying it from current user
+- name: set authorized key for default user
   authorized_key:
-    user: pi
+    user: rpi_users_user
+    key: "{{ lookup('file', rpi_users_key_file) }}"
     state: present
-    key: "{{ lookup('file', key_file) }}"
