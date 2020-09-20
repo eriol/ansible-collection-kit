@@ -1,0 +1,5 @@
+---
+pwd: your_secret_password
+
+ssh_dir: "{{ lookup('env','HOME') + '/.ssh/' }}"
+key_file: "{{ ssh_dir + 'id_rsa.pub' }}"
