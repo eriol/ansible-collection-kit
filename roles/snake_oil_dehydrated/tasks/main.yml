@@ -1,14 +1,18 @@
 ---
+- name: install ssl-cert
+  apt:
+    name: ssl-cert
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
 
 - name: ensure /var/lib/dehydrated/certs esists for each domain
   file:
     path: "/var/lib/dehydrated/certs/{{ item.cname }}"
     state: directory
     owner: root
-    group: root
-    mode: "0700"
-    recurse: true
-  become: true
+    group: ssl-cert
+    mode: 0750
   loop: "{{ domains }}"
 
 # It's fine to use rsa:2048 since this role is used only for testing.
@@ -20,5 +24,19 @@
       -subj "/CN={{ item.cname }}"
     cp /var/lib/dehydrated/certs/{{ item.cname }}/fullchain.pem \
        /var/lib/dehydrated/certs/{{ item.cname }}/chain.pem
-  become: true
   loop: "{{ domains }}"
+
+- name: find all *.pem files
+  find:
+    path: /var/lib/dehydrated/certs/
+    file_type: file
+    recurse: true
+  register: find_result
+
+- name: fix certificates permissions
+  file:
+    path: "{{ item.path }}"
+    owner: root
+    group: ssl-cert
+    mode: 0640
+  with_items: "{{ find_result.files }}"

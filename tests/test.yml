@@ -15,7 +15,7 @@
     - {role: ../roles/nftables}
     - {role: ../roles/ssh}
     - {role: ../roles/fail2ban}
-    - {role: ../roles/snake_oil_dehydrated}
+    - {role: ../roles/snake_oil_dehydrated, become: true}
     - {role: ../roles/mailserver}
     - {role: ../roles/weechat}
     # Uncomment to test wikijs role: it's commented since the tarball that we
