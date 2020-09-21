@@ -13,6 +13,7 @@
     owner: root
     group: ssl-cert
     mode: 0750
+    recurse: true
   loop: "{{ domains }}"
 
 # It's fine to use rsa:2048 since this role is used only for testing.
