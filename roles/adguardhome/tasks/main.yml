@@ -61,6 +61,12 @@
     mode: "0750"
   become: true
 
+- name: check if the AdGuardHome.yaml configuration exists
+  stat:
+    path: "{{ adguardhome_dir }}/AdGuardHome.yaml"
+  register: adguardhome_yaml_config
+  become: true
+
 # NOTE: python3-passlib must be installed or this will fail silently.
 - name: set the AdGuardHome config file
   template:
@@ -70,6 +76,7 @@
     group: adguardhome
     mode: 0640
   become: true
+  when: not adguardhome_yaml_config.stat.exists
   notify: systemctl restart adguardhome
 
 - name: set cap_net_bind_service=+ep on AdGuardHome binary
