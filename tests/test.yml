@@ -27,3 +27,4 @@
        become: true,
        beehive_bind: 10.10.10.10:8181,
        beehive_canonical_url: http://10.10.10.10:8181}
+    # - {role: ../roles/homeassistant, become: true}

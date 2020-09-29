@@ -1,0 +1,95 @@
+---
+- name: install homeassistant dependencies
+  apt:
+    name:
+      - autoconf
+      - build-essential
+      - libffi-dev
+      - libssl-dev
+      - python3
+      - python3-dev
+      - python3-pip
+      - virtualenv
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: ensure homeassistant group exits
+  group:
+    name: homeassistant
+    system: true
+
+- name: ensure homeassistant user exists and has restrictive settings
+  user:
+    name: homeassistant
+    groups: homeassistant
+    password: "*"
+    home: "{{ homeassistant_dir }}"
+    system: true
+    shell: /usr/sbin/nologin
+
+- name: get available groups
+  getent:
+    database: group
+
+- name: add homeassistant user to ssl-cert group
+  user:
+    name: homeassistant
+    groups: ssl-cert
+    append: true
+  become: true
+  when: homeassistant_add_to_ssl_cert_group and "ssl-cert" in ansible_facts.getent_group
+
+- name: add homeassistant user to dialout, gpio and i2c groups
+  user:
+    name: homeassistant
+    groups: dialout,gpio,i2c
+    append: true
+  when: is_a_raspberrypi
+
+- name: install wheel and homeassistant inside a virtualenv
+  pip:
+    name:
+      - wheel
+      - homeassistant
+    virtualenv: "{{ homeassistant_dir }}"
+
+- name: ensure homeassistant owns "{{ homeassistant_dir }}"
+  file:
+    path: "{{ homeassistant_dir }}"
+    state: directory
+    recurse: true
+    owner: homeassistant
+    group: homeassistant
+
+- name: install homeassistant systemd unit file
+  template:
+    src: etc/systemd/system/homeassistant.service.j2
+    dest: /etc/systemd/system/homeassistant.service
+  notify:
+    - systemctl daemon-reload
+
+- name: systemctl enable homeassistant
+  systemd:
+    name: homeassistant
+    enabled: true
+
+- name: ensure homeassistant is running
+  systemd:
+    name: homeassistant
+    state: started
+
+- name: Wait for port 8123
+  wait_for:
+    port: 8123
+    delay: 10
+
+- name: add custom TLS settings in configuration.yaml
+  blockinfile:
+    path: /srv/homeassistant/.homeassistant/configuration.yaml
+    marker: "# {mark} ANSIBLE TLS SETTINGS"
+    block: |
+      http:
+        ssl_certificate: /var/lib/dehydrated/certs/{{ domains[0].cname }}/chain.pem
+        ssl_key: /var/lib/dehydrated/certs/{{ domains[0].cname }}/privkey.pem
+  when: homeassistant_add_to_ssl_cert_group and "ssl-cert" in ansible_facts.getent_group
+  notify: systemctl restart homeassistant
