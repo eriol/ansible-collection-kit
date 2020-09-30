@@ -5,6 +5,7 @@
       - autoconf
       - build-essential
       - libffi-dev
+      - libopenjp2-7
       - libssl-dev
       - python3
       - python3-dev
