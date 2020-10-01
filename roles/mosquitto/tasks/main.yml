@@ -1,0 +1,13 @@
+---
+- name: install mosquitto
+  apt:
+    name:
+      - mosquitto
+      - mosquitto-clients
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: ensure mosquitto is running
+  systemd:
+    state: started
+    name: mosquitto
