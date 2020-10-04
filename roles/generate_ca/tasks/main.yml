@@ -1,0 +1,35 @@
+---
+- name: install python3-openssl
+  apt:
+    name: python3-openssl
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: ensure {{ generate_ca_base_path }} esists
+  file:
+    path: "{{ generate_ca_base_path }}"
+    state: directory
+    owner: root
+    mode: 0700
+
+- name: generate the root private key
+  openssl_privatekey:
+    path: "{{ generate_ca_root_key_path }}"
+    passphrase: "{{ generate_ca_passphrase }}"
+    cipher: des3
+    size: 4096
+    type: RSA
+
+- name: generate the root Certificate Signing Request
+  openssl_csr:
+    path: "{{ generate_ca_root_csr }}"
+    privatekey_path: "{{ generate_ca_root_key_path }}"
+    privatekey_passphrase: "{{ generate_ca_passphrase }}"
+
+- name: generate and self sign the root certificate
+  openssl_certificate:
+    path: "{{ generate_ca_root_certificate }}"
+    privatekey_path: "{{ generate_ca_root_key_path }}"
+    privatekey_passphrase: "{{ generate_ca_passphrase }}"
+    csr_path: "{{ generate_ca_root_csr }}"
+    provider: selfsigned
