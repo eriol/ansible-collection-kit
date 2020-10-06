@@ -7,5 +7,3 @@ generate_certificate_ca_path: /etc/ssl/ca/ca.crt
 generate_certificate_ca_privatekey_path: /etc/ssl/ca/ca.key
 generate_certificate_ca_privatekey_passphrase: "this is a secret!"
 generate_certificate_domain: example.org
-generate_certificate_organization_name: Example
-generate_certificate_email_address: email@example.org

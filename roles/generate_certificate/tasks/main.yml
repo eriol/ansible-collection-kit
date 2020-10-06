@@ -1,7 +1,9 @@
 ---
-- name: install python3-openssl
+- name: install openssl and python3-pexpect
   apt:
-    name: python3-openssl
+    name:
+      - openssl
+      - python3-pexpect
     update_cache: true
     cache_valid_time: 3600
 
@@ -13,25 +15,24 @@
     mode: 0700
 
 - name: generate certificate private key
-  openssl_privatekey:
-    path: "{{ generate_certificate_key_path }}"
-    size: 2048
-    type: RSA
+  command:
+    cmd: openssl genrsa -out {{ generate_certificate_key_path }} 2048
 
 - name: generate Certificate Signing Request
-  openssl_csr:
-    path: "{{ generate_certificate_csr_path }}"
-    privatekey_path: "{{ generate_certificate_key_path }}"
-    organization_name: "{{ generate_certificate_organization_name }}"
-    email_address: "{{ generate_certificate_email_address }}"
-    common_name: "{{ generate_certificate_domain }}"
+  command:
+    cmd: >
+      openssl req -new -sha256 -key {{ generate_certificate_key_path }}
+        -out {{ generate_certificate_csr_path }}
+        -subj "/CN={{ generate_certificate_domain }}"
 
 - name: generate a certificate for {{ generate_certificate_domain }}
-  openssl_certificate:
-    path: "{{ generate_certificate_crt_path }}"
-    csr_path: "{{ generate_certificate_csr_path }}"
-    ownca_path: "{{ generate_certificate_ca_path }}"
-    ownca_privatekey_path: "{{ generate_certificate_ca_privatekey_path }}"
-    ownca_privatekey_passphrase: "{{ generate_certificate_ca_privatekey_passphrase }}"
-    ownca_not_after: "+365d"
-    provider: ownca
+  expect:
+    command: >
+      openssl x509 -req -days 365 -sha256
+        -in {{ generate_certificate_csr_path }}
+        -CA {{ generate_certificate_ca_path }}
+        -CAkey {{ generate_certificate_ca_privatekey_path }}
+        -CAcreateserial
+        -out {{ generate_certificate_crt_path }}
+    responses:
+      Enter pass phrase: "{{ generate_ca_passphrase }}"
