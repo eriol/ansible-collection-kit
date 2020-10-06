@@ -35,4 +35,4 @@
         -CAcreateserial
         -out {{ generate_certificate_crt_path }}
     responses:
-      Enter pass phrase: "{{ generate_certificate_ca_passphrase }}"
+      Enter pass phrase: "{{ generate_certificate_ca_privatekey_passphrase }}"
