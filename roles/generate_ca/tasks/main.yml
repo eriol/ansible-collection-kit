@@ -1,7 +1,9 @@
 ---
-- name: install python3-openssl
+- name: install openssl and python3-pexpect
   apt:
-    name: python3-openssl
+    name:
+      - openssl
+      - python3-pexpect
     update_cache: true
     cache_valid_time: 3600
 
@@ -13,27 +15,17 @@
     mode: 0700
 
 - name: generate the root private key
-  openssl_privatekey:
-    path: "{{ generate_ca_root_key_path }}"
-    passphrase: "{{ generate_ca_passphrase }}"
-    cipher: des3
-    size: 4096
-    type: RSA
-
-- name: generate the root Certificate Signing Request
-  openssl_csr:
-    path: "{{ generate_ca_root_csr }}"
-    privatekey_path: "{{ generate_ca_root_key_path }}"
-    privatekey_passphrase: "{{ generate_ca_passphrase }}"
-    country_name: "{{ generate_ca_country_name }}"
-    organization_name: "{{ generate_ca_organization_name }}"
-    organizational_unit_name: "{{ generate_ca_organizational_unit_name }}"
-    state_or_province_name: "{{ generate_ca_state_or_province_name }}"
+  expect:
+    command: openssl genrsa -aes256 -out {{ generate_ca_root_key_path }} 4096
+    responses:
+      Enter pass phrase: "{{ generate_ca_passphrase }}"
 
 - name: generate and self sign the root certificate
-  openssl_certificate:
-    path: "{{ generate_ca_root_certificate }}"
-    privatekey_path: "{{ generate_ca_root_key_path }}"
-    privatekey_passphrase: "{{ generate_ca_passphrase }}"
-    csr_path: "{{ generate_ca_root_csr }}"
-    provider: selfsigned
+  expect:
+    command: >
+      openssl req -x509 -new -nodes -sha256 -days 1825 -extensions v3_ca
+      -key {{ generate_ca_root_key_path }}
+      -out {{ generate_ca_root_certificate }}
+      -subj "/C={{generate_ca_country_name}}/ST={{ generate_ca_state_or_province_name }}/O={{ generate_ca_organization_name }}"
+    responses:
+      Enter pass phrase: "{{ generate_ca_passphrase }}"
