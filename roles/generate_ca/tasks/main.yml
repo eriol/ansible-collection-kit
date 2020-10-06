@@ -24,8 +24,8 @@
   expect:
     command: >
       openssl req -x509 -new -nodes -sha256 -days 1825 -extensions v3_ca
-      -key {{ generate_ca_root_key_path }}
-      -out {{ generate_ca_root_certificate }}
-      -subj "/C={{generate_ca_country_name}}/ST={{ generate_ca_state_or_province_name }}/O={{ generate_ca_organization_name }}"
+        -key {{ generate_ca_root_key_path }}
+        -out {{ generate_ca_root_certificate }}
+        -subj "/C={{generate_ca_country_name}}/ST={{ generate_ca_state_or_province_name }}/O={{ generate_ca_organization_name }}"
     responses:
       Enter pass phrase: "{{ generate_ca_passphrase }}"
