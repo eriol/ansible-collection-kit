@@ -5,3 +5,7 @@ generate_ca_root_key_path: "{{ generate_ca_base_path }}/{{ generate_ca_name }}.k
 generate_ca_passphrase: "this is a secret!"
 generate_ca_root_csr: "{{ generate_ca_base_path }}/{{ generate_ca_name }}.csr"
 generate_ca_root_certificate: "{{ generate_ca_base_path }}/{{ generate_ca_name }}.crt"
+generate_ca_country_name: US
+generate_ca_organization_name: Aperture Science
+generate_ca_organizational_unit_name: GLaDOS
+generate_ca_state_or_province_name: Michigan
