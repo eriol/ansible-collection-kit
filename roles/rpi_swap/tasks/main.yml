@@ -1,0 +1,19 @@
+---
+- name: swapoff the current swap file
+  command: dphys-swapfile swapoff
+
+- name: set the swap size to {{ rpi_swap_size }}
+  lineinfile:
+    path: /etc/dphys-swapfile
+    regexp: "^CONF_SWAPSIZE"
+    line: "CONF_SWAPSIZE={{ rpi_swap_size }}"
+
+- name: re-initialize swap file
+  command: dphys-swapfile setup
+
+- name: swapon the swap file
+  command: dphys-swapfile swapon
+
+- name: reboot the raspberry pi
+  command: reboot
+  when: rpi_swap_reboot
