@@ -15,5 +15,5 @@
   command: dphys-swapfile swapon
 
 - name: reboot the raspberry pi
-  command: reboot
+  reboot:
   when: rpi_swap_reboot
