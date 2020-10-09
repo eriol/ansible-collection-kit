@@ -1,0 +1,11 @@
+allow_anonymous false
+password_file /etc/mosquitto/passwd
+
+listener 1883
+
+{% if mosquitto_certfile and mosquitto_keyfile and mosquitto_cafile %}
+listener 8883
+certfile {{ mosquitto_certfile }}
+keyfile {{ mosquitto_keyfile }}
+cafile {{ mosquitto_cafile }}
+{% endif %}
