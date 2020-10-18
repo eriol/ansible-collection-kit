@@ -1,0 +1,14 @@
+[Unit]
+Description=Gitea (Git with a cup of tea)
+After=syslog.target
+After=network.target
+
+[Service]
+RestartSec=2s
+Type=simple
+User=git
+Group=git
+WorkingDirectory={{ gitea_dir }}
+ExecStart={{ gitea_binary_dir }}/gitea web --config /etc/gitea/app.ini
+Restart=always
+Environment=USER=git HOME={{ gitea_git_home }} GITEA_WORK_DIR={{ gitea_dir }}

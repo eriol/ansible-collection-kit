@@ -1,0 +1,79 @@
+---
+- name: install git
+  apt:
+    name: git
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: ensure git group exits
+  group:
+    name: git
+    system: true
+
+- name: ensure git user exists and has restrictive settings
+  user:
+    name: git
+    groups: git
+    password: "*"
+    home: "{{ gitea_git_home }}"
+    system: true
+    shell: /bin/bash
+
+- name: download locally gitea in /tmp
+  get_url:
+    url: "{{ gitea_download_url }}"
+    dest: /tmp
+    checksum: "sha256:{{ gitea_tarball_sha256 }}"
+  delegate_to: localhost
+  become: false
+
+- name: copy gitea binary
+  copy:
+    src: "/tmp/{{ gitea_tarball }}"
+    dest: "{{ gitea_binary_dir }}/gitea"
+    owner: git
+    group: git
+    mode: "0750"
+
+- name: ensure that {{ gitea_dir }}/{custom,data,log} exists
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: git
+    group: git
+    mode: "0750"
+  with_items:
+    - "{{ gitea_dir }}/custom"
+    - "{{ gitea_dir }}/data"
+    - "{{ gitea_dir }}/log"
+
+- name: ensure that {{ gitea_config_dir }} exists
+  file:
+    path: "{{ gitea_config_dir }}"
+    state: directory
+    owner: root
+    group: git
+    mode: "0770"
+
+- name: set cap_net_bind_service=+ep on gitea binary
+  capabilities:
+    path: "{{ gitea_binary_dir }}/gitea"
+    capability: cap_net_bind_service=+ep
+
+- name: install gitea systemd unit file
+  template:
+    src: etc/systemd/system/gitea.service.j2
+    dest: /etc/systemd/system/gitea.service
+  notify:
+    - systemctl daemon-reload
+
+- name: systemctl enable gitea
+  systemd:
+    name: gitea
+    enabled: true
+
+- name: ensure gitea is running
+  systemd:
+    name: gitea
+    state: started

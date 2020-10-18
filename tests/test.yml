@@ -31,3 +31,4 @@
     # - {role: ../roles/mosquitto, become: true}
     # - {role: ../roles/generate_ca, become: true}
     # - {role: ../roles/generate_certificate, become: true}
+    # - {role: ../roles/gitea, become: true}

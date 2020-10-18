@@ -1,0 +1,9 @@
+---
+- name: systemctl daemon-reload
+  systemd:
+    daemon_reload: true
+
+- name: systemctl restart gitea
+  systemd:
+    name: gitea.service
+    state: restarted
