@@ -1,0 +1,10 @@
+---
+nftables_become: true
+
+nftables_input_policy: drop
+nftables_forward_policy: drop
+nftables_output_policy: drop
+
+nftables_input_rules: []
+nftables_forward_rules: []
+nftables_output_rules: []
