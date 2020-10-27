@@ -1,10 +1,12 @@
 #!/usr/sbin/nft -f
 
+# Ansible managed.
+
 flush ruleset
 
 table inet filter {
     chain input {
-        type filter hook input priority 0; policy drop;
+        type filter hook input priority 0; policy {{ nftables_input_policy }};
 
         iif lo accept comment "Accept any localhost traffic"
         ct state invalid drop comment "Drop invalid connections"
@@ -13,18 +15,21 @@ table inet filter {
         tcp flags & (fin|syn|rst|psh|ack|urg) == fin|syn|rst|psh|ack|urg counter drop comment "Drop XMAS packets"
         tcp flags & (fin|syn|rst|psh|ack|urg) == 0x0 counter drop comment "Drop NULL packets"
 
-        tcp dport ssh ct state new limit rate 15/minute accept comment "Accept SSH on port 22 but avoid brute force"
-
-        tcp dport { http, https } accept comment "Accept HTTP (ports 80, 443)"
-
-        tcp dport { submission, imaps } accept comment "Accept SSMTP and IMAPS"
+        {% for rule in nftables_input_rules %}
+            {{ rule }}
+        {% endfor %}
     }
     chain forward {
-        type filter hook forward priority 0; policy drop;
-        # Drop everything forwarded to us.
+        type filter hook forward priority 0; policy {{ nftables_forward_policy }};
+        {% for rule in nftables_forward_rules %}
+            {{ rule }}
+        {% endfor %}
 
     }
     chain output {
-        type filter hook output priority 0; policy accept;
+        type filter hook output priority 0; policy {{ nftables_output_policy }};
+        {% for rule in nftables_output_rules %}
+            {{ rule }}
+        {% endfor %}
     }
 }
