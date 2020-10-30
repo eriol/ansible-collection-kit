@@ -14,10 +14,5 @@
         owner: root
         group: root
         mode: 0644
-
-    - name: start nftables
-      systemd:
-        name: nftables.service
-        state: started
-        enabled: true
+      notify: systemctl restart nftables
   become: "{{ nftables_become }}"
