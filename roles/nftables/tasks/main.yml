@@ -16,3 +16,4 @@
         mode: 0644
       notify: systemctl restart nftables
   become: "{{ nftables_become }}"
+  become_user: "{{ nftables_become_user }}"

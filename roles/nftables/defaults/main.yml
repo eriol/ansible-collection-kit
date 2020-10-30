@@ -1,5 +1,6 @@
 ---
 nftables_become: true
+nftables_become_user: root
 
 nftables_input_policy: drop
 nftables_forward_policy: drop
