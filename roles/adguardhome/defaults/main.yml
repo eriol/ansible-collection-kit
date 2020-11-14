@@ -2,11 +2,11 @@
 adguardhome_become: true
 adguardhome_become_user: root
 
-adguardhome_version: v0.103.3
+adguardhome_version: v0.104.1
 adguardhome_tarball_armv7l: AdGuardHome_linux_armv7.tar.gz
-adguardhome_tarball_armv7l_sha256: 8dcfeca7a345ff3451f8ba20100aaef8bb9f8d05dfb2d9b619c019000fa00edc
+adguardhome_tarball_armv7l_sha256: b62a5e375c937b27db8e050835d1f81c0b3d384205034c40cbc5f22e6b500a2e
 adguardhome_tarball_x86_64: AdGuardHome_linux_amd64.tar.gz
-adguardhome_tarball_x86_64_sha256: 077fb5262129535f3fdc47379fdd573a68aade62cdbdac02919b69de777df3ea
+adguardhome_tarball_x86_64_sha256: f94ec247d546b6d2a756ff31b72a09fd7639b37e6fb68b0a634041a2900fffe5
 
 adguardhome_tarball: "{{ lookup('vars', 'adguardhome_tarball_'+ansible_architecture|lower, default=adguardhome_tarball_x86_64) }}"
 adguardhome_tarball_sha256: "{{ lookup('vars', 'adguardhome_tarball_'+ansible_architecture|lower+'_sha256', default=adguardhome_tarball_x86_64_sha256) }}"
