@@ -1,5 +1,6 @@
 ---
 - block:
+
   - name: ensure adguardhome group exits
     group:
       name: adguardhome
@@ -96,5 +97,6 @@
     systemd:
       name: adguardhome
       state: started
+
   become: "{{ adguardhome_become }}"
   become_user: "{{ adguardhome_become_user }}"
