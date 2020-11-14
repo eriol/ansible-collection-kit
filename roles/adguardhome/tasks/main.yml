@@ -1,106 +1,100 @@
 ---
-- name: ensure adguardhome group exits
-  group:
-    name: adguardhome
-    system: true
-  become: true
+- block:
+  - name: ensure adguardhome group exits
+    group:
+      name: adguardhome
+      system: true
 
-- name: ensure adguardhome user exists and has restrictive settings
-  user:
-    name: adguardhome
-    groups: adguardhome
-    password: "*"
-    create_home: false
-    system: true
-    shell: /usr/sbin/nologin
-  become: true
+  - name: ensure adguardhome user exists and has restrictive settings
+    user:
+      name: adguardhome
+      groups: adguardhome
+      password: "*"
+      create_home: false
+      system: true
+      shell: /usr/sbin/nologin
 
-- name: get available groups
-  getent:
-    database: group
+  - name: get available groups
+    getent:
+      database: group
 
-- name: add adguardhome user to ssl-cert group
-  user:
-    name: adguardhome
-    groups: ssl-cert
-    append: true
-  become: true
-  when: adguardhome_add_to_ssl_cert_group and "ssl-cert" in ansible_facts.getent_group
+  - name: add adguardhome user to ssl-cert group
+    user:
+      name: adguardhome
+      groups: ssl-cert
+      append: true
+    when: adguardhome_add_to_ssl_cert_group and "ssl-cert" in ansible_facts.getent_group
 
-- name: ensure that the directory where we deploy AdGuard Home exists
-  file:
-    path: "{{ adguardhome_dir }}"
-    state: directory
-    owner: adguardhome
-    group: adguardhome
-    mode: "0750"
-  become: true
+  - name: ensure that the directory where we deploy AdGuard Home exists
+    file:
+      path: "{{ adguardhome_dir }}"
+      state: directory
+      owner: adguardhome
+      group: adguardhome
+      mode: "0750"
 
-# TODO: download only if not installed or a new version.
+  # TODO: download only if not installed or a new version.
 
-- name: download locally AdGuard Home in /tmp
-  get_url:
-    url: "{{ adguardhome_download_url }}"
-    dest: /tmp
-    checksum: "sha256:{{ adguardhome_tarball_sha256 }}"
-  delegate_to: localhost
+  - name: download locally AdGuard Home in /tmp
+    get_url:
+      url: "{{ adguardhome_download_url }}"
+      dest: /tmp
+      checksum: "sha256:{{ adguardhome_tarball_sha256 }}"
+    delegate_to: localhost
+    become: false
 
-- name: unarchive locally AdGuard Home
-  unarchive:
-    src: "/tmp/{{ adguardhome_tarball }}"
-    dest: /tmp
-    remote_src: true
-  delegate_to: localhost
+  - name: unarchive locally AdGuard Home
+    unarchive:
+      src: "/tmp/{{ adguardhome_tarball }}"
+      dest: /tmp
+      remote_src: true
+    delegate_to: localhost
+    become: false
 
-- name: copy AdGuard Home binary
-  copy:
-    src: /tmp/AdGuardHome/AdGuardHome
-    dest: "{{ adguardhome_dir }}"
-    owner: adguardhome
-    group: adguardhome
-    mode: "0750"
-  become: true
+  - name: copy AdGuard Home binary
+    copy:
+      src: /tmp/AdGuardHome/AdGuardHome
+      dest: "{{ adguardhome_dir }}"
+      owner: adguardhome
+      group: adguardhome
+      mode: "0750"
 
-- name: check if the AdGuardHome.yaml configuration exists
-  stat:
-    path: "{{ adguardhome_dir }}/AdGuardHome.yaml"
-  register: adguardhome_yaml_config
-  become: true
+  - name: check if the AdGuardHome.yaml configuration exists
+    stat:
+      path: "{{ adguardhome_dir }}/AdGuardHome.yaml"
+    register: adguardhome_yaml_config
 
-# NOTE: python3-passlib must be installed or this will fail silently.
-- name: set the AdGuardHome config file
-  template:
-    src: templates/AdGuardHome.yaml.j2
-    dest: "{{ adguardhome_dir }}/AdGuardHome.yaml"
-    owner: adguardhome
-    group: adguardhome
-    mode: 0640
-  become: true
-  when: not adguardhome_yaml_config.stat.exists
-  notify: systemctl restart adguardhome
+  # NOTE: python3-passlib must be installed or this will fail silently.
+  - name: set the AdGuardHome config file
+    template:
+      src: templates/AdGuardHome.yaml.j2
+      dest: "{{ adguardhome_dir }}/AdGuardHome.yaml"
+      owner: adguardhome
+      group: adguardhome
+      mode: 0640
+    when: not adguardhome_yaml_config.stat.exists
+    notify: systemctl restart adguardhome
 
-- name: set cap_net_bind_service=+ep on AdGuardHome binary
-  capabilities:
-    path: "{{ adguardhome_dir }}/AdGuardHome"
-    capability: cap_net_bind_service=+ep
-  become: true
+  - name: set cap_net_bind_service=+ep on AdGuardHome binary
+    capabilities:
+      path: "{{ adguardhome_dir }}/AdGuardHome"
+      capability: cap_net_bind_service=+ep
 
-- name: install adguardhome systemd unit file
-  template:
-    src: etc/systemd/system/adguardhome.service.j2
-    dest: /etc/systemd/system/adguardhome.service
-  notify:
-    - systemctl daemon-reload
-  become: true
+  - name: install adguardhome systemd unit file
+    template:
+      src: etc/systemd/system/adguardhome.service.j2
+      dest: /etc/systemd/system/adguardhome.service
+    notify:
+      - systemctl daemon-reload
 
-- name: systemctl enable adguardhome
-  systemd:
-    name: adguardhome
-    enabled: true
-  become: true
+  - name: systemctl enable adguardhome
+    systemd:
+      name: adguardhome
+      enabled: true
 
-- name: ensure AdGuard Home is running
-  systemd:
-    name: adguardhome
-    state: started
-  become: true
+  - name: ensure AdGuard Home is running
+    systemd:
+      name: adguardhome
+      state: started
+  become: "{{ adguardhome_become }}"
+  become_user: "{{ adguardhome_become_user }}"

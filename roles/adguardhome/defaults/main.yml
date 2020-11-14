@@ -1,4 +1,7 @@
 ---
+adguardhome_become: true
+adguardhome_become_user: root
+
 adguardhome_version: v0.103.3
 adguardhome_tarball_armv7l: AdGuardHome_linux_armv7.tar.gz
 adguardhome_tarball_armv7l_sha256: 8dcfeca7a345ff3451f8ba20100aaef8bb9f8d05dfb2d9b619c019000fa00edc
