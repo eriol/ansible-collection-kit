@@ -11,7 +11,7 @@
     domains:
       - cname: mail.example.org
   roles:
-    # - {role: ../roles/apt_dist_upgrade, become: true}
+    # - ../roles/apt_dist_upgrade
     - {role: ../roles/common, become: true}
     - {role: ../roles/hostname, become: true}
     # The easy ports sequece is just for test. Also don't disable strict IP
