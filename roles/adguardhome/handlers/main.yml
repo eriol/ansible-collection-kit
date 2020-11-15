@@ -2,10 +2,12 @@
 - name: systemctl daemon-reload
   systemd:
     daemon_reload: true
-  become: true
+  become: "{{ adguardhome_become }}"
+  become_user: "{{ adguardhome_become_user }}"
 
 - name: systemctl restart adguardhome
   systemd:
     name: adguardhome.service
     state: restarted
-  become: true
+  become: "{{ adguardhome_become }}"
+  become_user: "{{ adguardhome_become_user }}"
