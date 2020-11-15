@@ -8,8 +8,8 @@
   - name: update 127.0.1.1 entry in /etc/hosts
     lineinfile:
       path: /etc/hosts
-      regexp: "^127.0.0.1\t"
-      line: "^127.0.0.1\t {{ hostname }} {{ hostname_aliases | join(' ') }}"
+      regexp: "^127.0.1.1\t"
+      line: "127.0.1.1\t{{ hostname }} {{ hostname_aliases | join(' ') }}"
 
   become: "{{ hostname_become }}"
   become_user: "{{ hostname_become_user }}"
