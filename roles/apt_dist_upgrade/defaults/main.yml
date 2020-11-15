@@ -1,0 +1,3 @@
+---
+apt_dist_upgrade_become: true
+apt_dist_upgrade_become_user: root
