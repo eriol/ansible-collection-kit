@@ -1,2 +1,6 @@
 ---
-desired_hostname: example.org
+hostname_become: true
+hostname_become_user: root
+
+hostname: "{{ ansible_fqdn }}"
+hostname_aliases: []
