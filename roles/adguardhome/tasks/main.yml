@@ -59,6 +59,7 @@
       owner: adguardhome
       group: adguardhome
       mode: "0750"
+    notify: systemctl restart adguardhome
 
   - name: check if the AdGuardHome.yaml configuration exists
     stat:
