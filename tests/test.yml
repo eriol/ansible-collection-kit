@@ -10,10 +10,13 @@
       - tcp dport { submission, imaps } accept comment "Accept SSMTP and IMAPS"
     domains:
       - cname: mail.example.org
+    hostname: example.org
+    hostname_aliases:
+      - example
   roles:
     # - ../roles/apt_dist_upgrade
     - {role: ../roles/common, become: true}
-    - {role: ../roles/hostname, become: true}
+    - ../roles/hostname
     # The easy ports sequece is just for test. Also don't disable strict IP
     # filtering on production.
     # - {role: ../roles/knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}
