@@ -1,18 +1,23 @@
 ---
-- name: perform apt update
-  apt:
-    cache_valid_time: 3600
-    force_apt_get: true
-    update_cache: true
+- block:
 
-- name: check upgradable packages
-  command: apt list --upgradable
-  register: apt_result
+  - name: perform apt update
+    apt:
+      cache_valid_time: 3600
+      force_apt_get: true
+      update_cache: true
 
-- name: show apt list --upgradable output
-  debug:
-    var: apt_result.stdout_lines
+  - name: check upgradable packages
+    command: apt list --upgradable
+    register: apt_result
 
-- name: update all packages
-  apt:
-    upgrade: dist
+  - name: show apt list --upgradable output
+    debug:
+      var: apt_result.stdout_lines
+
+  - name: upgrade all packages
+    apt:
+      upgrade: dist
+
+  become: "{{ apt_dist_upgrade_become }}"
+  become_user: "{{ apt_dist_upgrade_become_user }}"
