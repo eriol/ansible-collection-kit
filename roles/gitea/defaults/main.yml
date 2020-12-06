@@ -1,12 +1,12 @@
 ---
-gitea_version: 1.12.5
+gitea_version: 1.13.0
 
 gitea_tarball_armv6: "gitea-{{ gitea_version }}-linux-arm-6"
-gitea_tarball_armv6_sha256: 706f53ed833d07cac4fc797df7d5fe8ba617f4799df0664ed96a9ee10eac7466
+gitea_tarball_armv6_sha256: bdd3e9713e4a96645bbce7a11b06d2bd53968f9b0d1711043e2a44081f548d44
 
 
 gitea_tarball_x86_64: "gitea-{{ gitea_version }}-linux-amd64"
-gitea_tarball_x86_64_sha256: 8ed8bff1f34d8012cab92943214701c10764ffaca102e311a3297edbb8fce940
+gitea_tarball_x86_64_sha256: f27d8f17dcd531dab01450cb63313ab4239273f3c2d36f00b6908bed5287f683
 
 gitea_architecture: "{{ 'armv6' if ansible_architecture|lower == 'armv7l' else  ansible_architecture|lower}}"
 gitea_tarball: "{{ lookup('vars', 'gitea_tarball_'+gitea_architecture, default=gitea_tarball_x86_64) }}"
