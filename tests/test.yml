@@ -21,7 +21,7 @@
     # filtering on production.
     # - {role: ../roles/knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}
     - ../roles/nftables
-    - {role: ../roles/ssh}
+    - {role: ../roles/sshd}
     - {role: ../roles/fail2ban}
     - {role: ../roles/snake_oil_dehydrated, become: true}
     - {role: ../roles/mailserver}
