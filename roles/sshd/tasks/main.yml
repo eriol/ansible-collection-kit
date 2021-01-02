@@ -1,56 +1,59 @@
 ---
-- name: install openssh-server
-  apt:
-    name: openssh-server
-    state: present
-    update_cache: true
-    cache_valid_time: 3600
-  become: true
+- block:
 
-- name: ensure openssh-server is running
-  systemd:
-    state: started
-    name: sshd
+  - name: install openssh-server
+    apt:
+      name: openssh-server
+      state: present
+      update_cache: true
+      cache_valid_time: 3600
 
-- name: harden openssh-server
-  lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-    state: present
-  with_items:
-    - regexp: "^#?AllowAgentForwarding"
-      line: "AllowAgentForwarding no"
-    - regexp: "^#?AllowTcpForwarding"
-      line: "AllowTcpForwarding no"
-    - regexp: "^#?MaxAuthTries"
-      line: "MaxAuthTries 3"
-    - regexp: "^#?MaxSessions"
-      line: "MaxSessions 2"
-    - regexp: "^#?PasswordAuthentication"
-      line: "PasswordAuthentication no"
-    - regexp: "^#?PermitRootLogin"
-      line: "PermitRootLogin no"
-    - regexp: "^#?PubkeyAuthentication"
-      line: "PubkeyAuthentication yes"
-    - regexp: "^#?TCPKeepAlive"
-      line: "TCPKeepAlive no"
-    - regexp: "^#?UseDNS"
-      line: "UseDNS no"
-    - regexp: "^#?X11Forwarding"
-      line: "X11Forwarding no"
-  become: true
-  notify: systemctl restart sshd
+  - name: ensure openssh-server is running
+    systemd:
+      state: started
+      name: sshd
 
-# TODO: make an ansible module to perform knocking.
-# - name: flush handlers
-#   meta: flush_handlers
+  - name: harden openssh-server
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+      state: present
+    with_items:
+      - regexp: "^#?AllowAgentForwarding"
+        line: "AllowAgentForwarding no"
+      - regexp: "^#?AllowTcpForwarding"
+        line: "AllowTcpForwarding no"
+      - regexp: "^#?MaxAuthTries"
+        line: "MaxAuthTries 3"
+      - regexp: "^#?MaxSessions"
+        line: "MaxSessions 2"
+      - regexp: "^#?PasswordAuthentication"
+        line: "PasswordAuthentication no"
+      - regexp: "^#?PermitRootLogin"
+        line: "PermitRootLogin no"
+      - regexp: "^#?PubkeyAuthentication"
+        line: "PubkeyAuthentication yes"
+      - regexp: "^#?TCPKeepAlive"
+        line: "TCPKeepAlive no"
+      - regexp: "^#?UseDNS"
+        line: "UseDNS no"
+      - regexp: "^#?X11Forwarding"
+        line: "X11Forwarding no"
+    notify: systemctl restart sshd
 
-# - name: check that openssh-server is listening
-#   wait_for:
-#     host: "{{ inventory_hostname }}"
-#     port: 22
-#     timeout: 5
-#     search_regex: OpenSSH
-#     delay: 2
-#   delegate_to: localhost
+  # TODO: make an ansible module to perform knocking.
+  # - name: flush handlers
+  #   meta: flush_handlers
+
+  # - name: check that openssh-server is listening
+  #   wait_for:
+  #     host: "{{ inventory_hostname }}"
+  #     port: 22
+  #     timeout: 5
+  #     search_regex: OpenSSH
+  #     delay: 2
+  #   delegate_to: localhost
+
+  become: "{{ sshd_become }}"
+  become_user: "{{ sshd_become_user }}"
