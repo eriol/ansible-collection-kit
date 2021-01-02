@@ -13,6 +13,13 @@
       state: started
       name: sshd
 
+  - name: set the sshd port
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: "^#?Port"
+      line: "Port {{ sshd_port }}"
+    notify: systemctl restart sshd
+
   - name: harden openssh-server
     lineinfile:
       path: /etc/ssh/sshd_config
@@ -49,7 +56,7 @@
   # - name: check that openssh-server is listening
   #   wait_for:
   #     host: "{{ inventory_hostname }}"
-  #     port: 22
+  #     port: "{{ sshd_port }}"
   #     timeout: 5
   #     search_regex: OpenSSH
   #     delay: 2
