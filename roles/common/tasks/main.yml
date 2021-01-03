@@ -1,27 +1,32 @@
 ---
-- name: check if hardware random number generator exists
-  stat:
-    path: /dev/hwrng
-  register: dev_hwrng
+- block:
 
-- name: install haveged
-  apt:
-    name: haveged
-    update_cache: true
-    cache_valid_time: 3600
-  when: not dev_hwrng.stat.exists
+  - name: check if hardware random number generator exists
+    stat:
+      path: /dev/hwrng
+    register: dev_hwrng
 
-- name: install rng-tools
-  apt:
-    name: rng-tools
-  when: dev_hwrng.stat.exists
+  - name: install haveged
+    apt:
+      name: haveged
+      update_cache: true
+      cache_valid_time: 3600
+    when: not dev_hwrng.stat.exists
 
-- name: install ca-certificates
-  apt:
-    name: ca-certificates
+  - name: install rng-tools
+    apt:
+      name: rng-tools
+    when: dev_hwrng.stat.exists
 
-- name: install apparmor
-  apt:
-    name:
-      - apparmor-profiles
-      - apparmor-utils
+  - name: install ca-certificates
+    apt:
+      name: ca-certificates
+
+  - name: install apparmor
+    apt:
+      name:
+        - apparmor-profiles
+        - apparmor-utils
+
+  become: "{{ common_become }}"
+  become_user: "{{ common_become_user }}"

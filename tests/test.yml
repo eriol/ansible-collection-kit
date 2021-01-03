@@ -15,7 +15,7 @@
       - example
   roles:
     # - ../roles/apt_dist_upgrade
-    - {role: ../roles/common, become: true}
+    - ../roles/common
     - ../roles/hostname
     # The easy ports sequece is just for test. Also don't disable strict IP
     # filtering on production.
