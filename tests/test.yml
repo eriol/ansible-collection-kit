@@ -40,3 +40,4 @@
     # - {role: ../roles/generate_ca, become: true}
     # - {role: ../roles/generate_certificate, become: true}
     # - {role: ../roles/gitea, become: true}
+    # - ../roles/docker

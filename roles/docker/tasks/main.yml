@@ -1,0 +1,34 @@
+---
+- block:
+
+  - name: install docker dependencies
+    apt:
+      name:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg-agent
+        - software-properties-common
+      update_cache: true
+      cache_valid_time: 3600
+
+  - name: add Docker's GPG key
+    apt_key:
+      url: https://download.docker.com/linux/debian/gpg
+
+  - name: add Docker's GPG repository
+    apt_repository:
+      repo: "deb [arch=amd64] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+      filename: docker
+
+  - name: install docker
+    apt:
+      name:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+      update_cache: true
+      cache_valid_time: 3600
+
+  become: "{{ docker_become }}"
+  become_user: "{{ docker_become_user }}"
