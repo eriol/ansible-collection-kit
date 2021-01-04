@@ -16,7 +16,7 @@
     apt_key:
       url: https://download.docker.com/linux/debian/gpg
 
-  - name: add Docker's GPG repository
+  - name: add Docker's repository
     apt_repository:
       repo: "deb [arch=amd64] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
       filename: docker
