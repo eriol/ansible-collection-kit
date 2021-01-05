@@ -1,0 +1,3 @@
+---
+fail2ban_become: true
+fail2ban_become_user: root
