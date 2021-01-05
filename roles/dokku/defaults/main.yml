@@ -1,0 +1,10 @@
+---
+dokku_become: true
+dokku_become_user: root
+
+dokku_hostname: dokku.me
+dokku_key_file: /root/.ssh/id_rsa.pub
+dokku_nginx_enable: true
+dokku_skip_key_file: true
+dokku_vhost_enable: true
+dokku_web_config: false

@@ -1,0 +1,50 @@
+---
+- block:
+
+  - name: add dokku's GPG keys
+    apt_key:
+      url: https://packagecloud.io/dokku/dokku/gpgkey
+
+  - name: add Dokku's repository
+    apt_repository:
+      repo: "deb https://packagecloud.io/dokku/dokku/debian/ {{ ansible_distribution_release }} main"
+      filename: dokku
+
+  - name: Set dokku debconf options
+    debconf:
+      name: dokku
+      question: "{{ item.question }}"
+      value: "{{ item.value }}"
+      vtype: "{{ item.vtype }}"
+    with_items:
+      - question: "dokku/hostname"
+        value: "{{ dokku_hostname }}"
+        vtype: string
+      - question: "dokku/key_file"
+        value: "{{ dokku_key_file }}"
+        vtype: string
+      - question: "dokku/nginx_enable"
+        # debconf module wants a string as value.
+        value: "{{ dokku_nginx_enable | string | lower }}"
+        vtype: boolean
+      - question: "dokku/skip_key_file"
+        # debconf module wants a string as value.
+        value: "{{ dokku_skip_key_file | string | lower }}"
+        vtype: boolean
+      - question: "dokku/vhost_enable"
+        # debconf module wants a string as value.
+        value: "{{ dokku_vhost_enable | string | lower }}"
+        vtype: boolean
+      - question: "dokku/web_config"
+        # debconf module wants a string as value.
+        value: "{{ dokku_web_config  | string | lower }}"
+        vtype: boolean
+
+  - name: install dokku
+    apt:
+      name: dokku
+      update_cache: true
+      cache_valid_time: 3600
+
+  become: "{{ dokku_become }}"
+  become_user: "{{ dokku_become_user }}"

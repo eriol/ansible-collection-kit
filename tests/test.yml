@@ -41,3 +41,4 @@
     # - {role: ../roles/generate_certificate, become: true}
     # - {role: ../roles/gitea, become: true}
     # - ../roles/docker
+    - ../roles/dokku
