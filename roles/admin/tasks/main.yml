@@ -1,0 +1,24 @@
+---
+- block:
+
+  - name: ensure sudo is installed
+    apt:
+      name: sudo
+      state: present
+      update_cache: true
+      cache_valid_time: 3600
+
+  - name: ensure admin user ({{ admin_user }}) exists
+    user:
+      name: "{{ admin_user }}"
+      password: "{{ admin_password | password_hash('sha512') }}"
+      groups: sudo
+
+  - name: set authorized key for the admin user ({{ admin_user }})
+    authorized_key:
+      user: "{{ admin_user }}"
+      key: "{{ lookup('file', admin_key_file) }}"
+      state: present
+
+  become: "{{ admin_become }}"
+  become_user: "{{ admin_become_user }}"
