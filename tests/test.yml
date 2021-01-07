@@ -3,16 +3,19 @@
   hosts: all
   vars:
     ansible_python_interpreter: /usr/bin/python3
+    hostname: example.org
+    hostname_aliases:
+      - example
     nftables_output_policy: accept
     nftables_input_rules:
       - tcp dport ssh ct state new limit rate 15/minute accept comment "Accept SSH on port 22 but avoid brute force"
       - tcp dport { http, https } accept comment "Accept HTTP (ports 80, 443)"
       - tcp dport { submission, imaps } accept comment "Accept SSMTP and IMAPS"
+    admin_user: administrator
+    admin_password: the_secret_password
+    admin_key_file: ~/.ssh/test/id_rsa.pub
     domains:
       - cname: mail.example.org
-    hostname: example.org
-    hostname_aliases:
-      - example
   roles:
     # - ../roles/apt_dist_upgrade
     - ../roles/common
@@ -20,6 +23,7 @@
     - ../roles/nftables
     - ../roles/sshd
     - ../roles/fail2ban
+    - ../roles/admin
     # - {role: ../roles/snake_oil_dehydrated, become: true}
     # - {role: ../roles/mailserver}
     # - {role: ../roles/weechat}
