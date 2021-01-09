@@ -1,0 +1,24 @@
+# Ansible managed
+
+*nat
+
+:PREROUTING ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+
+COMMIT
+
+*filter
+
+:INPUT {{ iptables_input_policy | upper }} [0:0]
+:FORWARD {{ iptables_forward_policy | upper }} [0:0]
+:OUTPUT {{ iptables_output_policy | upper }} [0:0]
+
+-A INPUT -i lo -j ACCEPT
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+{% for rule in iptables_rules %}
+{{ rule }}
+{% endfor %}
+
+COMMIT

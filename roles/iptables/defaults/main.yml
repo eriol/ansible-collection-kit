@@ -1,0 +1,9 @@
+---
+iptables_become: true
+iptables_become_user: root
+
+iptables_input_policy: drop
+iptables_forward_policy: drop
+iptables_output_policy: drop
+
+iptables_rules: []

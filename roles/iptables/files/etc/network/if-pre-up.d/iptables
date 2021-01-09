@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Ansible managed.
+
+/sbin/iptables-legacy-restore < /etc/iptables.up.rules
