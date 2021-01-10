@@ -9,7 +9,7 @@ Create a `requirements.yml` with the following content:
 ```yaml
 ---
 collections:
-  - name: https://git.sr.ht/~eriol/ansible-collection-kit
+  - name: https://noa.mornie.org/eriol/ansible-collection-kit
     type: git
     version: main
 ```
