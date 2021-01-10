@@ -26,12 +26,6 @@
       group: root
       mode: 0644
     notify: load iptables rules
-    register: iptables_up_rules
-
-  - name: set iptables_rules_changed
-    set_fact:
-      iptables_rules_changed: true
-    when: iptables_up_rules.changed
 
   - name: ensure iptables rules are started on reboot
     copy:
