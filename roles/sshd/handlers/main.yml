@@ -3,4 +3,5 @@
   systemd:
     name: sshd.service
     state: restarted
-  become: true
+  become: "{{ sshd_become }}"
+  become_user: "{{ sshd_become_user }}"
