@@ -1,43 +1,48 @@
 ---
-- name: install ssl-cert
-  apt:
-    name: ssl-cert
-    state: present
-    update_cache: true
-    cache_valid_time: 3600
+- block:
 
-- name: ensure /var/lib/dehydrated/certs esists for each domain
-  file:
-    path: "/var/lib/dehydrated/certs/{{ item.cname }}"
-    state: directory
-    owner: root
-    group: ssl-cert
-    mode: 0750
-    recurse: true
-  loop: "{{ domains }}"
+  - name: install ssl-cert
+    apt:
+      name: ssl-cert
+      state: present
+      update_cache: true
+      cache_valid_time: 3600
 
-# It's fine to use rsa:2048 since this role is used only for testing.
-- name: create certificates for each domain
-  shell: |
-    openssl req -x509 -nodes -newkey rsa:2048 -days 365 -sha256 \
-      -keyout /var/lib/dehydrated/certs/{{ item.cname }}/privkey.pem \
-      -out /var/lib/dehydrated/certs/{{ item.cname }}/fullchain.pem \
-      -subj "/CN={{ item.cname }}"
-    cp /var/lib/dehydrated/certs/{{ item.cname }}/fullchain.pem \
-       /var/lib/dehydrated/certs/{{ item.cname }}/chain.pem
-  loop: "{{ domains }}"
+  - name: ensure /var/lib/dehydrated/certs esists for each domain
+    file:
+      path: "/var/lib/dehydrated/certs/{{ item }}"
+      state: directory
+      owner: root
+      group: ssl-cert
+      mode: 0750
+      recurse: true
+    loop: "{{ dehydrated_domains }}"
 
-- name: find all *.pem files
-  find:
-    path: /var/lib/dehydrated/certs/
-    file_type: file
-    recurse: true
-  register: find_result
+  # It's fine to use rsa:2048 since this role is used only for testing.
+  - name: create certificates for each domain
+    shell: |
+      openssl req -x509 -nodes -newkey rsa:2048 -days 365 -sha256 \
+        -keyout /var/lib/dehydrated/certs/{{ item }}/privkey.pem \
+        -out /var/lib/dehydrated/certs/{{ item }}/fullchain.pem \
+        -subj "/CN={{ item }}"
+      cp /var/lib/dehydrated/certs/{{ item }}/fullchain.pem \
+         /var/lib/dehydrated/certs/{{ item }}/chain.pem
+    loop: "{{ dehydrated_domains }}"
 
-- name: fix certificates permissions
-  file:
-    path: "{{ item.path }}"
-    owner: root
-    group: ssl-cert
-    mode: 0640
-  with_items: "{{ find_result.files }}"
+  - name: find all *.pem files
+    find:
+      path: /var/lib/dehydrated/certs/
+      file_type: file
+      recurse: true
+    register: find_result
+
+  - name: fix certificates permissions
+    file:
+      path: "{{ item.path }}"
+      owner: root
+      group: ssl-cert
+      mode: 0640
+    with_items: "{{ find_result.files }}"
+
+  become: "{{ dehydrated_become }}"
+  become_user: "{{ dehydrated_become_user }}"
