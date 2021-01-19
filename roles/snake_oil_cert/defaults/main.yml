@@ -1,5 +1,5 @@
 ---
-dehydrated_become: true
-dehydrated_become_user: root
+stake_oil_cert_become: true
+stake_oil_cert_become_user: root
 
-dehydrated_domains: []
+stake_oil_cert_domains: []
