@@ -8,30 +8,30 @@
       update_cache: true
       cache_valid_time: 3600
 
-  - name: ensure /var/lib/dehydrated/certs esists for each domain
+  - name: ensure {{ snake_oil_cert_root }} esists for each domain
     file:
-      path: "/var/lib/dehydrated/certs/{{ item }}"
+      path: "{{ snake_oil_cert_root }}/{{ item }}"
       state: directory
       owner: root
       group: ssl-cert
       mode: 0750
       recurse: true
-    loop: "{{ stake_oil_cert_domains }}"
+    loop: "{{ snake_oil_cert_domains }}"
 
   # It's fine to use rsa:2048 since this role is used only for testing.
   - name: create certificates for each domain
     shell: |
       openssl req -x509 -nodes -newkey rsa:2048 -days 365 -sha256 \
-        -keyout /var/lib/dehydrated/certs/{{ item }}/privkey.pem \
-        -out /var/lib/dehydrated/certs/{{ item }}/fullchain.pem \
+        -keyout {{ snake_oil_cert_root }}/{{ item }}/privkey.pem \
+        -out {{ snake_oil_cert_root }}/{{ item }}/fullchain.pem \
         -subj "/CN={{ item }}"
-      cp /var/lib/dehydrated/certs/{{ item }}/fullchain.pem \
-         /var/lib/dehydrated/certs/{{ item }}/chain.pem
-    loop: "{{ stake_oil_cert_domains }}"
+      cp {{ snake_oil_cert_root }}/{{ item }}/fullchain.pem \
+         {{ snake_oil_cert_root }}/{{ item }}/chain.pem
+    loop: "{{ snake_oil_cert_domains }}"
 
   - name: find all *.pem files
     find:
-      path: /var/lib/dehydrated/certs/
+      path: "{{ snake_oil_cert_root }}"
       file_type: file
       recurse: true
     register: find_result
@@ -44,5 +44,5 @@
       mode: 0640
     with_items: "{{ find_result.files }}"
 
-  become: "{{ stake_oil_cert_become }}"
-  become_user: "{{ stake_oil_cert_become_user }}"
+  become: "{{ snake_oil_cert_become }}"
+  become_user: "{{ snake_oil_cert_become_user }}"
