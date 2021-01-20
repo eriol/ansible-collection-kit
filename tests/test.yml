@@ -19,8 +19,26 @@
     admin_user: administrator
     admin_password: the_secret_password
     admin_key_file: ~/.ssh/test/id_rsa.pub
-    domains:
-      - cname: mail.example.org
+    snake_oil_cert_domains:
+      - example.org
+      - example2.org
+      - mail.example.org
+    nginx_vhosts:
+      - servername: example.org
+        serveralias:
+          - www.example.org
+          - www2.example.org
+        acme_challenges: /tmp/acme
+        ssl_certificate: /var/lib/snakeoil/certs/example.org/fullchain.pem
+        ssl_certificate_key: /var/lib/snakeoil/certs/example.org/privkey.pem
+        ssl_trusted_certificate: /var/lib/snakeoil/certs/example.org/fullchain.pem
+      - servername: example2.org
+        serveralias:
+          - www.example2.org
+          - www2.example2.org
+        ssl_certificate: /var/lib/snakeoil/certs/example2.org/fullchain.pem
+        ssl_certificate_key: /var/lib/snakeoil/certs/example2.org/privkey.pem
+        ssl_trusted_certificate: /var/lib/snakeoil/certs/example2.org/fullchain.pem
   roles:
     # - ../roles/apt_dist_upgrade
     - ../roles/common
@@ -29,9 +47,10 @@
     - ../roles/iptables
     - ../roles/sshd
     - ../roles/fail2ban
+    - ../roles/snake_oil_cert
+    - ../roles/nginx
     # - ../roles/admin
     # - ../roles/docker
-    # - {role: ../roles/snake_oil_dehydrated, become: true}
     # - {role: ../roles/mailserver}
     # - {role: ../roles/weechat}
     # Uncomment to test wikijs role: it's commented since the tarball that we

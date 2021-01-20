@@ -1,0 +1,55 @@
+# {{ ansible_managed }}
+
+server {
+    server_name {{ item.servername }}{% if item.serveralias is defined %}{% for alias in item.serveralias %} {{ alias }}{% endfor %}{% endif %};
+
+    listen 80;
+    listen [::]:80;
+
+    location / {
+        return 301 https://$server_name$request_uri;
+    }
+
+    {% if item.acme_challenges is defined %}
+
+    location ^~ /.well-known/acme-challenge {
+        alias {{ item.acme_challenges }};
+    }
+    {% endif %}
+
+}
+
+server {
+    server_name {{ item.servername }}{% if item.serveralias is defined %}{% for alias in item.serveralias %} {{ alias }}{% endfor %}{% endif %};
+
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    ssl_certificate {{ item.ssl_certificate }};
+    ssl_certificate_key {{ item.ssl_certificate_key }};
+    ssl_trusted_certificate {{ item.ssl_trusted_certificate }};
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:50m;
+
+    ssl_stapling on;
+    ssl_stapling_verify on;
+
+    root {{ nginx_root }}/{{ item.servername }}/html;
+    index index.html index.htm;
+
+    {% if item.acme_challenges is defined %}
+
+    location ^~ /.well-known/acme-challenge {
+        alias {{ item.acme_challenges }};
+    }
+    {% endif %}
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    error_page 404 /404.html;
+
+    access_log {{ nginx_root }}/{{ item.servername }}/logs/access.log;
+    error_log {{ nginx_root }}/{{ item.servername }}/logs/error.log;
+}

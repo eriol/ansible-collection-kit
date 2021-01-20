@@ -1,0 +1,42 @@
+---
+- name: create vhost directories
+  file:
+    path: "{{ nginx_root }}/{{ item.servername }}"
+    state: directory
+  with_items: "{{ nginx_vhosts }}"
+
+- name: create vhost content directories
+  file:
+    path: "{{ nginx_root }}/{{ item.servername }}/html"
+    state: directory
+  with_items: "{{ nginx_vhosts }}"
+
+- name: create vhost logs directories
+  file:
+    path: "{{ nginx_root }}/{{ item.servername }}/logs"
+    state: directory
+  with_items: "{{ nginx_vhosts }}"
+
+- name: add vhost configuration file for {{ item.servername }}
+  template:
+    src: etc/nginx/sites-available/site-vhost.j2
+    dest: "/etc/nginx/sites-available/{{ item.servername }}.vhost"
+    owner: root
+    group: root
+    mode: 0640
+  with_items: "{{ nginx_vhosts }}"
+  notify: systemctl restart nginx
+
+- name: remove all the vhost enabled
+  file:
+    path: /etc/nginx/sites-enabled/*.vhost
+    state: absent
+  notify: systemctl restart nginx
+
+- name: add vhost configuration sylink for {{ item.servername }}
+  file:
+    src: "/etc/nginx/sites-available/{{ item.servername }}.vhost"
+    dest: "/etc/nginx/sites-enabled/{{ item.servername }}.vhost"
+    state: link
+  with_items: "{{ nginx_vhosts }}"
+  notify: systemctl restart nginx

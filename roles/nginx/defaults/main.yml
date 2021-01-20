@@ -1,0 +1,9 @@
+---
+nginx_become: true
+nginx_become_user: root
+
+# Possible values are: nginx, nginx-core (only since bullseye), nginx-light,
+# nginx-full and nginx-extras.
+nginx_default_package: nginx
+nginx_root: /var/www
+nginx_vhosts: []

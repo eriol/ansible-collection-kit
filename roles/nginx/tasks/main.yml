@@ -1,0 +1,33 @@
+---
+- block:
+
+  - name: install {{ nginx_default_package }}
+    apt:
+      name: "{{ nginx_default_package }}"
+      state: present
+      update_cache: true
+      cache_valid_time: 3600
+
+  - name: remove the default site
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+      - /etc/nginx/sites-enabled/default
+      - /etc/nginx/sites-available/default
+      - /var/www/html
+    notify: systemctl reload nginx
+
+  - name: add default server to reply to client who not send correct Host header
+    copy:
+      src: etc/nginx/sites-enabled/_.conf
+      dest: /etc/nginx/sites-enabled/_.conf
+      owner: root
+      group: root
+      mode: 0640
+    notify: systemctl reload nginx
+
+  - import_tasks: create-vhosts.yml
+
+  become: "{{ nginx_become }}"
+  become_user: "{{ nginx_become_user }}"
