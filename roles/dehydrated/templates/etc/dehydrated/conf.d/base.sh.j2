@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+CONTACT_EMAIL={{ dehydrated_email }}
+{% if dehydrated_enable_hook %}HOOK="${BASEDIR}/hook.sh"{% endif %}
+{% if dehydrated_staging %}
+
+CA="https://acme-staging-v02.api.letsencrypt.org/directory"
+{% endif %}

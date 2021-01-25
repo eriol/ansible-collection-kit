@@ -1,0 +1,8 @@
+---
+dehydrated_become: true
+dehydrated_become_user: root
+
+dehydrated_domains: []
+dehydrated_email: example@example.org
+dehydrated_enable_hook: true
+dehydrated_staging: false
