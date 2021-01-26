@@ -3,7 +3,9 @@
 
   - name: install {{ nginx_default_package }}
     apt:
-      name: "{{ nginx_default_package }}"
+      name:
+        - "{{ nginx_default_package }}"
+        - logrotate
       state: present
       update_cache: true
       cache_valid_time: 3600

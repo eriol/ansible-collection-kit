@@ -40,3 +40,12 @@
     state: link
   with_items: "{{ nginx_vhosts }}"
   notify: systemctl restart nginx
+
+- name: add logrotate configuration for {{ item.servername }}
+  template:
+    src: etc/logrotate.d/nginx.j2
+    dest: "/etc/logrotate.d/{{ item.servername }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ nginx_vhosts }}"
