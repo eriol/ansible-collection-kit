@@ -43,6 +43,14 @@
     dehydrated_domains:
       - example.org www.example.org
       - example2.org
+    users_list:
+      - username: eriol
+        password: !
+        key: ~/.ssh/test/id_rsa.pub
+        key_options: 'command="/usr/bin/date"'
+      - username: melchisedec
+        # state: absent
+        # remove: true
   roles:
     # - ../roles/apt_dist_upgrade
     - ../roles/common
@@ -52,6 +60,7 @@
     - ../roles/sshd
     - ../roles/fail2ban
     - ../roles/snake_oil_cert
+    - ../roles/users
     # - ../roles/dehydrated
     # - ../roles/nginx
     # - ../roles/admin
