@@ -14,6 +14,11 @@
       password: "{{ admin_password | password_hash('sha512') }}"
       groups: sudo
 
+  - name: restrict $HOME permissions for ({{ admin_user }})
+    file:
+      path: "/home/{{ admin_user }}"
+      mode: u=rwX,g=rX,o=
+
   - name: set authorized key for the admin user ({{ admin_user }})
     authorized_key:
       user: "{{ admin_user }}"
