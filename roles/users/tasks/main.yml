@@ -5,6 +5,7 @@
     user:
       name: "{{ item.username }}"
       password: "{{ item.password | password_hash('sha512') if item.password is defined and item.password != '!' else '!' }}"
+      groups: "{{ item.groups | default('') }}"
       shell: "{{ item.shell | default('/bin/bash') }}"
       state: "{{ item.state | default('present') }}"
       remove: "{{ item.remove | default(false) }}"
