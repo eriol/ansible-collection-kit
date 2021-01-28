@@ -3,12 +3,17 @@
   file:
     path: "{{ nginx_root }}/{{ item.servername }}"
     state: directory
+    owner: root
+    group: www-data
   with_items: "{{ nginx_vhosts }}"
 
 - name: create vhost content directories
   file:
     path: "{{ nginx_root }}/{{ item.servername }}/html"
     state: directory
+    owner: root
+    group: www-data
+    mode: 0775
   with_items: "{{ nginx_vhosts }}"
 
 - name: create vhost logs directories
