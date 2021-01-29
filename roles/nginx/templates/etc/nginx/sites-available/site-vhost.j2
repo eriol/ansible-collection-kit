@@ -25,9 +25,12 @@ server {
     listen 443 ssl;
     listen [::]:443 ssl;
 
-    ssl_certificate {{ item.ssl_certificate }};
-    ssl_certificate_key {{ item.ssl_certificate_key }};
-    ssl_trusted_certificate {{ item.ssl_trusted_certificate }};
+    {% if item.ssl_certificate is defined %}ssl_certificate {{ item.ssl_certificate }};{% endif %}
+
+    {% if item.ssl_certificate_key is defined %}ssl_certificate_key {{ item.ssl_certificate_key }};{% endif %}
+
+    {% if item.ssl_trusted_certificate is defined %}ssl_trusted_certificate {{ item.ssl_trusted_certificate }};{% endif %}
+
     ssl_session_timeout 1d;
     ssl_session_cache shared:SSL:50m;
 
