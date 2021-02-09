@@ -34,6 +34,7 @@
       path: /etc/nginx/nginx.conf
       regexp: "^(.*)ssl_protocols"
       line: "\tssl_protocols TLSv1.2 TLSv1.3;"
+    notify: systemctl reload nginx
 
   - name: gzip compression
     lineinfile:
@@ -46,6 +47,7 @@
         line: "\tgzip_comp_level 5;"
       - regexp: "^(.*)gzip_types"
         line: "\tgzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;"
+    notify: systemctl reload nginx
 
 
   - import_tasks: create-vhosts.yml

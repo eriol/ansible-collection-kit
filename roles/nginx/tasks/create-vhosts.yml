@@ -43,7 +43,7 @@
     path: "{{ item.path }}"
     state: absent
   with_items: "{{ vhost_to_delete.files }}"
-  notify: systemctl restart nginx
+  notify: systemctl reload nginx
 
 - name: add vhost configuration sylink for {{ item.servername }}
   file:
@@ -51,7 +51,7 @@
     dest: "/etc/nginx/sites-enabled/{{ item.servername }}.vhost"
     state: link
   with_items: "{{ nginx_vhosts }}"
-  notify: systemctl restart nginx
+  notify: systemctl reload nginx
 
 - name: add logrotate configuration for {{ item.servername }}
   template:
