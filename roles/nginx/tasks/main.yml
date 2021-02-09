@@ -29,6 +29,12 @@
       mode: 0640
     notify: systemctl reload nginx
 
+  - name: set ssl_protocols to TLSv1.2 TLSv1.3
+    lineinfile:
+      path: /etc/nginx/nginx.conf
+      regexp: "^(.*)ssl_protocols"
+      line: "\tssl_protocols TLSv1.2 TLSv1.3;"
+
   - import_tasks: create-vhosts.yml
 
   become: "{{ nginx_become }}"
