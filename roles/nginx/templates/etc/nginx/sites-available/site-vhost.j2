@@ -25,6 +25,8 @@ server {
     listen 443 ssl;
     listen [::]:443 ssl;
 
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
     {% if item.ssl_certificate is defined %}ssl_certificate {{ item.ssl_certificate }};{% endif %}
 
     {% if item.ssl_certificate_key is defined %}ssl_certificate_key {{ item.ssl_certificate_key }};{% endif %}
