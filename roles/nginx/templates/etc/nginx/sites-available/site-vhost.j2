@@ -29,6 +29,7 @@ server {
     add_header Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'" always;
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 
     {% if item.ssl_certificate is defined %}ssl_certificate {{ item.ssl_certificate }};{% endif %}
 
