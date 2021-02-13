@@ -11,7 +11,7 @@ Create a `requirements.yml` with the following content:
 collections:
   - name: https://noa.mornie.org/eriol/ansible-collection-kit
     type: git
-    version: 0.2.4
+    version: 0.2.5
 ```
 
 and then, using ansible >= 2.10, run:
