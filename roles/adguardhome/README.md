@@ -14,4 +14,6 @@ Installs and configure [AdGuard Home](https://adguard.com/en/adguard-home/overvi
 * `adguardhome_password` - Default: changeme. Password for AdGuard Home web
   interface.
 * `adguardhome_bind_host` - Default: 0.0.0.0.
+* `adguardhome_upstream_dns` - Default: ["https://dns10.quad9.net/dns-query"].
+  List of upstream dns.
 * `adguardhome_add_to_ssl_cert_group` Default: false
