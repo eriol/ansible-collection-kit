@@ -1,6 +1,6 @@
 ---
 mosquitto_user: admin
-mosquitto_password: use the password, Luke!
+mosquitto_password: set the password, Luke!
 
 mosquitto_certfile: ""
 mosquitto_keyfile: ""
