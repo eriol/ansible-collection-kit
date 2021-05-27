@@ -1,36 +1,41 @@
 ---
-- name: install mosquitto
-  apt:
-    name:
-      - mosquitto
-      - mosquitto-clients
-      - python3-pexpect
-    update_cache: true
-    cache_valid_time: 3600
+- block:
 
-- name: create /etc/mosquitto/passwd with user "{{ mosquitto_user }}"
-  expect:
-    command: mosquitto_passwd -c /etc/mosquitto/passwd {{ mosquitto_user }}
-    responses:
-      (?i)password: "{{ mosquitto_password }}"
+  - name: install mosquitto
+    apt:
+      name:
+        - mosquitto
+        - mosquitto-clients
+        - python3-pexpect
+      update_cache: true
+      cache_valid_time: 3600
 
-- name: ensure /etc/mosquitto/passwd has restrictive persmissions
-  file:
-    path: /etc/mosquitto/passwd
-    owner: root
-    group: root
-    mode: 0640
+  - name: create /etc/mosquitto/passwd with user "{{ mosquitto_user }}"
+    expect:
+      command: mosquitto_passwd -c /etc/mosquitto/passwd {{ mosquitto_user }}
+      responses:
+        (?i)password: "{{ mosquitto_password }}"
 
-- name: set mosquitto config file
-  template:
-    src: etc/mosquitto/conf.d/default.conf.j2
-    dest: /etc/mosquitto/conf.d/default.conf
-    owner: root
-    group: root
-    mode: 0640
-  notify: systemctl restart mosquitto
+  - name: ensure /etc/mosquitto/passwd has restrictive persmissions
+    file:
+      path: /etc/mosquitto/passwd
+      owner: root
+      group: root
+      mode: 0640
 
-- name: ensure mosquitto is running
-  systemd:
-    state: started
-    name: mosquitto
+  - name: set mosquitto config file
+    template:
+      src: etc/mosquitto/conf.d/default.conf.j2
+      dest: /etc/mosquitto/conf.d/default.conf
+      owner: root
+      group: root
+      mode: 0640
+    notify: systemctl restart mosquitto
+
+  - name: ensure mosquitto is running
+    systemd:
+      state: started
+      name: mosquitto
+
+  become: "{{ mosquitto_become }}"
+  become_user: "{{ mosquitto_become_user }}"
