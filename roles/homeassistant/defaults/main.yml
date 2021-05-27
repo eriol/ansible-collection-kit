@@ -1,4 +1,7 @@
 ---
+homeassistant_become: true
+homeassistant_become_user: root
+
 homeassistant_dir: /srv/homeassistant
 is_a_raspberrypi: false
 
