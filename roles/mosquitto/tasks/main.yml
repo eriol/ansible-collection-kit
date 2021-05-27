@@ -19,7 +19,7 @@
   - name: ensure /etc/mosquitto/passwd has restrictive persmissions
     file:
       path: /etc/mosquitto/passwd
-      owner: root
+      owner: mosquitto
       group: root
       mode: 0640
 
