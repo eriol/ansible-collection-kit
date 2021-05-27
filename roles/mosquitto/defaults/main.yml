@@ -1,4 +1,7 @@
 ---
+mosquitto_become: true
+mosquitto_become_user: root
+
 mosquitto_user: admin
 mosquitto_password: set the password, Luke!
 
