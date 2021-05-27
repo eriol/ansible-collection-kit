@@ -49,18 +49,18 @@
         key: ~/.ssh/test/id_rsa.pub
         key_options: 'command="/usr/bin/date"'
       - username: melchisedec
-        # state: absent
-        # remove: true
+        state: absent
+        remove: true
   roles:
     # - ../roles/apt_dist_upgrade
-    - ../roles/common
+    # - ../roles/common
     - ../roles/hostname
     # - ../roles/nftables
-    - ../roles/iptables
-    - ../roles/sshd
-    - ../roles/fail2ban
-    - ../roles/snake_oil_cert
-    - ../roles/users
+    # - ../roles/iptables
+    # - ../roles/sshd
+    # - ../roles/fail2ban
+    # - ../roles/snake_oil_cert
+    # - ../roles/users
     # - ../roles/dehydrated
     # - ../roles/nginx
     # - ../roles/admin
@@ -77,7 +77,7 @@
     #    beehive_bind: 10.10.10.10:8181,
     #    beehive_canonical_url: http://10.10.10.10:8181}
     # - {role: ../roles/homeassistant, become: true}
-    # - {role: ../roles/mosquitto, become: true}
+    - ../roles/mosquitto
     # - {role: ../roles/generate_ca, become: true}
     # - {role: ../roles/generate_certificate, become: true}
     # - {role: ../roles/gitea, become: true}
