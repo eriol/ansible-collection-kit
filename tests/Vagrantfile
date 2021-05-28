@@ -1,8 +1,8 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
+# OS_TO_TEST = "debian/buster64"
+OS_TO_TEST = "debian/bullseye64"
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "debian/buster64"
+  config.vm.box = OS_TO_TEST
   config.vm.network "private_network", ip: "10.10.10.10"
 
   config.vm.provision "ansible" do |ansible|
