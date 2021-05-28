@@ -74,15 +74,11 @@
     notify:
       - systemctl daemon-reload
 
-  - name: systemctl enable homeassistant
-    systemd:
-      name: homeassistant
-      enabled: true
-
-  - name: ensure homeassistant is running
+  - name: ensure homeassistant is enabled and started
     systemd:
       name: homeassistant
       state: started
+      enabled: true
 
   - name: Wait for port 8123
     wait_for:
