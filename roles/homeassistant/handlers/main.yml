@@ -2,8 +2,12 @@
 - name: systemctl daemon-reload
   systemd:
     daemon_reload: true
+  become: "{{ homeassistant_become }}"
+  become_user: "{{ homeassistant_become_user }}"
 
 - name: systemctl restart homeassistant
   systemd:
     name: homeassistant.service
     state: restarted
+  become: "{{ homeassistant_become }}"
+  become_user: "{{ homeassistant_become_user }}"
