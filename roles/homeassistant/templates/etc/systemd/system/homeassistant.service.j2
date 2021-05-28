@@ -6,7 +6,7 @@ Wants=network-online.target
 
 [Service]
 # WorkingDirectory={{ homeassistant_dir }}
-ExecStart={{ homeassistant_dir }}/bin/hass -c "{{ homeassistant_dir }}/.homeassistant"
+ExecStart={{ homeassistant_dir }}/bin/hass -c "{{ homeassistant_config_dir }}"
 User=homeassistant
 Group=homeassistant
 Restart=on-failure

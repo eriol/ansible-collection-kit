@@ -35,6 +35,14 @@
     getent:
       database: group
 
+  - name: ensure that {{ homeassistant_config_dir }} exists
+    file:
+      path: "{{ homeassistant_config_dir }}"
+      state: directory
+      owner: homeassistant
+      group: root
+      mode: "0750"
+
   - name: add homeassistant user to ssl-cert group
     user:
       name: homeassistant
@@ -87,7 +95,7 @@
 
   - name: add custom TLS settings in configuration.yaml
     blockinfile:
-      path: "{{ homeassistant_dir }}/.homeassistant/configuration.yaml"
+      path: "{{ homeassistant_config_dir }}/configuration.yaml"
       marker: "# {mark} ANSIBLE TLS SETTINGS"
       block: |
         http:

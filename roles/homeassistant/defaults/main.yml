@@ -3,6 +3,7 @@ homeassistant_become: true
 homeassistant_become_user: root
 
 homeassistant_dir: /srv/homeassistant
+homeassistant_config_dir: /etc/homeassistant
 is_a_raspberrypi: false
 
 homeassistant_add_to_ssl_cert_group: false
