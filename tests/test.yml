@@ -77,7 +77,8 @@
     #    beehive_bind: 10.10.10.10:8181,
     #    beehive_canonical_url: http://10.10.10.10:8181}
     # - ../roles/mosquitto
-    - ../roles/homeassistant
+    - ../roles/influxdb
+    # - ../roles/homeassistant
     # - {role: ../roles/generate_ca, become: true}
     # - {role: ../roles/generate_certificate, become: true}
     # - {role: ../roles/gitea, become: true}
