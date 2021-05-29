@@ -3,4 +3,5 @@
   systemd:
     name: mosquitto
     state: restarted
-  become: true
+  become: "{{ mosquitto_become }}"
+  become_user: "{{ mosquitto_become_user }}"
