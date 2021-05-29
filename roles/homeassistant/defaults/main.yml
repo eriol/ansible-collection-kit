@@ -9,3 +9,6 @@ is_a_raspberrypi: false
 homeassistant_add_to_ssl_cert_group: false
 homeassistant_ssl_certificate: ""
 homeassistant_ssl_key: ""
+
+homeassistant_influxdb_host: ""
+homeassistant_influxdb_port: 8086
