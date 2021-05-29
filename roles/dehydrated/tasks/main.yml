@@ -36,5 +36,8 @@
       owner: root
       group: root
 
+  # TODO: add registration
+  # /usr/bin/dehydrated --register --accept-terms
+
   become: "{{ dehydrated_become }}"
   become_user: "{{ dehydrated_become_user }}"
