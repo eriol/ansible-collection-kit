@@ -93,6 +93,18 @@
       port: 8123
       delay: 10
 
+  - name: add influxdb settings in configuration.yaml
+    blockinfile:
+      path: "{{ homeassistant_config_dir }}/configuration.yaml"
+      marker: "# {mark} ANSIBLE INFLUXDB SETTINGS"
+      block: |
+        influxdb:
+          host: {{ homeassistant_influxdb_host }}
+          port: {{ homeassistant_influxdb_port }}
+    when:
+      - homeassistant_influxdb_host
+    notify: systemctl restart homeassistant
+
   - name: add custom TLS settings in configuration.yaml
     blockinfile:
       path: "{{ homeassistant_config_dir }}/configuration.yaml"
