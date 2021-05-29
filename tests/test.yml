@@ -51,6 +51,8 @@
       - username: melchisedec
         state: absent
         remove: true
+    influxdb_bind_hostname: 127.0.0.1
+    homeassistant_influxdb_host: 127.0.0.1
   roles:
     # - ../roles/apt_dist_upgrade
     # - ../roles/common
@@ -78,7 +80,7 @@
     #    beehive_canonical_url: http://10.10.10.10:8181}
     # - ../roles/mosquitto
     - ../roles/influxdb
-    # - ../roles/homeassistant
+    - ../roles/homeassistant
     # - {role: ../roles/generate_ca, become: true}
     # - {role: ../roles/generate_certificate, become: true}
     # - {role: ../roles/gitea, become: true}
