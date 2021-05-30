@@ -52,7 +52,10 @@
         state: absent
         remove: true
     influxdb_bind_hostname: 127.0.0.1
-    homeassistant_influxdb_host: 127.0.0.1
+    homeassistant_add_to_ssl_cert_group: true
+    homeassistant_ssl_certificate: /var/lib/snakeoil/certs/example.org/fullchain.pem
+    homeassistant_ssl_key: /var/lib/snakeoil/certs/example.org/privkey.pem
+    # homeassistant_influxdb_host: 127.0.0.1
   roles:
     # - ../roles/apt_dist_upgrade
     # - ../roles/common
@@ -61,7 +64,7 @@
     # - ../roles/iptables
     # - ../roles/sshd
     # - ../roles/fail2ban
-    # - ../roles/snake_oil_cert
+    - ../roles/snake_oil_cert
     # - ../roles/users
     # - ../roles/dehydrated
     # - ../roles/nginx
@@ -79,7 +82,7 @@
     #    beehive_bind: 10.10.10.10:8181,
     #    beehive_canonical_url: http://10.10.10.10:8181}
     # - ../roles/mosquitto
-    - ../roles/influxdb
+    # - ../roles/influxdb
     - ../roles/homeassistant
     # - {role: ../roles/generate_ca, become: true}
     # - {role: ../roles/generate_certificate, become: true}

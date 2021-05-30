@@ -50,8 +50,7 @@
       append: true
     become: true
     when:
-      - homeassistant_add_to_ssl_cert_group
-      - ssl-cert in ansible_facts.getent_group
+      - homeassistant_add_to_ssl_cert_group and "ssl-cert" in ansible_facts.getent_group
 
   - name: add homeassistant user to dialout, gpio and i2c groups
     user:
@@ -114,8 +113,7 @@
           ssl_certificate: {{ homeassistant_ssl_certificate }}
           ssl_key: {{ homeassistant_ssl_key }}
     when:
-      - homeassistant_add_to_ssl_cert_group
-      - ssl-cert in ansible_facts.getent_group
+      - homeassistant_add_to_ssl_cert_group and "ssl-cert" in ansible_facts.getent_group
       - homeassistant_ssl_certificate and homeassistant_ssl_key
     notify: systemctl restart homeassistant
 
