@@ -1,0 +1,14 @@
+---
+# Needed to make znc create the TLS certificate as znc user.
+ansible_shell_allow_world_readable_temp: true
+znc_become: true
+znc_become_user: root
+
+znc_port: 12345
+znc_ipv4: "true"
+znc_ipv6: "false"
+znc_ssl: "true"
+
+znc_admin_username: admin
+znc_admin_password: password
+znc_salt: abcdefghijklmnopqrst

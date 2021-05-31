@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+[Unit]
+Description=znc
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+WorkingDirectory=/home/znc
+ExecStart=/usr/bin/znc -f
+User=znc
+Group=znc
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

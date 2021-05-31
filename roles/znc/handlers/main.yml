@@ -1,0 +1,13 @@
+---
+- name: systemctl daemon-reload
+  systemd:
+    daemon_reload: true
+  become: "{{ znc_become }}"
+  become_user: "{{ znc_become_user }}"
+
+- name: systemctl start znc
+  systemd:
+    name: znc.service
+    state: started
+  become: "{{ znc_become }}"
+  become_user: "{{ znc_become_user }}"

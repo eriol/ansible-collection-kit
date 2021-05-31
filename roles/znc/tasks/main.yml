@@ -1,0 +1,76 @@
+---
+- block:
+
+  - name: install znc
+    apt:
+      name: znc
+      state: present
+      update_cache: true
+      cache_valid_time: 3600
+
+  - name: add znc group
+    group:
+      name: znc
+
+  - name: add znc user
+    user:
+      name: znc
+      group: znc
+      create_home: true
+
+  - name: restrict znc home only to znc user and group
+    file:
+      path: /home/znc
+      state: directory
+      owner: znc
+      group: znc
+      mode: 0750
+      recurse: true
+
+  - name: ensure that the znc config directory exists
+    file:
+      path: /home/znc/.znc/configs
+      state: directory
+      owner: znc
+      group: znc
+      mode: "0750"
+
+  - name: check if the znf configuration exists
+    stat:
+      path: "/home/znc/.znc/configs/znc.conf"
+    register: znc_config
+
+  - name: set the znc config file
+    template:
+      src: templates/znc.conf.j2
+      dest: "/home/znc/.znc/configs/znc.conf"
+      owner: znc
+      group: znc
+      mode: 0640
+    when: not znc_config.stat.exists
+
+  - name: create the ssl certificate
+    ansible.builtin.shell:
+      cmd: znc --makepem
+    when:
+      - znc_ssl == "true"
+      - not znc_config.stat.exists
+    become_user: znc
+
+  - name: install znc systemd unit file
+    template:
+      src: etc/systemd/system/znc.service.j2
+      dest: /etc/systemd/system/znc.service
+
+  - name: systemctl daemon-reload
+    systemd:
+      daemon_reload: true
+
+  - name: ensure znc is running
+    systemd:
+      name: znc.service
+      state: started
+      enabled: true
+
+  become: "{{ znc_become }}"
+  become_user: "{{ znc_become_user }}"
