@@ -64,7 +64,7 @@
     # - ../roles/iptables
     # - ../roles/sshd
     # - ../roles/fail2ban
-    - ../roles/snake_oil_cert
+    # - ../roles/snake_oil_cert
     # - ../roles/users
     # - ../roles/dehydrated
     # - ../roles/nginx
@@ -83,11 +83,12 @@
     #    beehive_canonical_url: http://10.10.10.10:8181}
     # - ../roles/mosquitto
     # - ../roles/influxdb
-    - ../roles/homeassistant
+    # - ../roles/homeassistant
     # - {role: ../roles/generate_ca, become: true}
     # - {role: ../roles/generate_certificate, become: true}
     # - {role: ../roles/gitea, become: true}
     # - ../roles/dokku
+    - ../roles/znc
     # The easy ports sequece is just for test. Also don't disable strict IP
     # filtering on production.
     # - {role: ../roles/knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}
