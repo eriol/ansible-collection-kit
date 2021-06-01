@@ -3,3 +3,6 @@ sshd_become: true
 sshd_become_user: root
 
 sshd_port: 22
+
+sshd_allow_tcp_forwarding: "no"
+sshd_max_sessions: 2
