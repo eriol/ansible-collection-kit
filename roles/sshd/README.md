@@ -9,6 +9,8 @@ Installs and configures openssh server.
 * `sshd_become_user` - Default: root. When using become functionality for
   privilege escalation, this is the user with desired privileges you become.
 * `sshd_port` - Default: 22. The port openssh server listen to.
+* `sshd_allow_tcp_forwarding` - Default: "no".
+* `sshd_max_sessions` - Default: 2.
 
 ## Example playbook
 
