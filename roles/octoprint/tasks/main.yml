@@ -1,0 +1,56 @@
+---
+- block:
+
+  - name: install octoprint dependencies
+    apt:
+      name:
+        - python3
+        - python3-pip
+        - virtualenv
+      update_cache: true
+      cache_valid_time: 3600
+
+  - name: ensure octoprint group exits
+    group:
+      name: octoprint
+      system: true
+
+  - name: ensure octoprint user exists and has restrictive settings
+    user:
+      name: octoprint
+      groups: octoprint
+      password: "*"
+      home: "{{ octoprint_dir }}"
+      system: true
+      shell: /usr/sbin/nologin
+
+  - name: install wheel and octoprint inside a virtualenv
+    pip:
+      name:
+        - wheel
+        - OctoPrint=={{ octoprint_version }}
+      virtualenv: "{{ octoprint_dir }}"
+
+  - name: ensure octoprint owns "{{ octoprint_dir }}"
+    file:
+      path: "{{ octoprint_dir }}"
+      state: directory
+      recurse: true
+      owner: octoprint
+      group: octoprint
+
+  - name: install octoprint systemd unit file
+    template:
+      src: etc/systemd/system/octoprint.service.j2
+      dest: /etc/systemd/system/octoprint.service
+    notify:
+      - systemctl daemon-reload
+
+  - name: ensure octoprint is enabled and started
+    systemd:
+      name: octoprint
+      state: started
+      enabled: true
+
+  become: "{{ octoprint_become }}"
+  become_user: "{{ octoprint_become_user }}"
