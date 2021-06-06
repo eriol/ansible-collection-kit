@@ -1,0 +1,13 @@
+---
+- name: systemctl daemon-reload
+  systemd:
+    daemon_reload: true
+  become: "{{ octoprint_become }}"
+  become_user: "{{ octoprint_become_user }}"
+
+- name: systemctl restart octoprint
+  systemd:
+    name: octoprint.service
+    state: restarted
+  become: "{{ octoprint_become }}"
+  become_user: "{{ octoprint_become_user }}"
