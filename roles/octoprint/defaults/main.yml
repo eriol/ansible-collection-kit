@@ -1,0 +1,6 @@
+---
+octoprint_become: true
+octoprint_become_user: root
+
+octoprint_version: 1.6.1
+octoprint_dir: /srv/octoprint
