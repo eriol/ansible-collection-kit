@@ -24,6 +24,12 @@
       system: true
       shell: /usr/sbin/nologin
 
+  - name: add octoprint user to dialout group
+    user:
+      name: octoprint
+      groups: dialout
+      append: true
+
   - name: install wheel and octoprint inside a virtualenv
     pip:
       name:
