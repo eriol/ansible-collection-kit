@@ -1,0 +1,15 @@
+# Managed by Ansible
+[Unit]
+Description=OctoPrint
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+# WorkingDirectory={{ octoprint_dir }}
+ExecStart={{ octoprint_dir }}/bin/octoprint serve
+User=octoprint
+Group=octoprint
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
