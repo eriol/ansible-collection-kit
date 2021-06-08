@@ -46,7 +46,7 @@
       - regexp: "^(.*)gzip_comp_level"
         line: "\tgzip_comp_level 5;"
       - regexp: "^(.*)gzip_types"
-        line: "\tgzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;"
+        line: "\tgzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml;"
     notify: systemctl reload nginx
 
 
