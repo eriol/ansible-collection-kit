@@ -1,5 +1,6 @@
-OS_TO_TEST = "debian/buster64"
-# OS_TO_TEST = "debian/bullseye64"
+# Default to buster, but just set env variable to, for example,
+# "debian/bullseye64" to run test against bullseye.
+OS_TO_TEST = ENV["OS_TO_TEST"] || "debian/buster64"
 
 Vagrant.configure("2") do |config|
   config.vm.box = OS_TO_TEST
