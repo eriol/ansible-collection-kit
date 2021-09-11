@@ -1,0 +1,3 @@
+---
+- name: Verify sshd role
+  import_playbook: ../../roles/sshd/molecule/default/verify.yml
