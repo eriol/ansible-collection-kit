@@ -8,7 +8,7 @@ steps:
     image: debian:11
     privileged: true
     commands:
-      - apt update && apt install -y ansible podman python3-pip
+      - apt update && apt install -y dbus ansible podman python3-pip
       - python3 -m pip install "molecule[lint,podman]"
       - echo "[registries.search]\nregistries = ['docker.io']" >> /etc/containers/registries.conf
       - echo "[engine]\nevents_logger = 'file'" >> /etc/containers/containers.conf
