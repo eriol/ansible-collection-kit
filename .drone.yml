@@ -8,6 +8,6 @@ steps:
     image: debian:11
     privileged: true
     commands:
-      - apt update && apt install -y ansible docker python3-pip
+      - apt update && apt install -y ansible docker.io python3-pip
       - python3 -m pip install "molecule[lint,docker]"
       - molecule test
