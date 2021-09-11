@@ -49,18 +49,5 @@
         line: "X11Forwarding no"
     notify: systemctl restart sshd
 
-  # TODO: make an ansible module to perform knocking.
-  # - name: flush handlers
-  #   meta: flush_handlers
-
-  # - name: check that openssh-server is listening
-  #   wait_for:
-  #     host: "{{ inventory_hostname }}"
-  #     port: "{{ sshd_port }}"
-  #     timeout: 5
-  #     search_regex: OpenSSH
-  #     delay: 2
-  #   delegate_to: localhost
-
   become: "{{ sshd_become }}"
   become_user: "{{ sshd_become_user }}"
