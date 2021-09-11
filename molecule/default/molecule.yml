@@ -10,6 +10,7 @@ platforms:
   - name: podman-in-docker
     image: jrei/systemd-debian:11
     command: /lib/systemd/systemd
+    privileged: true
     tmpfs:
       - /run
       - /tmp
