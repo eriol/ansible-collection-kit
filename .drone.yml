@@ -4,16 +4,23 @@ type: docker
 name: default
 
 steps:
-  - name: test
+  - name: start-systemd
     image: jrei/systemd-debian:11
     privileged: true
+    detach: true
+    # NOTE: It's important to not add a commands section since it prevents
+    # systemd from starting.
     volumes:
       - name: cgroup
         path: /sys/fs/cgroup
+
+  - name: test
+    image: jrei/systemd-debian:11
     commands:
       - apt update && apt install -y ansible python3-pip
       - python3 -m pip install "molecule[lint]"
       - molecule --debug test
+
 volumes:
   - name: cgroup
     host:
