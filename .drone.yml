@@ -11,5 +11,5 @@ steps:
       - apt update && apt install -y ansible podman python3-pip
       - python3 -m pip install "molecule[lint,podman]"
       - echo "[registries.search]\nregistries = ['docker.io']" >> /etc/containers/registries.conf
-      - echo "[engine]\nevents_logger = 'file'" >> /etc/containers/containers.conf
+      - echo "[engine]\nevents_logger = \"file\"\ncgroup_manager = \"cgroupfs\"" >> /etc/containers/containers.conf
       - molecule --debug test
