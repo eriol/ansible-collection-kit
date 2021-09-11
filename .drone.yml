@@ -10,5 +10,4 @@ steps:
     commands:
       - apt update && apt install -y ansible docker python3-pip
       - python3 -m pip install "molecule[lint,docker]"
-      - echo "[registries.search]\nregistries = ['docker.io']" >> /etc/containers/registries.conf
       - molecule test
