@@ -8,5 +8,5 @@ steps:
     image: debian:11-slim
     commands:
       - apt update && apt install -y ansible python3-pip
-      - python3 -m pip install "molecule[lint]"
+      - python3 -m pip install "molecule[lint,podman]"
       - molecule lint
