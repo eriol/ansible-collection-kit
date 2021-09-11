@@ -1,0 +1,40 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Update services facts
+      ansible.builtin.service_facts:
+
+    # - name: Print service facts
+    #   ansible.builtin.debug:
+    #     var: ansible_facts.services
+
+    - name: Assert that sshd is running
+      assert:
+        that:
+          - ansible_facts.services['sshd.service'].state is defined
+          - ansible_facts.services['sshd.service'].state == 'active'
+
+    - name: Get sshd configuration
+      command:
+        cmd: sshd -T
+      register: sshd_config
+      changed_when: false
+
+    - name: Assert that tcp forwarding is forbidden by default
+      assert:
+        that: "'allowtcpforwarding no' in sshd_config.stdout"
+
+    - name: Assert that tcp forwarding is is autorized
+      assert:
+        that: "'allowtcpforwarding yes' in sshd_config.stdout"
+      when:
+        - sshd_allow_tcp_forwarding is true
+
+    - name: Assert that password authentication is forbidden
+      assert:
+        that: "'passwordauthentication no' in sshd_config.stdout"
+
+    - name: Assert that root login is forbidden
+      assert:
+        that: "'permitrootlogin no' in sshd_config.stdout"
