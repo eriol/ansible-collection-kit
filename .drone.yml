@@ -4,7 +4,7 @@ type: docker
 name: default
 
 steps:
-  - name: test
+  - name: lint
     image: debian:11-slim
     commands:
       - apt update && apt install -y ansible python3-pip podman
