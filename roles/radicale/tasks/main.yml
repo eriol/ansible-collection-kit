@@ -1,0 +1,12 @@
+---
+- block:
+
+  - name: install radicale
+    apt:
+      name: radicale
+      state: present
+      update_cache: true
+      cache_valid_time: 3600
+
+  become: "{{ radicale_become }}"
+  become_user: "{{ radicale_become_user }}"

@@ -6,23 +6,8 @@ name: default
 steps:
   - name: test
     image: debian:11
-    volumes:
-      - name: dockersock
-        path: /var/run
     commands:
-      - sleep 5 # To ensure docker started.
       - apt update && apt install -y ansible docker.io python3-pip
-      - python3 -m pip install "molecule[lint,docker]"
+      - python3 -m pip install "molecule[lint,podman]"
+      - echo "[registries.search]\nregistries = ['docker.io']" >> /etc/containers/registries.conf
       - molecule test
-
-services:
-- name: docker
-  image: docker:dind
-  privileged: true
-  volumes:
-  - name: dockersock
-    path: /var/run
-
-volumes:
-- name: dockersock
-  temp: {}
