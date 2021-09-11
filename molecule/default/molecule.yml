@@ -5,9 +5,13 @@ dependency:
   name: galaxy
   enabled: false
 driver:
-  name: podman
+  name: delegated
+  options:
+    managed: false
+    ansible_connection_options:
+      ansible_connection: local
 platforms:
-  - name: podman-in-docker
+  - name: instance
     image: jrei/systemd-debian:11
     command: /lib/systemd/systemd
     privileged: true
