@@ -18,6 +18,6 @@ steps:
       - molecule --debug test
 
 volumes:
-- name: cgroup
-  host:
-    path: /sys/fs/cgroup
+  - name: cgroup
+    host:
+      path: /sys/fs/cgroup
