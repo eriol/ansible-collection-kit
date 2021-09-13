@@ -3,7 +3,7 @@ scenario:
   name: default
 dependency:
   name: galaxy
-  enabled: false
+  enabled: true
 driver:
   name: podman
 platforms:
