@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: Include sshd
+    - name: Include sshd role
       include_role:
         name: sshd
