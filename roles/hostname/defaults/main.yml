@@ -4,3 +4,4 @@ hostname_become_user: root
 
 hostname: "{{ ansible_fqdn }}"
 hostname_aliases: []
+hostname_update_etc_hosts: true
