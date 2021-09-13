@@ -3,13 +3,9 @@ scenario:
   name: default
 dependency:
   name: galaxy
-  enabled: true
+  enabled: false
 driver:
-  name: delegated
-  options:
-    managed: false
-    ansible_connection_options:
-      ansible_connection: local
+  name: podman
 platforms:
   - name: debian11
     image: jrei/systemd-debian:11
@@ -19,7 +15,6 @@ platforms:
       - /tmp
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    pre_build_image: true
 provisioner:
   name: ansible
   env:
