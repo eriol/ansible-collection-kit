@@ -1,0 +1,17 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Get /etc/hostname
+      command:
+        cmd: cat /etc/hostname
+      register: hostname_content
+      changed_when: false
+
+    - name: Print /etc/hostname
+      debug:
+        msg: "{{ hostname_content.stdout }}"
+
+    - name: Assert debian11 in /etc/hostname
+      assert:
+        that: "'debian11' in hostname_content.stdout"

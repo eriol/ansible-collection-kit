@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    hostname_update_etc_hosts: false
+  tasks:
+    - name: Include hostname role
+      include_role:
+        name: hostname
