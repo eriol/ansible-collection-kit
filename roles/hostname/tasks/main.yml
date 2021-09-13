@@ -10,6 +10,8 @@
       path: /etc/hosts
       regexp: "^127.0.1.1\t"
       line: "127.0.1.1\t{{ hostname }} {{ hostname_aliases | join(' ') }}"
+    when:
+      - hostname_update_etc_hosts
 
   become: "{{ hostname_become }}"
   become_user: "{{ hostname_become_user }}"
