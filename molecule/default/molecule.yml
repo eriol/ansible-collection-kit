@@ -5,7 +5,7 @@ dependency:
   name: galaxy
   enabled: true
 driver:
-  name: podman
+  name: demanded
 platforms:
   - name: debian11
     image: jrei/systemd-debian:11
