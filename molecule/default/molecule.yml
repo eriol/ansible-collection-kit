@@ -5,7 +5,7 @@ dependency:
   name: galaxy
   enabled: true
 driver:
-  name: demanded
+  name: delegated
 platforms:
   - name: debian11
     image: jrei/systemd-debian:11
