@@ -6,6 +6,10 @@ dependency:
   enabled: true
 driver:
   name: delegated
+  options:
+    managed: false
+    ansible_connection_options:
+      ansible_connection: local
 platforms:
   - name: debian11
     image: jrei/systemd-debian:11
