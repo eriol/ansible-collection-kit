@@ -9,4 +9,6 @@ steps:
     commands:
       - apt update && apt install -y ansible python3-pip podman
       - python3 -m pip install "molecule[lint,podman]"
+      - echo "[registries.search]\nregistries = ['docker.io']" >> /etc/containers/registries.conf
+      - echo "[engine]\nevents_logger = 'file'" >> /etc/containers/containers.conf
       - molecule test
