@@ -15,6 +15,7 @@ platforms:
       - /tmp
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    pre_build_image: true
 provisioner:
   name: ansible
   env:

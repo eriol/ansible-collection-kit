@@ -4,9 +4,9 @@ type: docker
 name: default
 
 steps:
-  - name: lint
+  - name: test
     image: debian:11-slim
     commands:
       - apt update && apt install -y ansible python3-pip podman
       - python3 -m pip install "molecule[lint,podman]"
-      - molecule lint
+      - molecule test
