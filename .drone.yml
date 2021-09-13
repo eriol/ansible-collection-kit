@@ -12,4 +12,5 @@ steps:
       - python3 -m pip install "molecule[lint,podman]"
       - echo "[registries.search]\nregistries = ['docker.io']" >> /etc/containers/registries.conf
       - echo "[engine]\nevents_logger = 'file'" >> /etc/containers/containers.conf
+      - cat /proc/1/cmdline
       - molecule test
