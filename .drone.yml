@@ -11,6 +11,7 @@ steps:
 
   - name: test
     image: quay.io/ansible/toolset:3.5.0
+    privileged: true
     volumes:
       - name: docker
         path: /var/run/docker.sock
