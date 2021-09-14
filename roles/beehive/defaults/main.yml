@@ -5,7 +5,7 @@ beehive_tarball_armv6_sha256: c1fa8f5a1935ee12f09a2bd9579281d64552897c597534361a
 beehive_tarball_x86_64: beehive_0.4.0_Linux_x86_64.tar.gz
 beehive_tarball_x86_64_sha256: f1959bc2f7c19d4ec8eaabc7b78492836afcc3bcd75d034854e66607efa9efab
 
-beehive_architecture: "{{ 'armv6' if ansible_architecture|lower == 'armv7l' else  ansible_architecture|lower}}"
+beehive_architecture: "{{ 'armv6' if ansible_architecture|lower == 'armv7l' else  ansible_architecture|lower }}"
 beehive_tarball: "{{ lookup('vars', 'beehive_tarball_'+beehive_architecture, default=beehive_tarball_x86_64) }}"
 beehive_tarball_sha256: "{{ lookup('vars', 'beehive_tarball_'+beehive_architecture+'_sha256', default=beehive_tarball_x86_64_sha256) }}"
 
