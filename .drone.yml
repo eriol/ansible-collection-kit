@@ -4,23 +4,9 @@ type: docker
 name: default
 
 steps:
-  # - name: lint
-  #   image: quay.io/ansible/toolset:3.5.0
-  #   commands:
-  #     - molecule lint
-
-  - name: test
-    image: quay.io/ansible/toolset:3.5.0
-    privileged: true
-    volumes:
-      - name: docker
-        path: /var/run/docker.sock
-    environment:
-      MOLECULE_NO_LOG: false
+  - name: lint
+    image: debian:11-slim
     commands:
-      - molecule test
-
-volumes:
-  - name: docker
-    host:
-      path: /var/run/docker.sock
+      - apt update && apt install -y ansible python3-pip podman
+      - python3 -m pip install "molecule[lint,podman]"
+      - molecule lint
