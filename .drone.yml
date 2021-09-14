@@ -5,7 +5,7 @@ name: default
 
 steps:
   - name: lint
-    image: quay.io/ansible/molecule:3.4.0
+    image: quay.io/ansible/toolset:3.5.0
     commands:
       - molecule lint
 
