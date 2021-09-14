@@ -9,6 +9,7 @@ driver:
 platforms:
   - name: debian11
     image: geerlingguy/docker-debian11-ansible:latest
+    pre_build_image: true
     command: /sbin/init
     privileged: true
     tmpfs:
