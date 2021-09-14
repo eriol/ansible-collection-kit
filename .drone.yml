@@ -8,3 +8,18 @@ steps:
     image: quay.io/ansible/toolset:3.5.0
     commands:
       - molecule lint
+
+  - name: test
+    image: quay.io/ansible/toolset:3.5.0
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+    environment:
+      MOLECULE_NO_LOG: false
+    commands:
+      - molecule test
+
+volumes:
+  - name: docker
+    host:
+      path: /var/run/docker.sock
