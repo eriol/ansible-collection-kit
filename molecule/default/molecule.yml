@@ -8,8 +8,9 @@ driver:
   name: docker
 platforms:
   - name: debian11
-    image: jrei/systemd-debian:11
-    command: /lib/systemd/systemd
+    image: geerlingguy/docker-debian11-ansible:latest
+    command: /sbin/init
+    privileged: true
     tmpfs:
       - /run
       - /tmp
