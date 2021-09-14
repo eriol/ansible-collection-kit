@@ -22,7 +22,7 @@ provisioner:
     ANSIBLE_ROLES_PATH: ../../roles
 verifier:
   name: ansible
-lint: |
-  set -e
-  yamllint .
-  ansible-lint
+# lint: |
+#   set -e
+#   yamllint .
+#   ansible-lint
