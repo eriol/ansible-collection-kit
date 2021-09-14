@@ -5,7 +5,7 @@ dependency:
   name: galaxy
   enabled: false
 driver:
-  name: docker
+  name: podman
 platforms:
   - name: debian11
     image: geerlingguy/docker-debian11-ansible:latest
@@ -17,6 +17,9 @@ platforms:
       - /tmp
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    cgroup_manager: cgroupfs
+    storage_opt: overlay.mount_program=/usr/bin/fuse-overlayfs
+    storage_driver: overlay
 provisioner:
   name: ansible
   env:
