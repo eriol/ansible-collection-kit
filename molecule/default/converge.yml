@@ -2,9 +2,9 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: Test sshd role
-      include_role:
-        name: sshd
+    # - name: Test sshd role
+    #   include_role:
+    #     name: sshd
     - name: Test hostname role
       include_role:
         name: hostname
