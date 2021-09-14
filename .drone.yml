@@ -8,4 +8,3 @@ steps:
     image: quay.io/ansible/toolset:3.5.0
     commands:
       - molecule lint
-
