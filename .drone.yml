@@ -4,10 +4,10 @@ type: docker
 name: default
 
 steps:
-  - name: lint
-    image: quay.io/ansible/toolset:3.5.0
-    commands:
-      - molecule lint
+  # - name: lint
+  #   image: quay.io/ansible/toolset:3.5.0
+  #   commands:
+  #     - molecule lint
 
   - name: test
     image: quay.io/ansible/toolset:3.5.0
