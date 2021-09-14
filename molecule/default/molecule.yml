@@ -24,4 +24,3 @@ verifier:
 lint: |
   yamllint .
   ansible-lint
-  flake8
