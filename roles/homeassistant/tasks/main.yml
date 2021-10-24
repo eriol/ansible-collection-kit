@@ -63,7 +63,7 @@
     pip:
       name:
         - wheel
-        - homeassistant
+        - homeassistant=={{ homeassistant_version }}
       virtualenv: "{{ homeassistant_dir }}"
 
   - name: ensure homeassistant owns "{{ homeassistant_dir }}"
