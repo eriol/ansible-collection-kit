@@ -14,3 +14,5 @@ homeassistant_ssl_key: ""
 
 homeassistant_influxdb_host: ""
 homeassistant_influxdb_port: 8086
+
+homeassistant_limit_nofile: 2048

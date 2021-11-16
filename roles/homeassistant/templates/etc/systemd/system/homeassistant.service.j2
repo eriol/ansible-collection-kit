@@ -9,6 +9,7 @@ Wants=network-online.target
 ExecStart={{ homeassistant_dir }}/bin/hass -c "{{ homeassistant_config_dir }}"
 User=homeassistant
 Group=homeassistant
+LimitNOFILE={{ homeassistant_limit_nofile }}
 Restart=on-failure
 
 [Install]
