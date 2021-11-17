@@ -4,15 +4,21 @@ adguardhome_become_user: root
 
 adguardhome_version: v0.106.3
 adguardhome_tarball_armv7l: AdGuardHome_linux_armv7.tar.gz
+# yamllint disable-line rule:line-length
 adguardhome_tarball_armv7l_sha256: 8bbc0e15ab68b2a11630e84f318f755f4a6f92ea9d0fa727e107f060ed6f5a2c
 adguardhome_tarball_x86_64: AdGuardHome_linux_amd64.tar.gz
+# yamllint disable-line rule:line-length
 adguardhome_tarball_x86_64_sha256: a89332993c66a0f94886e243eb3141596c33cfe085c7ef7e30ead1885b40e086
 adguardhome_tarball_aarch64: AdGuardHome_linux_arm64.tar.gz
+# yamllint disable-line rule:line-length
 adguardhome_tarball_aarch64_sha256: 67985e90dc5e7a6a96b0cbbb9f75139980b374aa795eca7d92ed06d8b3aa0bcd
 
+# yamllint disable-line rule:line-length
 adguardhome_tarball: "{{ lookup('vars', 'adguardhome_tarball_'+ansible_architecture|lower, default=adguardhome_tarball_x86_64) }}"
+# yamllint disable-line rule:line-length
 adguardhome_tarball_sha256: "{{ lookup('vars', 'adguardhome_tarball_'+ansible_architecture|lower+'_sha256', default=adguardhome_tarball_x86_64_sha256) }}"
 
+# yamllint disable-line rule:line-length
 adguardhome_download_url: "https://github.com/AdguardTeam/AdGuardHome/releases/download/{{ adguardhome_version }}/{{ adguardhome_tarball }}"
 
 adguardhome_dir: /srv/AdGuardHome
