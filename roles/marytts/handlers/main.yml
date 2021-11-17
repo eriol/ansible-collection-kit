@@ -1,0 +1,13 @@
+---
+- name: systemctl daemon-reload
+  systemd:
+    daemon_reload: true
+  become: "{{ marytts_become }}"
+  become_user: "{{ marytts_become_user }}"
+
+- name: systemctl restart marytts
+  systemd:
+    name: marytts.service
+    state: restarted
+  become: "{{ marytts_become }}"
+  become_user: "{{ marytts_become_user }}"

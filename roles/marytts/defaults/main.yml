@@ -1,0 +1,12 @@
+---
+marytts_become: true
+marytts_become_user: root
+
+marytts_version: 5.2
+marytts_tarball: marytts-5.2.zip
+# yamllint disable-line rule:line-length
+marytts_tarball_sha256: 9e985d37c96f9b0c82dd5f913c3308124d0051205f52c5b1a9b25572ce403e7b
+# yamllint disable-line rule:line-length
+marytts_download_url: "https://github.com/marytts/marytts/releases/download/v{{ marytts_version }}/{{ marytts_tarball }}"
+
+marytts_dir: /srv

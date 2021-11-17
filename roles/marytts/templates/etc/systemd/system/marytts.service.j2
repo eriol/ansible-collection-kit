@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+[Unit]
+Description=MaryTTS
+After=network-online.target
+Wants=network-online.target
+[Service]
+ExecStart="{{ marytts_dir }}/marytts-{{ marytts_version }}/bin/marytts-server"
+User=marytts
+Group=marytts
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target

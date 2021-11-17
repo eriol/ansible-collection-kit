@@ -89,7 +89,8 @@
     # - {role: ../roles/gitea, become: true}
     # - ../roles/dokku
     # - ../roles/znc
-    - ../roles/octoprint
+    # - ../roles/octoprint
+    - ../roles/marytts
     # The easy ports sequece is just for test. Also don't disable strict IP
     # filtering on production.
     # - {role: ../roles/knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}
