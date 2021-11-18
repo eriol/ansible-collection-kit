@@ -38,6 +38,7 @@
     ansible.builtin.unarchive:
       src: "/tmp/{{ marytts_tarball }}"
       dest: "{{ marytts_dir }}"
+      remote_src: true
       owner: marytts
       group: marytts
 
