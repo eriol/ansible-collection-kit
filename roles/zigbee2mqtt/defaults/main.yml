@@ -1,0 +1,16 @@
+---
+zigbee2mqtt_become: true
+zigbee2mqtt_become_user: root
+
+zigbee2mqtt_dir: /srv/zigbee2mqtt
+zigbee2mqtt_mqtt_server: mqtt://localhost
+zigbee2mqtt_mqtt_user: mqtt
+zigbee2mqtt_mqtt_password: secret
+zigbee2mqtt_fresh_install: true
+
+zigbee2mqtt_homeassistant: true
+zigbee2mqtt_permit_join: true
+
+zigbee2mqtt_devices: |
+  '<device id>':
+    friendly_name: "device name"
