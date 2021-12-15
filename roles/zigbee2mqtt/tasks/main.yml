@@ -1,0 +1,78 @@
+---
+- block:
+
+  - name: install dependencies
+    ansible.builtin.apt:
+      name:
+        - g++
+        - gcc
+        - git
+        - make
+        - nodejs
+        - npm
+      state: present
+      update_cache: true
+      cache_valid_time: 3600
+
+  - name: ensure zigbee2mqtt group exits
+    ansible.builtin.group:
+      name: zigbee2mqtt
+      system: true
+
+  - name: ensure zigbee2mqtt user exists and has restrictive settings
+    ansible.builtin.user:
+      name: zigbee2mqtt
+      groups: zigbee2mqtt,dialout
+      password: "*"
+      create_home: false
+      system: true
+      shell: /usr/sbin/nologin
+
+  - name: ensure that the directory where we deploy zigbee2mqtt exists
+    ansible.builtin.file:
+      path: "{{ zigbee2mqtt_dir }}"
+      state: directory
+      owner: zigbee2mqtt
+      group: zigbee2mqtt
+      mode: "0750"
+
+  - name: git clone zigbee2mqtt
+    ansible.builtin.git:
+      repo: https://github.com/Koenkk/zigbee2mqtt.git
+      dest: "{{ zigbee2mqtt_dir }}"
+    when: zigbee2mqtt_fresh_install
+
+  - name: install npm package
+    community.general.npm:
+      ci: true
+      path: "{{ zigbee2mqtt_dir }}"
+    when: zigbee2mqtt_fresh_install
+
+  - name: set the zigbee2mqtt config file
+    template:
+      src: templates/configuration.yaml.j2
+      dest: "{{ zigbee2mqtt_dir }}/data/configuration.yaml"
+      owner: zigbee2mqtt
+      group: zigbee2mqtt
+      mode: 0640
+    notify: systemctl restart zigbee2mqtt
+
+  - name: install zigbee2mqtt systemd unit file
+    template:
+      src: etc/systemd/system/zigbee2mqtt.service.j2
+      dest: /etc/systemd/system/zigbee2mqtt.service
+    notify:
+      - systemctl daemon-reload
+
+  - name: systemctl enable zigbee2mqtt
+    systemd:
+      name: zigbee2mqtt
+      enabled: true
+
+  - name: ensure zigbee2mqtt is running
+    systemd:
+      name: zigbee2mqtt
+      state: started
+
+  become: "{{ zigbee2mqtt_become }}"
+  become_user: "{{ zigbee2mqtt_become_user }}"
