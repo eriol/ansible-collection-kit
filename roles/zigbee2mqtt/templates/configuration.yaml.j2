@@ -8,7 +8,7 @@ device_options:
   legacy: false
 
 devices:
-  {{ zigbee2mqtt_devices }}
+{{ zigbee2mqtt_devices | indent(width=2, first=True) }}
 
 homeassistant: {{ zigbee2mqtt_homeassistant }}
 
