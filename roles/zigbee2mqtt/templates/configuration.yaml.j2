@@ -1,0 +1,28 @@
+# {{ ansible_managed }}
+---
+advanced:
+  homeassistant_legacy_entity_attributes: false
+  legacy_api: false
+
+device_options:
+  legacy: false
+
+devices:
+  {{ zigbee2mqtt_devices }}
+
+homeassistant: {{ zigbee2mqtt_homeassistant }}
+
+mqtt:
+  # MQTT base topic for Zigbee2MQTT MQTT messages
+  base_topic: zigbee2mqtt
+  # MQTT server URL
+  server: '{{ zigbee2mqtt_mqtt_server }}'
+  # MQTT server authentication, uncomment if required:
+  user: {{ zigbee2mqtt_mqtt_user }}
+  password: {{ zigbee2mqtt_mqtt_password }}
+
+permit_join: {{ zigbee2mqtt_permit_join }}
+
+serial:
+  # Location of the adapter.
+  port: /dev/ttyACM0

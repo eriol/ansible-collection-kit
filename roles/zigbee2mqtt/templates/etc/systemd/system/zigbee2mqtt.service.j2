@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+[Unit]
+Description=zigbee2mqtt
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/npm start
+WorkingDirectory={{ zigbee2mqtt_dir }}
+StandardOutput=inherit
+User=zigbee2mqtt
+Group=zigbee2mqtt
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
