@@ -57,6 +57,13 @@
       mode: 0640
     notify: systemctl restart zigbee2mqtt
 
+  - name: change owner and permission of {{ zigbee2mqtt_dir }}
+    ansible.builtin.file:
+      path: "{{ zigbee2mqtt_dir }}"
+      owner: zigbee2mqtt
+      group: zigbee2mqtt
+      recurse: true
+
   - name: install zigbee2mqtt systemd unit file
     template:
       src: etc/systemd/system/zigbee2mqtt.service.j2
