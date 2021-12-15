@@ -1,0 +1,13 @@
+---
+- name: systemctl daemon-reload
+  systemd:
+    daemon_reload: true
+  become: "{{ zigbee2mqtt_become }}"
+  become_user: "{{ zigbee2mqtt_become_user }}"
+
+- name: systemctl restart zigbee2mqtt
+  systemd:
+    name: zigbee2mqtt.service
+    state: restarted
+  become: "{{ zigbee2mqtt_become }}"
+  become_user: "{{ zigbee2mqtt_become_user }}"
