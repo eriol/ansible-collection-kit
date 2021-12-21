@@ -56,6 +56,7 @@
     homeassistant_ssl_certificate: /var/lib/snakeoil/certs/example.org/fullchain.pem
     homeassistant_ssl_key: /var/lib/snakeoil/certs/example.org/privkey.pem
     # homeassistant_influxdb_host: 127.0.0.1
+    zigbee2mqtt_fresh_install: false
   roles:
     # - ../roles/apt_dist_upgrade
     # - ../roles/common
@@ -90,7 +91,8 @@
     # - ../roles/dokku
     # - ../roles/znc
     # - ../roles/octoprint
-    - ../roles/marytts
+    # - ../roles/marytts
+    - ../roles/zigbee2mqtt
     # The easy ports sequece is just for test. Also don't disable strict IP
     # filtering on production.
     # - {role: ../roles/knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}
