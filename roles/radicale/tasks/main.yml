@@ -3,10 +3,27 @@
 
   - name: install radicale
     apt:
-      name: radicale
+      name:
+        - radicale
+        - uwsgi
+        - uwsgi-plugin-python3
       state: present
       update_cache: true
       cache_valid_time: 3600
+
+  - name: configure radicale
+    lineinfile:
+      path: /etc/radicale/config
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+      state: present
+    with_items:
+      - regexp: "^#?type = remote_user"
+        line: "type = htpasswd"
+      - regexp: "^#?htpasswd_filename = /etc/radicale/users"
+        line: "htpasswd_filename = /etc/radicale/users"
+      - regexp: "^#?htpasswd_encryption = md5"
+        line: "htpasswd_encryption = bcrypt"
 
   become: "{{ radicale_become }}"
   become_user: "{{ radicale_become_user }}"
