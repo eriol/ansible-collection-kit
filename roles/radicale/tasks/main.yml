@@ -2,7 +2,7 @@
 - block:
 
   - name: install radicale
-    apt:
+    ansible.builtin.apt:
       name:
         - radicale
         - uwsgi
@@ -12,7 +12,7 @@
       cache_valid_time: 3600
 
   - name: configure radicale
-    lineinfile:
+    ansible.builtin.lineinfile:
       path: /etc/radicale/config
       regexp: "{{ item.regexp }}"
       line: "{{ item.line }}"
@@ -24,6 +24,13 @@
         line: "htpasswd_filename = /etc/radicale/users"
       - regexp: "^#?htpasswd_encryption = md5"
         line: "htpasswd_encryption = bcrypt"
+
+  - name: set radicale users and password
+    ansible.builtin.template:
+      src: etc/radicale/users.j2
+      dest: /etc/radicale/users
+      mode: 0640
+
 
   become: "{{ radicale_become }}"
   become_user: "{{ radicale_become_user }}"

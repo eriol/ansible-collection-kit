@@ -1,3 +1,7 @@
 ---
 radicale_become: true
 radicale_become_user: root
+
+radicale_users:
+  - username: admin
+    password: secret
