@@ -31,6 +31,12 @@
       dest: /etc/radicale/users
       mode: 0640
 
+  - name: enable radicale uWSGI service
+    ansible.builtin.file:
+      src: /etc/uwsgi/apps-available/radicale.ini
+      path: /etc/uwsgi/apps-enabled/radicale.ini
+      state: link
+    notify: systemctl restart uwsgi
 
   become: "{{ radicale_become }}"
   become_user: "{{ radicale_become_user }}"
