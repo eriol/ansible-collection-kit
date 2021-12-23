@@ -7,6 +7,8 @@
         - radicale
         - uwsgi
         - uwsgi-plugin-python3
+        - nginx
+        - logrotate
       state: present
       update_cache: true
       cache_valid_time: 3600
@@ -29,6 +31,8 @@
     ansible.builtin.template:
       src: etc/radicale/users.j2
       dest: /etc/radicale/users
+      owner: radicale
+      group: www-data
       mode: 0640
 
   - name: enable radicale uWSGI service
@@ -37,6 +41,50 @@
       path: /etc/uwsgi/apps-enabled/radicale.ini
       state: link
     notify: systemctl restart uwsgi
+
+  - name: create vhost directory
+    file:
+      path: "{{ radicale_nginx_root }}/{{ radicale_servername }}"
+      state: directory
+      owner: root
+      group: www-data
+
+  - name: create vhost content directory
+    file:
+      path: "{{ radicale_nginx_root }}/{{ radicale_servername }}/html"
+      state: directory
+      owner: root
+      group: www-data
+      mode: 0775
+
+  - name: create vhost logs directory
+    file:
+      path: "{{ radicale_nginx_root }}/{{ radicale_servername }}/logs"
+      state: directory
+
+  - name: add vhost configuration file for {{ radicale_servername }}
+    template:
+      src: etc/nginx/sites-available/site-vhost.j2
+      dest: "/etc/nginx/sites-available/{{ radicale_servername }}.vhost"
+      owner: root
+      group: root
+      mode: 0640
+    notify: systemctl restart nginx
+
+  - name: add vhost configuration sylink for {{ radicale_servername }}
+    file:
+      src: "/etc/nginx/sites-available/{{ radicale_servername }}.vhost"
+      dest: "/etc/nginx/sites-enabled/{{ radicale_servername }}.vhost"
+      state: link
+    notify: systemctl reload nginx
+
+  # - name: add logrotate configuration for {{ radicale_servername }}
+  #   template:
+  #     src: etc/logrotate.d/nginx.j2
+  #     dest: "/etc/logrotate.d/{{ radicale_servername }}"
+  #     owner: root
+  #     group: root
+  #     mode: 0644
 
   become: "{{ radicale_become }}"
   become_user: "{{ radicale_become_user }}"

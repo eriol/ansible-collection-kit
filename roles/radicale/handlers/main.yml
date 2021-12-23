@@ -5,3 +5,17 @@
     state: restarted
   become: "{{ radicale_become }}"
   become_user: "{{ radicale_become_user }}"
+
+- name: systemctl restart nginx
+  systemd:
+    name: nginx.service
+    state: restarted
+  become: "{{ radicale_become }}"
+  become_user: "{{ radicale_become_user }}"
+
+- name: systemctl reload nginx
+  systemd:
+    name: nginx.service
+    state: reloaded
+  become: "{{ radicale_become }}"
+  become_user: "{{ radicale_become_user }}"

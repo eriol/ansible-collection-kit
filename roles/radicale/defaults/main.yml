@@ -5,3 +5,6 @@ radicale_become_user: root
 radicale_users:
   - username: admin
     password: secret
+
+radicale_nginx_root: /var/www
+radicale_servername: radicale.example.org
