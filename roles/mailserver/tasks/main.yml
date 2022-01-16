@@ -1,6 +1,10 @@
 ---
+- block:
 
-- import_tasks: vmail.yml
-- import_tasks: postfix.yml
-- import_tasks: dovecot.yml
-- import_tasks: rspamd.yml
+  - import_tasks: vmail.yml
+  - import_tasks: postfix.yml
+  - import_tasks: dovecot.yml
+  - import_tasks: rspamd.yml
+
+  become: "{{ mailserver_become }}"
+  become_user: "{{ mailserver_become_user }}"

@@ -1,11 +1,17 @@
 ---
-mailname: mail.example.org
+mailserver_become: true
+mailserver_become_user: root
+
+mailserver_mailname: mail.example.org
 
 mailserver_auth_database: /etc/dovecot/authdb.sqlite
 
-vmail_dir: /var/vmail
+mailserver_vmail_dir: /var/vmail
 # On Debian group "mail" has gid 8.
-vmail_gid: 8
-vmail_group: mail
-vmail_uid: 150
-vmail_user: vmail
+mailserver_vmail_gid: 8
+mailserver_vmail_group: mail
+mailserver_vmail_uid: 150
+mailserver_vmail_user: vmail
+
+mailserver_tls_cert_file: "/var/lib/dehydrated/certs/{{ mailserver_mailname }}/fullchain.pem"
+mailserver_tls_key_file: "/var/lib/dehydrated/certs/{{ mailserver_mailname }}/privkey.pem"

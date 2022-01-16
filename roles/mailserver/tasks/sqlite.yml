@@ -7,7 +7,6 @@
     name: sqlite3
     update_cache: true
     cache_valid_time: 3600
-  become: true
 
 - name: import schema
   shell: |
@@ -43,7 +42,6 @@
           active CHAR(1) NOT NULL default 'Y'
       );
     EOF
-  become: true
 
 - name: ensure /etc/dovecot/authdb.sqlite is owned by dovecot
   file:
@@ -51,4 +49,3 @@
     owner: dovecot
     group: root
     mode: "0600"
-  become: true

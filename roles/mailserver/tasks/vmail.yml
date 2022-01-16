@@ -1,20 +1,18 @@
 ---
 
 - name: ensure vmail user exists
-  user:
-    name: "{{ vmail_user }}"
-    uid: "{{ vmail_uid }}"
-    group: "{{ vmail_group }}"
-    home: "{{ vmail_dir }}"
+  ansible.builtin.user:
+    name: "{{ mailserver_vmail_user }}"
+    uid: "{{ mailserver_vmail_uid }}"
+    group: "{{ mailserver_vmail_group }}"
+    home: "{{ mailserver_vmail_dir }}"
     shell: /usr/sbin/nologin
     system: true
-  become: true
 
 - name: restrict vmail directory to vmail user and group
-  file:
-    path: "{{ vmail_dir }}"
+  ansible.builtin.file:
+    path: "{{ mailserver_vmail_dir }}"
     state: directory
-    owner: "{{ vmail_user }}"
-    group: "{{ vmail_group }}"
+    owner: "{{ mailserver_vmail_user }}"
+    group: "{{ mailserver_vmail_group }}"
     mode: "0770"
-  become: true

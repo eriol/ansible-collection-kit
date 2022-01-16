@@ -1,7 +1,7 @@
 ---
 
 - name: install dovecot
-  apt:
+  ansible.builtin.apt:
     name:
       - dovecot-core
       - dovecot-imapd
@@ -10,12 +10,11 @@
       - dovecot-sqlite
     update_cache: true
     cache_valid_time: 3600
-  become: true
 
 - import_tasks: sqlite.yml
 
 - name: disable auth-system.conf.ext and enable auth-sql.conf.ext
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/dovecot/conf.d/10-auth.conf
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
@@ -24,24 +23,21 @@
       line: "#!include auth-system.conf.ext"
     - regexp: "^#!include auth-sql.conf.ext"
       line: "!include auth-sql.conf.ext"
-  become: true
 
 - name: install dovecot 10-mail.conf
-  template:
+  ansible.builtin.template:
     src: etc/dovecot/conf.d/10-mail.conf.j2
     dest: /etc/dovecot/conf.d/10-mail.conf
   register: dovecot_10_mail_conf
-  become: true
 
 - name: install dovecot 10-master.conf
-  template:
+  ansible.builtin.template:
     src: etc/dovecot/conf.d/10-master.conf.j2
     dest: /etc/dovecot/conf.d/10-master.conf
   register: dovecot_10_master_conf
-  become: true
 
 - name: configure 10-ssl.conf
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/dovecot/conf.d/10-ssl.conf
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
@@ -49,46 +45,40 @@
     - regexp: "^ssl = yes"
       line: "ssl = required"
     - regexp: "^ssl_cert = "
-      line: "ssl_cert = </var/lib/dehydrated/certs/{{ mailname }}/fullchain.pem"
+      line: "ssl_cert = <{{ mailserver_tls_cert_file }}"
     - regexp: "^ssl_key = "
-      line: "ssl_key = </var/lib/dehydrated/certs/{{ mailname }}/privkey.pem"
-  become: true
+      line: "ssl_key = <{{ mailserver_tls_key_file }}"
 
 - name: configure 15-lda.conf
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/dovecot/conf.d/15-lda.conf
     regexp: "^  #mail_plugins ="
     line: "  mail_plugins = $mail_plugins sieve"
-  become: true
 
 - name: configure 15-mailboxes.conf
-  copy:
+  ansible.builtin.copy:
     src: etc/dovecot/conf.d/15-mailboxes.conf
     dest: /etc/dovecot/conf.d/15-mailboxes.conf
     owner: root
     group: root
-  become: true
 
 - name: configure 95-stats.conf
-  template:
+  ansible.builtin.template:
     src: etc/dovecot/conf.d/95-stats.conf.j2
     dest: /etc/dovecot/conf.d/95-stats.conf
     owner: root
     group: root
-  become: true
 
 - name: configure dovecot-sql.conf.ext
-  template:
+  ansible.builtin.template:
     src: etc/dovecot/dovecot-sql.conf.ext.j2
     dest: /etc/dovecot/dovecot-sql.conf.ext
     owner: root
     group: root
     mode: 0600
   register: dovecot_sql_conf_ext
-  become: true
 
 - name: reload dovecot on config
-  systemd:
+  ansible.builtin.systemd:
     name: dovecot
     state: reloaded
-  become: true

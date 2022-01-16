@@ -1,4 +1,4 @@
-# Ansible managed.
+# {{ ansible_managed }}
 # See /usr/share/postfix/main.cf.dist for a commented, more complete version
 
 
@@ -26,9 +26,9 @@ compatibility_level = 2
 smtp_tls_ciphers = high
 smtp_tls_protocols = !SSLv2, !SSLv3
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
-smtpd_tls_cert_file=/var/lib/dehydrated/certs/{{ mailname }}/fullchain.pem
+smtpd_tls_cert_file={{ mailserver_tls_cert_file }}
 smtpd_tls_ciphers = high
-smtpd_tls_key_file=/var/lib/dehydrated/certs/{{ mailname }}/privkey.pem
+smtpd_tls_key_file={{ mailserver_tls_key_file }}
 smtpd_tls_protocols = !SSLv2, !SSLv3
 smtpd_tls_security_level = may
 smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
@@ -73,21 +73,21 @@ smtpd_relay_restrictions =
 
 smtpd_sender_login_maps = $virtual_mailbox_maps
 
-myhostname = {{ mailname }}
+myhostname = {{ mailserver_mailname }}
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 myorigin = /etc/mailname
 mydestination = $myhostname, localhost
-relayhost = 
+relayhost =
 mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
 mailbox_size_limit = 0
 recipient_delimiter = +
 inet_interfaces = all
 inet_protocols = all
 
-virtual_mailbox_base = {{ vmail_dir }}
-virtual_gid_maps = static:{{ vmail_gid }}
-virtual_uid_maps = static:{{ vmail_uid }}
+virtual_mailbox_base = {{ mailserver_vmail_dir }}
+virtual_gid_maps = static:{{ mailserver_vmail_gid }}
+virtual_uid_maps = static:{{ mailserver_vmail_uid }}
 virtual_mailbox_limit = 51200000
 virtual_mailbox_maps = sqlite:/etc/postfix/sqlite_virtual_mailbox_maps.cf
 virtual_alias_maps = sqlite:/etc/postfix/sqlite_virtual_alias_maps.cf

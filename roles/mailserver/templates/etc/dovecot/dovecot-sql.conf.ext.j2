@@ -130,8 +130,8 @@ password_query = \
 #   user_query = SELECT home, 501 AS uid, 501 AS gid FROM users WHERE userid = '%u'
 #
 user_query = \
-  SELECT '{{ vmail_dir }}/%d/%n' as home, 'maildir:{{ vmail_dir }}/%d/%n/mail' as mail, \
-  {{ vmail_uid }} AS uid, {{ vmail_gid }} AS gid \
+  SELECT '{{ mailserver_vmail_dir }}/%d/%n' as home, 'maildir:{{ mailserver_vmail_dir }}/%d/%n/mail' as mail, \
+  {{ mailserver_vmail_uid }} AS uid, {{ mailserver_vmail_gid }} AS gid \
   FROM mailbox WHERE username = '%u' AND active = 'Y'
 
 # If you wish to avoid two SQL lookups (passdb + userdb), you can use

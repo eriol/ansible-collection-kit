@@ -127,4 +127,4 @@ mailman   unix  -       n       n       -       -       pipe
   ${nexthop} ${user}
 # Dovecot integration.
 dovecot      unix   -        n      n       -       -   pipe
-  flags=DRhu user={{ vmail_user }}:{{ vmail_group }} argv=/usr/lib/dovecot/dovecot-lda -d $(recipient)
+  flags=DRhu user={{ mailserver_vmail_user }}:{{ mailserver_vmail_group }} argv=/usr/lib/dovecot/dovecot-lda -d $(recipient)

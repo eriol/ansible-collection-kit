@@ -1,13 +1,13 @@
 service stats {
     unix_listener stats-reader {
-        user = {{ vmail_user }}
-        group = {{ vmail_group }}
+        user = {{ mailserver_vmail_user }}
+        group = {{ mailserver_vmail_group }}
         mode = 0660
     }
 
     unix_listener stats-writer {
-        user = {{ vmail_user }}
-        group = {{ vmail_group }}
+        user = {{ mailserver_vmail_user }}
+        group = {{ mailserver_vmail_group }}
         mode = 0660
     }
 }

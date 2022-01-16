@@ -1,16 +1,15 @@
 ---
 
 - name: install rspamd
-  apt:
+  ansible.builtin.apt:
     name:
       - rspamd
       - redis
     update_cache: true
     cache_valid_time: 3600
-  become: true
 
 - name: copy rspamd configuration files
-  copy:
+  ansible.builtin.copy:
     src: etc/rspamd/local.d/{{ item }}
     dest: /etc/rspamd/local.d/{{ item }}
   loop:
@@ -18,10 +17,8 @@
     - classifier-bayes.conf
     - milter_headers.conf
     - redis.conf
-  become: true
 
 - name: reload rspamd
-  systemd:
+  ansible.builtin.systemd:
     name: rspamd
     state: reloaded
-  become: true

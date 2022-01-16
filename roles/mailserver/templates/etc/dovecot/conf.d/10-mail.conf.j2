@@ -29,7 +29,7 @@
 #
 # <doc/wiki/MailLocation.txt>
 #
-mail_home = {{ vmail_dir }}/%d/%n
+mail_home = {{ mailserver_vmail_dir }}/%d/%n
 mail_location = maildir:~/mail
 
 # If you need to set multiple mailbox locations or want to change default
@@ -108,8 +108,8 @@ namespace inbox {
 # System user and group used to access mails. If you use multiple, userdb
 # can override these by returning uid or gid fields. You can use either numbers
 # or names. <doc/wiki/UserIds.txt>
-mail_uid = {{ vmail_user }}
-mail_gid = {{ vmail_group }}
+mail_uid = {{ mailserver_vmail_user }}
+mail_gid = {{ mailserver_vmail_group }}
 
 # Group to enable temporarily for privileged operations. Currently this is
 # used only with INBOX when either its initial creation or dotlocking fails.
@@ -178,15 +178,15 @@ mail_privileged_group = mail
 # to make sure that users can't log in as daemons or other system users.
 # Note that denying root logins is hardcoded to dovecot binary and can't
 # be done even if first_valid_uid is set to 0.
-first_valid_uid = {{ vmail_uid }}
-last_valid_uid = {{ vmail_uid }}
+first_valid_uid = {{ mailserver_vmail_uid }}
+last_valid_uid = {{ mailserver_vmail_uid }}
 
 # Valid GID range for users, defaults to non-root/wheel. Users having
 # non-valid GID as primary group ID aren't allowed to log in. If user
 # belongs to supplementary groups with non-valid GIDs, those groups are
 # not set.
-first_valid_gid = {{ vmail_gid }}
-last_valid_gid = {{ vmail_gid }}
+first_valid_gid = {{ mailserver_vmail_gid }}
+last_valid_gid = {{ mailserver_vmail_gid }}
 
 # Maximum allowed length for mail keyword name. It's only forced when trying
 # to create new keywords.

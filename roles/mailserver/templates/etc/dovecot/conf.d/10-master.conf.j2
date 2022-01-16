@@ -101,8 +101,8 @@ service auth {
   # permissions (e.g. 0777 allows everyone full permissions).
   unix_listener auth-userdb {
     mode = 0660
-    user = {{ vmail_user }}
-    group = {{ vmail_group }}
+    user = {{ mailserver_vmail_user }}
+    group = {{ mailserver_vmail_group }}
   }
 
   # Postfix smtp-auth
