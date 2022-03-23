@@ -4,3 +4,4 @@ snake_oil_cert_become_user: root
 
 snake_oil_cert_root: /var/lib/snakeoil/certs
 snake_oil_cert_domains: []
+snake_oil_cert_days: 365
