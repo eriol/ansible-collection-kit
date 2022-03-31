@@ -2,28 +2,28 @@
 - block:
 
   - name: check if hardware random number generator exists
-    stat:
+    ansible.builtin.stat:
       path: /dev/hwrng
     register: dev_hwrng
 
   - name: install haveged
-    apt:
+    ansible.builtin.apt:
       name: haveged
       update_cache: true
       cache_valid_time: 3600
     when: not dev_hwrng.stat.exists
 
   - name: install rng-tools
-    apt:
+    ansible.builtin.apt:
       name: rng-tools
     when: dev_hwrng.stat.exists
 
   - name: install ca-certificates
-    apt:
+    ansible.builtin.apt:
       name: ca-certificates
 
   - name: install apparmor
-    apt:
+    ansible.builtin.apt:
       name:
         - apparmor-profiles
         - apparmor-utils
