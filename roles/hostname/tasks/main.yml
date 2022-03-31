@@ -2,11 +2,11 @@
 - block:
 
   - name: set the hostname
-    hostname:
+    ansible.builtin.hostname:
       name: "{{ hostname }}"
 
   - name: update 127.0.1.1 entry in /etc/hosts
-    lineinfile:
+    ansible.builtin.lineinfile:
       path: /etc/hosts
       regexp: "^127.0.1.1\t"
       line: "127.0.1.1\t{{ hostname }} {{ hostname_aliases | join(' ') }}"
