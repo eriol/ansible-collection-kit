@@ -2,14 +2,14 @@
 - block:
 
   - name: install ssl-cert
-    apt:
+    ansible.builtin.apt:
       name: ssl-cert
       state: present
       update_cache: true
       cache_valid_time: 3600
 
   - name: ensure {{ snake_oil_cert_root }} esists for each domain
-    file:
+    ansible.builtin.file:
       path: "{{ snake_oil_cert_root }}/{{ item }}"
       state: directory
       owner: root
@@ -20,7 +20,7 @@
 
   # It's fine to use rsa:2048 since this role is used only for testing.
   - name: create certificates for each domain
-    shell: |
+    ansible.builtin.shell: |
       openssl req -x509 -nodes -newkey rsa:2048 \
         -days {{ snake_oil_cert_days }} -sha256 \
         -keyout {{ snake_oil_cert_root }}/{{ item }}/privkey.pem \
@@ -31,14 +31,14 @@
     loop: "{{ snake_oil_cert_domains }}"
 
   - name: find all *.pem files
-    find:
+    ansible.builtin.find:
       path: "{{ snake_oil_cert_root }}"
       file_type: file
       recurse: true
     register: find_result
 
   - name: fix certificates permissions
-    file:
+    ansible.builtin.file:
       path: "{{ item.path }}"
       owner: root
       group: ssl-cert
