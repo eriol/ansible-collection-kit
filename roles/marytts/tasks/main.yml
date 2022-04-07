@@ -43,19 +43,19 @@
       group: marytts
 
   - name: install marytts systemd unit file
-    template:
+    ansible.builtin.template:
       src: etc/systemd/system/marytts.service.j2
       dest: /etc/systemd/system/marytts.service
     notify:
       - systemctl daemon-reload
 
   - name: systemctl enable marytts
-    systemd:
+    ansible.builtin.systemd:
       name: marytts
       enabled: true
 
   - name: systemctl start marytts
-    systemd:
+    ansible.builtin.systemd:
       name: marytts
       state: started
 

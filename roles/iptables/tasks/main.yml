@@ -1,39 +1,38 @@
 ---
 - block:
+    - name: install iptables
+      ansible.builtin.apt:
+        name: iptables
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
 
-  - name: install iptables
-    apt:
-      name: iptables
-      state: present
-      update_cache: true
-      cache_valid_time: 3600
+    - name: switch to iptables legacy as default
+      community.general.alternatives:
+        name: "{{ item.name }}"
+        path: "{{ item.path }}"
+      with_items:
+        - name: iptables
+          path: /usr/sbin/iptables-legacy
+        - name: ip6tables
+          path: /usr/sbin/ip6tables-legacy
 
-  - name: switch to iptables legacy as default
-    alternatives:
-      name: "{{ item.name }}"
-      path: "{{ item.path }}"
-    with_items:
-      - name: iptables
-        path: /usr/sbin/iptables-legacy
-      - name: ip6tables
-        path: /usr/sbin/ip6tables-legacy
+    - name: install /etc/iptables.up.rules
+      ansible.builtin.template:
+        src: etc/iptables.up.rules.j2
+        dest: /etc/iptables.up.rules
+        owner: root
+        group: root
+        mode: 0644
+      notify: load iptables rules
 
-  - name: install /etc/iptables.up.rules
-    template:
-      src: etc/iptables.up.rules.j2
-      dest: /etc/iptables.up.rules
-      owner: root
-      group: root
-      mode: 0644
-    notify: load iptables rules
-
-  - name: ensure iptables rules are started on reboot
-    copy:
-      src: etc/network/if-pre-up.d/iptables
-      dest: /etc/network/if-pre-up.d/iptables
-      owner: root
-      group: root
-      mode: 0750
+    - name: ensure iptables rules are started on reboot
+      ansible.builtin.copy:
+        src: etc/network/if-pre-up.d/iptables
+        dest: /etc/network/if-pre-up.d/iptables
+        owner: root
+        group: root
+        mode: 0750
 
   become: "{{ iptables_become }}"
   become_user: "{{ iptables_become_user }}"

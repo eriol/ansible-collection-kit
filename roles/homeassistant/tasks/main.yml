@@ -2,7 +2,7 @@
 - block:
 
   - name: install homeassistant dependencies
-    apt:
+    ansible.builtin.apt:
       name:
         - autoconf
         - build-essential
@@ -18,12 +18,12 @@
       cache_valid_time: 3600
 
   - name: ensure homeassistant group exits
-    group:
+    ansible.builtin.group:
       name: homeassistant
       system: true
 
   - name: ensure homeassistant user exists and has restrictive settings
-    user:
+    ansible.builtin.user:
       name: homeassistant
       groups: homeassistant
       password: "*"
@@ -32,11 +32,11 @@
       shell: /usr/sbin/nologin
 
   - name: get available groups
-    getent:
+    ansible.builtin.getent:
       database: group
 
   - name: ensure that {{ homeassistant_config_dir }} exists
-    file:
+    ansible.builtin.file:
       path: "{{ homeassistant_config_dir }}"
       state: directory
       owner: homeassistant
@@ -44,7 +44,7 @@
       mode: "0750"
 
   - name: add homeassistant user to ssl-cert group
-    user:
+    ansible.builtin.user:
       name: homeassistant
       groups: ssl-cert
       append: true
@@ -53,21 +53,21 @@
       - homeassistant_add_to_ssl_cert_group and "ssl-cert" in ansible_facts.getent_group
 
   - name: add homeassistant user to dialout, gpio and i2c groups
-    user:
+    ansible.builtin.user:
       name: homeassistant
       groups: dialout,gpio,i2c
       append: true
     when: is_a_raspberrypi
 
   - name: install wheel and homeassistant inside a virtualenv
-    pip:
+    ansible.builtin.pip:
       name:
         - wheel
         - homeassistant=={{ homeassistant_version }}
       virtualenv: "{{ homeassistant_dir }}"
 
   - name: ensure homeassistant owns "{{ homeassistant_dir }}"
-    file:
+    ansible.builtin.file:
       path: "{{ homeassistant_dir }}"
       state: directory
       recurse: true
@@ -75,20 +75,20 @@
       group: homeassistant
 
   - name: install homeassistant systemd unit file
-    template:
+    ansible.builtin.template:
       src: etc/systemd/system/homeassistant.service.j2
       dest: /etc/systemd/system/homeassistant.service
     notify:
       - systemctl daemon-reload
 
   - name: ensure homeassistant is enabled and started
-    systemd:
+    ansible.builtin.systemd:
       name: homeassistant
       state: started
       enabled: true
 
   - name: Wait for port 8123
-    wait_for:
+    ansible.builtin.wait_for:
       port: 8123
       delay: 10
 

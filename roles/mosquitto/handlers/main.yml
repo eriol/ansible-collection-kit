@@ -1,6 +1,6 @@
 ---
 - name: systemctl restart mosquitto
-  systemd:
+  ansible.builtin.systemd:
     name: mosquitto
     state: restarted
   become: "{{ mosquitto_become }}"

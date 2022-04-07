@@ -1,12 +1,12 @@
 ---
 - name: systemctl daemon-reload
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: true
   become: "{{ marytts_become }}"
   become_user: "{{ marytts_become_user }}"
 
 - name: systemctl restart marytts
-  systemd:
+  ansible.builtin.systemd:
     name: marytts.service
     state: restarted
   become: "{{ marytts_become }}"
