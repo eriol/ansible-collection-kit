@@ -2,7 +2,7 @@
 - block:
 
   - name: install mosquitto
-    apt:
+    ansible.builtin.apt:
       name:
         - mosquitto
         - mosquitto-clients
@@ -11,20 +11,20 @@
       cache_valid_time: 3600
 
   - name: create /etc/mosquitto/passwd with user "{{ mosquitto_user }}"
-    expect:
+    ansible.builtin.expect:
       command: mosquitto_passwd -c /etc/mosquitto/passwd {{ mosquitto_user }}
       responses:
         (?i)password: "{{ mosquitto_password }}"
 
   - name: ensure /etc/mosquitto/passwd has restrictive persmissions
-    file:
+    ansible.builtin.file:
       path: /etc/mosquitto/passwd
       owner: mosquitto
       group: root
       mode: 0640
 
   - name: set mosquitto config file
-    template:
+    ansible.builtin.template:
       src: etc/mosquitto/conf.d/default.conf.j2
       dest: /etc/mosquitto/conf.d/default.conf
       owner: root
@@ -33,7 +33,7 @@
     notify: systemctl restart mosquitto
 
   - name: ensure mosquitto is running
-    systemd:
+    ansible.builtin.systemd:
       state: started
       name: mosquitto
 
