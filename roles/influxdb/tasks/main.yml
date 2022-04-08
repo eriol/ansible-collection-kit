@@ -2,14 +2,14 @@
 - block:
 
   - name: install influxdb
-    apt:
+    ansible.builtin.apt:
       name:
         - influxdb
       update_cache: true
       cache_valid_time: 3600
 
   - name: install /etc/influxdb/influxdb.conf
-    template:
+    ansible.builtin.template:
       src: etc/influxdb/influxdb.conf.j2
       dest: /etc/influxdb/influxdb.conf
       owner: root
@@ -18,7 +18,7 @@
     notify: systemctl restart influxdb
 
   - name: ensure influxdb is running
-    systemd:
+    ansible.builtin.systemd:
       state: started
       name: influxdb
 
