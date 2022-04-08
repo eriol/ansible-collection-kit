@@ -13,6 +13,8 @@ Install and configure [mosquitto](https://mosquitto.org/).
 * `mosquitto_certfile` - Default: "". Server certificate.
 * `mosquitto_keyfile` - Default: "". Server key.
 * `mosquitto_cafile` - Default: "". CA certificate.
+* `mosquitto_add_to_ssl_cert_group` - Default: false. Add the mosquitto user to
+  the ssl-cert group.
 
 TLS is enabled only if all of `mosquitto_certfile`, `mosquitto_keyfile` and
 `mosquitto_cafile` are set.

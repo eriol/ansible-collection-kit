@@ -8,3 +8,4 @@ mosquitto_password: set the password, Luke!
 mosquitto_certfile: ""
 mosquitto_keyfile: ""
 mosquitto_cafile: ""
+mosquitto_add_to_ssl_cert_group: false
