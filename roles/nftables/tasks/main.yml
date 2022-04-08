@@ -2,14 +2,14 @@
 - block:
 
   - name: install nftables
-    apt:
+    ansible.builtin.apt:
       name: nftables
       state: present
       update_cache: true
       cache_valid_time: 3600
 
   - name: install nftables.conf
-    template:
+    ansible.builtin.template:
       src: etc/nftables.conf.j2
       dest: /etc/nftables.conf
       owner: root
