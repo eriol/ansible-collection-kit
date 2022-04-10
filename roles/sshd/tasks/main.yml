@@ -1,53 +1,52 @@
 ---
 - block:
+    - name: install openssh-server
+      ansible.builtin.apt:
+        name: openssh-server
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
 
-  - name: install openssh-server
-    apt:
-      name: openssh-server
-      state: present
-      update_cache: true
-      cache_valid_time: 3600
+    - name: ensure openssh-server is running
+      ansible.builtin.systemd:
+        state: started
+        name: sshd
 
-  - name: ensure openssh-server is running
-    systemd:
-      state: started
-      name: sshd
+    - name: set the sshd port
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?Port"
+        line: "Port {{ sshd_port }}"
+      notify: systemctl restart sshd
 
-  - name: set the sshd port
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      regexp: "^#?Port"
-      line: "Port {{ sshd_port }}"
-    notify: systemctl restart sshd
-
-  - name: harden openssh-server
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      regexp: "{{ item.regexp }}"
-      line: "{{ item.line }}"
-      state: present
-    with_items:
-      - regexp: "^#?AllowAgentForwarding"
-        line: "AllowAgentForwarding no"
-      - regexp: "^#?AllowTcpForwarding"
-        line: "AllowTcpForwarding {{ sshd_allow_tcp_forwarding }}"
-      - regexp: "^#?MaxAuthTries"
-        line: "MaxAuthTries 3"
-      - regexp: "^#?MaxSessions"
-        line: "MaxSessions {{ sshd_max_sessions }}"
-      - regexp: "^#?PasswordAuthentication"
-        line: "PasswordAuthentication no"
-      - regexp: "^#?PermitRootLogin"
-        line: "PermitRootLogin no"
-      - regexp: "^#?PubkeyAuthentication"
-        line: "PubkeyAuthentication yes"
-      - regexp: "^#?TCPKeepAlive"
-        line: "TCPKeepAlive no"
-      - regexp: "^#?UseDNS"
-        line: "UseDNS no"
-      - regexp: "^#?X11Forwarding"
-        line: "X11Forwarding no"
-    notify: systemctl restart sshd
+    - name: harden openssh-server
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: present
+      with_items:
+        - regexp: "^#?AllowAgentForwarding"
+          line: "AllowAgentForwarding no"
+        - regexp: "^#?AllowTcpForwarding"
+          line: "AllowTcpForwarding {{ sshd_allow_tcp_forwarding }}"
+        - regexp: "^#?MaxAuthTries"
+          line: "MaxAuthTries 3"
+        - regexp: "^#?MaxSessions"
+          line: "MaxSessions {{ sshd_max_sessions }}"
+        - regexp: "^#?PasswordAuthentication"
+          line: "PasswordAuthentication no"
+        - regexp: "^#?PermitRootLogin"
+          line: "PermitRootLogin no"
+        - regexp: "^#?PubkeyAuthentication"
+          line: "PubkeyAuthentication yes"
+        - regexp: "^#?TCPKeepAlive"
+          line: "TCPKeepAlive no"
+        - regexp: "^#?UseDNS"
+          line: "UseDNS no"
+        - regexp: "^#?X11Forwarding"
+          line: "X11Forwarding no"
+      notify: systemctl restart sshd
 
   become: "{{ sshd_become }}"
   become_user: "{{ sshd_become_user }}"
