@@ -53,6 +53,7 @@
         state: absent
         remove: true
     influxdb_bind_hostname: 127.0.0.1
+    mosquitto_add_to_ssl_cert_group: true
     homeassistant_add_to_ssl_cert_group: true
     homeassistant_ssl_certificate: /var/lib/snakeoil/certs/example.org/fullchain.pem
     homeassistant_ssl_key: /var/lib/snakeoil/certs/example.org/privkey.pem
@@ -88,7 +89,7 @@
     #    become: true,
     #    beehive_bind: 10.10.10.10:8181,
     #    beehive_canonical_url: http://10.10.10.10:8181}
-    # - ../roles/mosquitto
+    - ../roles/mosquitto
     # - ../roles/influxdb
     # - ../roles/homeassistant
     # - {role: ../roles/generate_ca, become: true}
@@ -99,7 +100,7 @@
     # - ../roles/octoprint
     # - ../roles/marytts
     # - ../roles/zigbee2mqtt
-    - ../roles/radicale
+    # - ../roles/radicale
     # The easy ports sequece is just for test. Also don't disable strict IP
     # filtering on production.
     # - {role: ../roles/knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}
