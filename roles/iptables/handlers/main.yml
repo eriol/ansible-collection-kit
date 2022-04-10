@@ -1,5 +1,5 @@
 ---
 - name: load iptables rules
-  shell: /sbin/iptables-legacy-restore < /etc/iptables.up.rules
+  ansible.builtin.shell: /sbin/iptables-legacy-restore < /etc/iptables.up.rules
   become: "{{ iptables_become }}"
   become_user: "{{ iptables_become_user }}"
