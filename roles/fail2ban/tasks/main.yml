@@ -1,26 +1,25 @@
 ---
 - block:
+    - name: install fail2ban
+      ansible.builtin.apt:
+        name: fail2ban
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
 
-  - name: install fail2ban
-    apt:
-      name: fail2ban
-      state: present
-      update_cache: true
-      cache_valid_time: 3600
+    - name: set customization.local config file
+      ansible.builtin.template:
+        src: templates/customization.local.j2
+        dest: /etc/fail2ban/jail.d/customization.local
+        mode: 0640
+      notify: restart fail2ban
 
-  - name: set customization.local config file
-    template:
-      src: templates/customization.local.j2
-      dest: /etc/fail2ban/jail.d/customization.local
-      mode: 0640
-    notify: restart fail2ban
-
-  - name: set custom sshd filter config file
-    template:
-      src: templates/sshd-custom-filter.conf.j2
-      dest: /etc/fail2ban/filter.d/sshd-custom.conf
-      mode: 0640
-    notify: restart fail2ban
+    - name: set custom sshd filter config file
+      ansible.builtin.template:
+        src: templates/sshd-custom-filter.conf.j2
+        dest: /etc/fail2ban/filter.d/sshd-custom.conf
+        mode: 0640
+      notify: restart fail2ban
 
   become: "{{ fail2ban_become }}"
   become_user: "{{ fail2ban_become_user }}"
