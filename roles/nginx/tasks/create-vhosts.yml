@@ -1,6 +1,6 @@
 ---
 - name: create vhost directories
-  file:
+  ansible.builtin.file:
     path: "{{ nginx_root }}/{{ item.servername }}"
     state: directory
     owner: root
@@ -8,7 +8,7 @@
   with_items: "{{ nginx_vhosts }}"
 
 - name: create vhost content directories
-  file:
+  ansible.builtin.file:
     path: "{{ nginx_root }}/{{ item.servername }}/html"
     state: directory
     owner: root
@@ -17,13 +17,13 @@
   with_items: "{{ nginx_vhosts }}"
 
 - name: create vhost logs directories
-  file:
+  ansible.builtin.file:
     path: "{{ nginx_root }}/{{ item.servername }}/logs"
     state: directory
   with_items: "{{ nginx_vhosts }}"
 
 - name: add vhost configuration file for {{ item.servername }}
-  template:
+  ansible.builtin.template:
     src: etc/nginx/sites-available/site-vhost.j2
     dest: "/etc/nginx/sites-available/{{ item.servername }}.vhost"
     owner: root
@@ -33,20 +33,20 @@
   notify: systemctl restart nginx
 
 - name: collect all vhost enabled
-  find:
+  ansible.builtin.find:
     paths: /etc/nginx/sites-enabled/
     patterns: "*.vhost"
   register: vhost_to_delete
 
 - name: remove all the vhost enabled
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: absent
   with_items: "{{ vhost_to_delete.files }}"
   notify: systemctl reload nginx
 
 - name: add vhost configuration sylink for {{ item.servername }}
-  file:
+  ansible.builtin.file:
     src: "/etc/nginx/sites-available/{{ item.servername }}.vhost"
     dest: "/etc/nginx/sites-enabled/{{ item.servername }}.vhost"
     state: link
@@ -54,7 +54,7 @@
   notify: systemctl reload nginx
 
 - name: add logrotate configuration for {{ item.servername }}
-  template:
+  ansible.builtin.template:
     src: etc/logrotate.d/nginx.j2
     dest: "/etc/logrotate.d/{{ item.servername }}"
     owner: root

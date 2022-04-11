@@ -1,13 +1,13 @@
 ---
 - name: systemctl restart nginx
-  systemd:
+  ansible.builtin.systemd:
     name: nginx.service
     state: restarted
   become: "{{ nginx_become }}"
   become_user: "{{ nginx_become_user }}"
 
 - name: systemctl reload nginx
-  systemd:
+  ansible.builtin.systemd:
     name: nginx.service
     state: reloaded
   become: "{{ nginx_become }}"
