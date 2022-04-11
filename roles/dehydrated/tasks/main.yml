@@ -1,40 +1,39 @@
 ---
 - block:
+    - name: install dehydrated
+      ansible.builtin.apt:
+        name:
+          - dehydrated
+          - curl
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
 
-  - name: install dehydrated
-    apt:
-      name:
-        - dehydrated
-        - curl
-      state: present
-      update_cache: true
-      cache_valid_time: 3600
+    - name: install base.sh configuration file
+      ansible.builtin.template:
+        src: etc/dehydrated/conf.d/base.sh.j2
+        dest: /etc/dehydrated/conf.d/base.sh
 
-  - name: install base.sh configuration file
-    template:
-      src: etc/dehydrated/conf.d/base.sh.j2
-      dest: /etc/dehydrated/conf.d/base.sh
+    - name: install /etc/dehydrated/domains.txt configuration file
+      ansible.builtin.template:
+        src: etc/dehydrated/domains.txt.j2
+        dest: /etc/dehydrated/domains.txt
 
-  - name: install /etc/dehydrated/domains.txt configuration file
-    template:
-      src: etc/dehydrated/domains.txt.j2
-      dest: /etc/dehydrated/domains.txt
+    - name: install /var/lib/dehydrated/hook.sh
+      ansible.builtin.copy:
+        src: var/lib/dehydrated/hook.sh
+        dest: /var/lib/dehydrated/hook.sh
+        mode: 0750
+        owner: root
+        group: root
 
-  - name: install /var/lib/dehydrated/hook.sh
-    copy:
-      src: var/lib/dehydrated/hook.sh
-      dest: /var/lib/dehydrated/hook.sh
-      mode: 0750
-      owner: root
-      group: root
-
-  - name: install /etc/cron.daily/dehydrated
-    copy:
-      src: etc/cron.daily/dehydrated
-      dest: /etc/cron.daily/dehydrated
-      mode: 0755
-      owner: root
-      group: root
+    - name: install /etc/cron.daily/dehydrated
+      ansible.builtin.copy:
+        src: etc/cron.daily/dehydrated
+        dest: /etc/cron.daily/dehydrated
+        mode: 0755
+        owner: root
+        group: root
 
   # TODO: add registration
   # /usr/bin/dehydrated --register --accept-terms

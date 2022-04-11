@@ -1,31 +1,31 @@
 ---
 - block:
+    - name: user {{ item.username }}
+      ansible.builtin.user:
+        name: "{{ item.username }}"
+        # yamllint disable-line rule:line-length
+        password: "{{ item.password | password_hash('sha512') if item.password is defined and item.password != '!' else '!' }}"
+        groups: "{{ item.groups | default('') }}"
+        shell: "{{ item.shell | default('/bin/bash') }}"
+        state: "{{ item.state | default('present') }}"
+        remove: "{{ item.remove | default(false) }}"
+      with_items: "{{ users_list }}"
 
-  - name: user {{ item.username }}
-    user:
-      name: "{{ item.username }}"
-      password: "{{ item.password | password_hash('sha512') if item.password is defined and item.password != '!' else '!' }}"
-      groups: "{{ item.groups | default('') }}"
-      shell: "{{ item.shell | default('/bin/bash') }}"
-      state: "{{ item.state | default('present') }}"
-      remove: "{{ item.remove | default(false) }}"
-    with_items: "{{ users_list }}"
+    - name: set proper HOME permissions for {{ item.username }}
+      ansible.builtin.file:
+        path: "/home/{{ item.username }}"
+        mode: u=rwX,g=rX,o=
+      with_items: "{{ users_list }}"
+      when: item.state is not defined or item.state == 'present'
 
-  - name: set proper HOME permissions for {{ item.username }}
-    file:
-      path: "/home/{{ item.username }}"
-      mode: u=rwX,g=rX,o=
-    with_items: "{{ users_list }}"
-    when: item.state is not defined or item.state == 'present'
-
-  - name: set authorized key for the user ({{ item.username }})
-    authorized_key:
-      user: "{{ item.username }}"
-      key: "{{ lookup('file', item.key) }}"
-      key_options: "{{ item.key_options | default('') }}"
-      state: "{{ item.state | default('present') }}"
-    with_items: "{{ users_list }}"
-    when: item.key is defined
+    - name: set authorized key for the user ({{ item.username }})
+      ansible.builtin.authorized_key:
+        user: "{{ item.username }}"
+        key: "{{ lookup('file', item.key) }}"
+        key_options: "{{ item.key_options | default('') }}"
+        state: "{{ item.state | default('present') }}"
+      with_items: "{{ users_list }}"
+      when: item.key is defined
 
   become: "{{ users_become }}"
   become_user: "{{ users_become_user }}"
