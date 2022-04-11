@@ -32,19 +32,6 @@
   with_items: "{{ nginx_vhosts }}"
   notify: systemctl restart nginx
 
-- name: collect all vhost enabled
-  ansible.builtin.find:
-    paths: /etc/nginx/sites-enabled/
-    patterns: "*.vhost"
-  register: vhost_to_delete
-
-- name: remove all the vhost enabled
-  ansible.builtin.file:
-    path: "{{ item.path }}"
-    state: absent
-  with_items: "{{ vhost_to_delete.files }}"
-  notify: systemctl reload nginx
-
 - name: add vhost configuration sylink for {{ item.servername }}
   ansible.builtin.file:
     src: "/etc/nginx/sites-available/{{ item.servername }}.vhost"
