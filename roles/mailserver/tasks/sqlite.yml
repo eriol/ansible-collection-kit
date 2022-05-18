@@ -33,6 +33,7 @@
           username VARCHAR(255) NOT NULL PRIMARY KEY,
           password VARCHAR(255) NOT NULL,
           domain VARCHAR(128) NOT NULL,
+          maildir VARCHAR(255) NOT NULL,
           name VARCHAR(255) NOT NULL,
           quota BIGINT(20) NOT NULL DEFAULT 0,
           created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
