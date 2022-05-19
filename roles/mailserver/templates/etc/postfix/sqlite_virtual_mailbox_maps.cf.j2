@@ -1,2 +1,2 @@
 dbpath = {{ mailserver_auth_database }}
-query = SELECT maildir FROM mailbox WHERE username = '%s' AND active = 'Y'
+query = SELECT domain || "/" || substr(username, 1, instr(username, "@") - 1) || "/" FROM mailbox WHERE username = '%s' AND active = 'Y'
