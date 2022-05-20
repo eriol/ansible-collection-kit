@@ -9,7 +9,7 @@
 - name: import schema
   shell: |
     sqlite3 /etc/dovecot/authdb.sqlite << EOF
-      CREATE TABLE alias (
+      CREATE TABLE IF NOT EXISTS alias (
           address VARCHAR(255) NOT NULL PRIMARY KEY,
           goto TEXT NOT NULL,
           domain VARCHAR(128) NOT NULL,
@@ -17,7 +17,7 @@
           modified DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
           active CHAR(1) NOT NULL DEFAULT 'Y'
       );
-      CREATE TABLE domain (
+      CREATE TABLE IF NOT EXISTS domain (
           domain VARCHAR(128) NOT NULL PRIMARY KEY,
           description VARCHAR(255) NOT NULL,
           aliases INT(10) NOT NULL DEFAULT 0,
@@ -29,7 +29,7 @@
           modified DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
           active CHAR(1) NOT NULL DEFAULT 'Y'
       );
-      CREATE TABLE mailbox (
+      CREATE TABLE IF NOT EXISTS mailbox (
           username VARCHAR(255) NOT NULL PRIMARY KEY,
           password VARCHAR(255) NOT NULL,
           domain VARCHAR(128) NOT NULL,
