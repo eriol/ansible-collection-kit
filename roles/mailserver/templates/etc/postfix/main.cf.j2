@@ -25,6 +25,7 @@ compatibility_level = 2
 # TLS parameters
 smtp_tls_ciphers = high
 smtp_tls_protocols = !SSLv2, !SSLv3
+smtp_tls_security_level = may
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 smtpd_tls_cert_file={{ mailserver_tls_cert_file }}
 smtpd_tls_ciphers = high
