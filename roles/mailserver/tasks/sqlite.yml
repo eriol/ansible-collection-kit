@@ -41,9 +41,9 @@
       );
     EOF
 
-- name: ensure /etc/dovecot/authdb.sqlite is owned by dovecot
+- name: ensure /etc/dovecot/authdb.sqlite is owned by dovecot and postfix
   file:
     path: "{{ mailserver_auth_database }}"
     owner: dovecot
-    group: root
-    mode: "0600"
+    group: postfix
+    mode: "0640"
