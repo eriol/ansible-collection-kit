@@ -1,13 +1,13 @@
 ---
 
 - name: install sqlite3
-  apt:
+  ansible.builtin.apt:
     name: sqlite3
     update_cache: true
     cache_valid_time: 3600
 
 - name: import schema
-  shell: |
+  ansible.builtin.shell: |
     sqlite3 /etc/dovecot/authdb.sqlite << EOF
       CREATE TABLE IF NOT EXISTS alias (
           address VARCHAR(255) NOT NULL PRIMARY KEY,
@@ -42,7 +42,7 @@
     EOF
 
 - name: ensure /etc/dovecot/authdb.sqlite is owned by dovecot and postfix
-  file:
+  ansible.builtin.file:
     path: "{{ mailserver_auth_database }}"
     owner: dovecot
     group: postfix
