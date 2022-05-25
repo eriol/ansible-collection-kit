@@ -27,7 +27,7 @@
     state: present
   with_items:
     - regexp: "^#?Domain"
-      line: "Domain {{ mailserver_mailname }}"
+      line: "Domain {{ mailserver_dkim_domain }}"
     - regexp: "^#?Selector"
       line: "Selector {{ mailserver_dkim_selector }}"
     - regexp: "^#?KeyFile"

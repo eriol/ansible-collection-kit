@@ -15,4 +15,5 @@ Install and configure postfix, dovecot, opendkim and rspamd.
 - `mailserver_auth_database` - Default: /etc/dovecot/authdb.sqlite.
 - `mailserver_tls_cert_file` - Default: "/var/lib/dehydrated/certs/{{ mailserver_mailname }}/fullchain.pem"
 - `mailserver_tls_key_file` - Default: "/var/lib/dehydrated/certs/{{ mailserver_mailname }}/privkey.pem"
+- `mailserver_dkim_domain` - Default: N/A. DKIM domain.
 - `mailserver_dkim_selector` - Default: 2022. DKIM selector.
