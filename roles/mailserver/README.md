@@ -1,6 +1,6 @@
 # mailserver
 
-Install and configure postfix, dovecot and rspamd.
+Install and configure postfix, dovecot, opendkim and rspamd.
 
 ## Role Variables
 * `mailserver_become` - Default: true. Enable/disable the Ansible become
@@ -15,3 +15,4 @@ Install and configure postfix, dovecot and rspamd.
 - `mailserver_auth_database` - Default: /etc/dovecot/authdb.sqlite.
 - `mailserver_tls_cert_file` - Default: "/var/lib/dehydrated/certs/{{ mailserver_mailname }}/fullchain.pem"
 - `mailserver_tls_key_file` - Default: "/var/lib/dehydrated/certs/{{ mailserver_mailname }}/privkey.pem"
+- `mailserver_dkim_selector` - Default: 2022. DKIM selector.
