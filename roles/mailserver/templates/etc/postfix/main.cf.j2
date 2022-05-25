@@ -99,3 +99,7 @@ local_recipient_maps = $virtual_mailbox_maps
 
 virtual_transport = dovecot
 dovecot_destination_recipient_limit = 1
+
+# OpenDKIM
+smtpd_milters = inet:localhost:8891
+non_smtpd_milters = $smtpd_milters

@@ -2,6 +2,7 @@
 - block:
 
   - import_tasks: vmail.yml
+  - import_tasks: opendkim.yml
   - import_tasks: postfix.yml
   - import_tasks: dovecot.yml
   - import_tasks: rspamd.yml

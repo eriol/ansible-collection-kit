@@ -1,0 +1,39 @@
+---
+
+- name: install opendkim
+  ansible.builtin.apt:
+    name:
+      - opendkim
+      - opendkim-tools
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: check if the DKIM cert for specified selector exists
+  stat:
+    path: "/etc/dkimkeys/{{ mailserver_dkim_selector }}.private"
+  register: dkim_cert
+
+- name: generate key pair for domain and selector
+  shell: |
+    sudo -u opendkim opendkim-genkey -D /etc/dkimkeys -d {{ mailserver_mailname }} -s {{ mailserver_dkim_selector }}
+  when: not dkim_cert.stat.exists
+
+- name: configure DKIM
+  ansible.builtin.lineinfile:
+    path: /etc/opendkim.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  with_items:
+    - regexp: "^#?Domain"
+      line: "Domain {{ mailserver_mailname }}"
+    - regexp: "^#?Selector"
+      line: "Selector {{ mailserver_dkim_selector }}"
+    - regexp: "^#?KeyFile"
+      line: "KeyFile /etc/dkimkeys/{{ mailserver_dkim_selector }}.private"
+    - regexp: '^#?Socket(\s+)local:/run/opendkim/opendkim.sock'
+      line: "#Socket local:/run/opendkim/opendkim.sock"
+    - regexp: '^#?Socket(\s+)inet:8891@localhost'
+      line: "Socket inet:8891@localhost"
+  notify: systemctl restart opendkim
