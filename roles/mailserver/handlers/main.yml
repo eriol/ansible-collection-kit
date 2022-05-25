@@ -1,13 +1,20 @@
 ---
+- block:
 
-- name: systemctl restart dovecot
-  systemd:
-    name: dovecot.service
-    state: restarted
-  become: true
+  - name: systemctl restart dovecot
+    systemd:
+      name: dovecot.service
+      state: restarted
 
-- name: systemctl restart postfix
-  systemd:
-    name: postfix.service
-    state: restarted
-  become: true
+  - name: systemctl restart postfix
+    systemd:
+      name: postfix.service
+      state: restarted
+
+  - name: systemctl restart opendkim
+    systemd:
+      name: opendkim.service
+      state: restarted
+
+  become: "{{ mailserver_become }}"
+  become_user: "{{ mailserver_become_user }}"
