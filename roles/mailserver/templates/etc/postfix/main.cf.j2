@@ -100,8 +100,9 @@ local_recipient_maps = $virtual_mailbox_maps
 virtual_transport = dovecot
 dovecot_destination_recipient_limit = 1
 
-# OpenDKIM
 milter_default_action = accept
-milter_protocol = 2
-smtpd_milters = inet:localhost:8891
+milter_protocol = 6
+milter_mail_macros =  i {mail_addr} {client_addr} {client_name} {auth_authen}
+# OpenDKIM/rspamd
+smtpd_milters = inet:localhost:8891,inet:localhost:11332
 non_smtpd_milters = $smtpd_milters
