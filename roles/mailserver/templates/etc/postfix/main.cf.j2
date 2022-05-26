@@ -102,7 +102,7 @@ dovecot_destination_recipient_limit = 1
 
 milter_default_action = accept
 milter_protocol = 6
-milter_mail_macros =  i {mail_addr} {client_addr} {client_name} {auth_authen}
-# OpenDKIM/rspamd
-smtpd_milters = inet:localhost:8891,inet:localhost:11332
+milter_mail_macros =  i {mail_addr} {client_addr} {client_name} {auth_type} {auth_authen}
+# Rspamd/OpenDKIM
+smtpd_milters = inet:localhost:11332 inet:localhost:8891
 non_smtpd_milters = $smtpd_milters
