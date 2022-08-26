@@ -20,7 +20,8 @@
     admin_password: the_secret_password
     admin_key_file: ~/.ssh/test/id_rsa.pub
     snake_oil_cert_domains:
-      - mail.example.org
+      - example.org
+      - example2.org
     nginx_vhosts:
       - servername: example.org
         serveralias:
@@ -30,6 +31,8 @@
         ssl_certificate: /var/lib/snakeoil/certs/example.org/fullchain.pem
         ssl_certificate_key: /var/lib/snakeoil/certs/example.org/privkey.pem
         ssl_trusted_certificate: /var/lib/snakeoil/certs/example.org/fullchain.pem
+        header_csp: >
+          "default-src 'self'; img-src *; style-src 'self' 'unsafe-inline'; script-src 'self' https://stats.example.org"
       - servername: example2.org
         serveralias:
           - www.example2.org
@@ -74,10 +77,10 @@
     - ../roles/snake_oil_cert
     # - ../roles/users
     # - ../roles/dehydrated
-    # - ../roles/nginx
+    - ../roles/nginx
     # - ../roles/admin
     # - ../roles/docker
-    - ../roles/mailserver
+    # - ../roles/mailserver
     # - {role: ../roles/weechat}
     # Uncomment to test wikijs role: it's commented since the tarball that we
     # have to download is more than 60MB.
