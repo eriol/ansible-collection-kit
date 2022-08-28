@@ -32,7 +32,7 @@
   with_items: "{{ nginx_vhosts }}"
   notify: systemctl restart nginx
 
-- name: add vhost configuration sylink for {{ item.servername }}
+- name: add vhost configuration symlink for {{ item.servername }}
   ansible.builtin.file:
     src: "/etc/nginx/sites-available/{{ item.servername }}.vhost"
     dest: "/etc/nginx/sites-enabled/{{ item.servername }}.vhost"
