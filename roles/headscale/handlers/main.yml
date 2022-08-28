@@ -1,0 +1,13 @@
+---
+- name: systemctl daemon-reload
+  systemd:
+    daemon_reload: true
+  become: "{{ headscale_become }}"
+  become_user: "{{ headscale_become_user }}"
+
+- name: systemctl restart headscale
+  systemd:
+    name: headscale.service
+    state: restarted
+  become: "{{ headscale_become }}"
+  become_user: "{{ headscale_become_user }}"

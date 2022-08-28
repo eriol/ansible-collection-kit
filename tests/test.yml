@@ -74,10 +74,11 @@
     # - ../roles/iptables
     # - ../roles/sshd
     # - ../roles/fail2ban
-    - ../roles/snake_oil_cert
+    # - ../roles/snake_oil_cert
     # - ../roles/users
     # - ../roles/dehydrated
-    - ../roles/nginx
+    # - ../roles/nginx
+    - ../roles/headscale
     # - ../roles/admin
     # - ../roles/docker
     # - ../roles/mailserver
