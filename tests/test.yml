@@ -40,6 +40,8 @@
         ssl_certificate: /var/lib/snakeoil/certs/example2.org/fullchain.pem
         ssl_certificate_key: /var/lib/snakeoil/certs/example2.org/privkey.pem
         ssl_trusted_certificate: /var/lib/snakeoil/certs/example2.org/fullchain.pem
+        is_reverse_proxy_site: true
+        proxy_pass: http://localhost:5000/
     dehydrated_email: test@example.org
     dehydrated_domains:
       - example.org www.example.org
@@ -74,11 +76,11 @@
     # - ../roles/iptables
     # - ../roles/sshd
     # - ../roles/fail2ban
-    # - ../roles/snake_oil_cert
+    - ../roles/snake_oil_cert
     # - ../roles/users
     # - ../roles/dehydrated
-    # - ../roles/nginx
-    - ../roles/headscale
+    - ../roles/nginx
+    # - ../roles/headscale
     # - ../roles/admin
     # - ../roles/docker
     # - ../roles/mailserver
