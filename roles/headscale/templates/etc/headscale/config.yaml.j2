@@ -191,9 +191,9 @@ acl_policy_path: ""
 dns_config:
   # List of DNS servers to expose to clients.
   nameservers:
-    {% for nameserver in headscale_nameservers %}
-    - {{ nameserver }}
-    {% endfor %}
+  {% for nameserver in headscale_nameservers %}
+  - {{ nameserver }}
+  {% endfor %}
 
   # Split DNS (see https://tailscale.com/kb/1054/dns/),
   # list of search domains and the DNS to query for each one.
