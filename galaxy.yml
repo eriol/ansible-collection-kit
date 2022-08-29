@@ -1,7 +1,7 @@
 ---
 namespace: eriol
 name: kit
-version: 0.7.0
+version: 0.7.1
 readme: README.md
 authors:
   - Daniele Tricoli <eriol@mornie.org>
