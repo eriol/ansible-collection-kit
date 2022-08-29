@@ -13,3 +13,5 @@ headscale_download_url: "https://github.com/juanfont/headscale/releases/download
 headscale_dir: /srv/headscale
 headscale_server_url: http://127.0.0.1:8080
 headscale_listen_addr: 0.0.0.0:8080
+headscale_nameservers: ['1.1.1.1']
+headscale_base_domain: example.org
