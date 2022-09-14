@@ -1,0 +1,13 @@
+---
+- name: systemctl daemon-reload
+  ansible.builtin.systemd:
+    daemon_reload: true
+  become: "{{ diun_become }}"
+  become_user: "{{ diun_become_user }}"
+
+- name: systemctl restart diun
+  ansible.builtin.systemd:
+    name: diun.service
+    state: restarted
+  become: "{{ diun_become }}"
+  become_user: "{{ diun_become_user }}"

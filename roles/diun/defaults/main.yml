@@ -1,0 +1,29 @@
+---
+diun_become: true
+diun_become_user: root
+
+diun_version: v4.22.0
+# yamllint disable-line rule:line-length
+diun_tarball_armv7l: diun_{{ diun_version | replace("v", "")}}_linux_armv7.tar.gz
+# yamllint disable-line rule:line-length
+diun_tarball_armv7l_sha256: fb41898e1142c1e8d7f4f83c86a18fde4ef4758ebe3f24a254e1cc70a66df7a3
+# yamllint disable-line rule:line-length
+diun_tarball_x86_64: diun_{{ diun_version | replace("v", "")}}_linux_amd64.tar.gz
+# yamllint disable-line rule:line-length
+diun_tarball_x86_64_sha256: b519c498b458a732d936f85f2124e31f81fdf4caf0e665115c6539aab4a26f25
+# yamllint disable-line rule:line-length
+diun_tarball_aarch64: diun_{{ diun_version | replace("v", "")}}_linux_arm64.tar.gz
+# yamllint disable-line rule:line-length
+diun_tarball_aarch64_sha256: eb53d9acc61d43ceb9163ad59794546d3d8156a10f8b39a97d68cf9270f16a54
+
+# yamllint disable-line rule:line-length
+diun_tarball: "{{ lookup('vars', 'diun_tarball_'+ansible_architecture|lower, default=diun_tarball_x86_64) }}"
+# yamllint disable-line rule:line-length
+diun_tarball_sha256: "{{ lookup('vars', 'diun_tarball_'+ansible_architecture|lower+'_sha256', default=diun_tarball_x86_64_sha256) }}"
+
+# yamllint disable-line rule:line-length
+diun_download_url: "https://github.com/crazy-max/diun/releases/download/{{ diun_version }}/{{ diun_tarball }}"
+
+diun_dir: /srv/diun
+diun_tz: Europe/Rome
+diun_config: "{{ undef(hint='You must specify your diun configuration.') }}"
