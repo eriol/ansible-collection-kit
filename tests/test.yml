@@ -68,6 +68,18 @@
     radicale_ssl_trusted_certificate: /var/lib/snakeoil/certs/radicale.example.org/fullchain.pem
     mailserver_tls_cert_file: "/var/lib/snakeoil/certs/{{ mailserver_mailname }}/fullchain.pem"
     mailserver_tls_key_file: "/var/lib/snakeoil/certs/{{ mailserver_mailname }}/privkey.pem"
+    diun_config: |
+      db:
+        path: {{ diun_dir }}/diun.db
+
+      watch:
+        workers: 10
+        schedule: "0 */6 * * *"
+        firstCheckNotif: false
+
+      providers:
+        docker:
+          watchStopped: true
   roles:
     # - ../roles/apt_dist_upgrade
     # - ../roles/common
@@ -82,7 +94,7 @@
     # - ../roles/nginx
     # - ../roles/headscale
     # - ../roles/admin
-    # - ../roles/docker
+    - ../roles/docker
     - ../roles/diun
     # - ../roles/mailserver
     # - {role: ../roles/weechat}

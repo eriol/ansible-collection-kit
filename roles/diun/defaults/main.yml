@@ -26,4 +26,5 @@ diun_download_url: "https://github.com/crazy-max/diun/releases/download/{{ diun_
 
 diun_dir: /srv/diun
 diun_tz: Europe/Rome
+diun_is_docker_used: true
 diun_config: "{{ undef(hint='You must specify your diun configuration.') }}"

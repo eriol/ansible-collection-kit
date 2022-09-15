@@ -11,6 +11,7 @@ Install and configure [Diun](https://crazymax.dev/diun/).
 * `diun_version` - Default: `v4.22.0`.
 * `diun_dir` - Default: `/srv/diun`.
 * `diun_tz` - Default: `Europe/Rome`.
+* `diun_is_docker_used` - Default: `true`. Add the diun user to docker group.
 
 Variable `diun_config` is mandatory and it doesn't have a default.
 

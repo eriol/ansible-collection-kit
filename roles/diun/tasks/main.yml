@@ -9,11 +9,18 @@
   - name: ensure diun user exists and has restrictive settings
     ansible.builtin.user:
       name: diun
-      groups: diun, docker
+      groups: diun
       password: "*"
       create_home: false
       system: true
       shell: /usr/sbin/nologin
+
+  - name: add 'diun' user to docker group
+    ansible.builtin.user:
+      name: diun
+      groups: docker
+      append: true
+    when: diun_is_docker_used
 
   - name: ensure that the directory where we deploy diun exists
     ansible.builtin.file:
