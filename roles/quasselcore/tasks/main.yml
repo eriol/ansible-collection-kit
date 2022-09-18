@@ -1,0 +1,17 @@
+---
+- block:
+
+  - name: install quassel-core
+    ansible.builtin.apt:
+      name:
+        - quassel-core
+      update_cache: true
+      cache_valid_time: 3600
+
+  - name: ensure quassel-core is running
+    ansible.builtin.systemd:
+      state: started
+      name: quasselcore
+
+  become: "{{ quasselcore_become }}"
+  become_user: "{{ quasselcore_become_user }}"

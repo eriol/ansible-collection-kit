@@ -1,0 +1,7 @@
+---
+- name: systemctl restart quasselcore
+  ansible.builtin.systemd:
+    name: quasselcore
+    state: restarted
+  become: "{{ quasselcore_become }}"
+  become_user: "{{ quasselcore_become_user }}"

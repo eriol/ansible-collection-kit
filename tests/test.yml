@@ -119,7 +119,8 @@
     # - ../roles/marytts
     # - ../roles/zigbee2mqtt
     # - ../roles/radicale
-    - ../roles/tailscale
+    # - ../roles/tailscale
+    - ../roles/quasselcore
     # The easy ports sequece is just for test. Also don't disable strict IP
     # filtering on production.
     # - {role: ../roles/knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}
