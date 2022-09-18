@@ -64,6 +64,16 @@
       mode: 0640
     notify: systemctl restart diun
 
+  - name: set the diun config for file provider
+    ansible.builtin.copy:
+      content: "{{ diun_file_provider_config }}"
+      dest: "{{ diun_dir }}/watched.yml"
+      owner: diun
+      group: diun
+      mode: 0640
+    when: diun_file_provider_config is defined
+    notify: systemctl restart diun
+
   - name: install diun systemd unit file
     ansible.builtin.template:
       src: etc/systemd/system/diun.service.j2

@@ -14,6 +14,8 @@ Install and configure [Diun](https://crazymax.dev/diun/).
 * `diun_is_docker_used` - Default: `true`. Add the diun user to docker group.
 
 Variable `diun_config` is mandatory and it doesn't have a default.
+Variable `diun_file_provider_config` is optional and it's content will put in
+`{{ diun_dir}}/watched.yml` if set, to be used by the diun file provider.
 
 ## Example Playbook
 
