@@ -94,8 +94,8 @@
     # - ../roles/nginx
     # - ../roles/headscale
     # - ../roles/admin
-    - ../roles/docker
-    - ../roles/diun
+    # - ../roles/docker
+    # - ../roles/diun
     # - ../roles/mailserver
     # - {role: ../roles/weechat}
     # Uncomment to test wikijs role: it's commented since the tarball that we
@@ -119,6 +119,7 @@
     # - ../roles/marytts
     # - ../roles/zigbee2mqtt
     # - ../roles/radicale
+    - ../roles/tailscale
     # The easy ports sequece is just for test. Also don't disable strict IP
     # filtering on production.
     # - {role: ../roles/knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}

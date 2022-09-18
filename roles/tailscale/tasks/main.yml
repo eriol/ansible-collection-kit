@@ -1,0 +1,32 @@
+---
+- block:
+
+  - name: install tailscale dependencies
+    apt:
+      name:
+        - apt-transport-https
+        - ca-certificates
+        - gnupg-agent
+      update_cache: true
+      cache_valid_time: 3600
+
+  - name: add Tailscale's GPG key
+    apt_key:
+      # yamllint disable-line rule:line-length
+      url: https://pkgs.tailscale.com/stable/debian/{{ ansible_distribution_release }}.noarmor.gpg
+
+  - name: add Tailscale's repository
+    apt_repository:
+      # yamllint disable-line rule:line-length
+      repo: "deb https://pkgs.tailscale.com/stable/debian {{ ansible_distribution_release }} main"
+      filename: tailscale
+
+  - name: install tailscale
+    apt:
+      name:
+        - tailscale
+      update_cache: true
+      cache_valid_time: 3600
+
+  become: "{{ tailscale_become }}"
+  become_user: "{{ tailscale_become_user }}"
