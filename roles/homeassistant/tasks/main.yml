@@ -81,6 +81,15 @@
     notify:
       - systemctl daemon-reload
 
+  - name: disable not wanted default_config modules
+    ansible.builtin.lineinfile:
+      path: "{{ homeassistant_default_config_manifest_path }}"
+      regexp: ^\s*"{{ item }}"
+      state: absent
+    with_items: "{{ homeassistant_disabled_default_config }}"
+    when: homeassistant_default_config_manifest_path|length > 0
+    notify: systemctl restart homeassistant
+
   - name: ensure homeassistant is enabled and started
     ansible.builtin.systemd:
       name: homeassistant
