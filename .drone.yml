@@ -1,10 +1,6 @@
 ---
-kind: pipeline
-type: docker
-name: default
-
-steps:
-  - name: lint
+pipeline:
+  lint:
     image: debian:11-slim
     commands:
       - apt update && apt install -y ansible python3-pip podman
