@@ -2,31 +2,36 @@
 - block:
 
   - name: install docker dependencies
-    apt:
+    ansible.builtin.apt:
       name:
         - apt-transport-https
         - ca-certificates
-        - curl
-        - gnupg-agent
-        - software-properties-common
       update_cache: true
       cache_valid_time: 3600
 
+  - name: ensure /etc/apt/keyrings exists
+    ansible.builtin.file:
+      dest: /etc/apt/keyrings/
+      state: directory
+      mode: 0755
+
   - name: add Docker's GPG key
-    apt_key:
+    ansible.builtin.get_url:
       url: https://download.docker.com/linux/debian/gpg
+      dest: /etc/apt/keyrings/docker.asc
 
   - name: add Docker's repository
     apt_repository:
-      repo: "deb [arch=amd64] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+      repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
       filename: docker
 
   - name: install docker
-    apt:
+    ansible.builtin.apt:
       name:
         - docker-ce
         - docker-ce-cli
         - containerd.io
+        - docker-compose-plugin
       update_cache: true
       cache_valid_time: 3600
 
