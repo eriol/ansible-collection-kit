@@ -22,7 +22,7 @@
 
   - name: add Docker's repository
     apt_repository:
-      repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+      repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian {{ docker_distribution_release }} stable"
       filename: docker
 
   - name: install docker
