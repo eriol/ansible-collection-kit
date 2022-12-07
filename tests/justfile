@@ -1,0 +1,11 @@
+# vagrant up
+up:
+    @vagrant up
+
+# vagrant up --provision
+provision:
+    @vagrant up --provision
+
+# vagrant destroy --force
+destroy:
+    @vagrant destroy --force
