@@ -1,0 +1,8 @@
+---
+- name: systemctl restart docker
+  systemd:
+    name: docker.service
+    state: restarted
+  become: "{{ docker_nvidia_become }}"
+  become_user: "{{ docker_nvidia_become_user }}"
+  listen: load iptables rules

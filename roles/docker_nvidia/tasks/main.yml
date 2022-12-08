@@ -1,0 +1,49 @@
+---
+- block:
+
+  - name: install required dependencies
+    ansible.builtin.apt:
+      name:
+        - apt-transport-https
+        - ca-certificates
+        - gnupg-agent
+      update_cache: true
+      cache_valid_time: 3600
+
+  - name: ensure /etc/apt/keyrings exists
+    ansible.builtin.file:
+      dest: /etc/apt/keyrings/
+      state: directory
+      mode: 0755
+
+  # Can't do the following without writing the repository by hand.
+  # I don't care right now.
+  #
+  # - name: add Docker NVIDIA's GPG key
+  #   ansible.builtin.get_url:
+  #     url: https://nvidia.github.io/nvidia-docker/gpgkey
+  #     dest: /etc/apt/keyrings/nvidia.asc
+
+  # - name: add Docker's repository
+  #   apt_repository:
+  #     repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/nvidia.asc] https://nvidia.github.io/nvidia-docker/{{ docker_nvidia_distribution }}/nvidia-docker.list   stable"
+  #     filename: nvidia
+
+  - name: add NVIDIA docker's GPG key
+    ansible.builtin.apt_key:
+      url: https://nvidia.github.io/nvidia-docker/gpgkey
+
+  - name: add NVIDIA docker repository
+    ansible.builtin.get_url:
+      url: "https://nvidia.github.io/nvidia-docker/{{ docker_nvidia_distribution }}/nvidia-docker.list"
+      dest: /etc/apt/sources.list.d/nvidia-docker.list
+
+  - name: install nvidia-docker
+    ansible.builtin.apt:
+      name:
+        - nvidia-container-toolkit
+      update_cache: true
+    notify: systemctl restart docker
+
+  become: "{{ docker_nvidia_become }}"
+  become_user: "{{ docker_nvidia_become_user }}"
