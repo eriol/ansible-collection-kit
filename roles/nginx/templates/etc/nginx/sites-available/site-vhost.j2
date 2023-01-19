@@ -19,6 +19,15 @@ server {
 
 }
 
+{% if item.need_websocket is defined %}
+
+map $http_upgrade $connection_upgrade {
+    default      keep-alive;
+    'websocket'  upgrade;
+    ''           close;
+}
+{% endif %}
+
 server {
     server_name {{ item.servername }}{% if item.serveralias is defined %}{% for alias in item.serveralias %} {{ alias }}{% endfor %}{% endif %};
 
@@ -61,14 +70,16 @@ server {
 
     location / {
         proxy_pass {{ item.proxy_pass }};
-        proxy_read_timeout 6m;
-        proxy_ignore_client_abort off;
-        proxy_request_buffering off;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Host $server_name;
+        proxy_redirect http:// https://;
         proxy_buffering off;
-        proxy_no_cache "always";
-        proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+        add_header Strict-Transport-Security "max-age=15552000; includeSubDomains" always;
     }
     {% else %}
 
