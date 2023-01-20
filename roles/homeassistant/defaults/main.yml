@@ -2,7 +2,7 @@
 homeassistant_become: true
 homeassistant_become_user: root
 
-homeassistant_version: 2022.11.4
+homeassistant_version: 2023.1.6
 homeassistant_dir: /srv/homeassistant
 homeassistant_config_dir: /etc/homeassistant
 
