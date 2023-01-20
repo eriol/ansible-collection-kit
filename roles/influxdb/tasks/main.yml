@@ -1,21 +1,31 @@
 ---
 - block:
 
-  - name: install influxdb
+  - name: ensure /etc/apt/keyrings exists
+    ansible.builtin.file:
+      dest: /etc/apt/keyrings/
+      state: directory
+      mode: 0755
+
+  - name: add Infuxdb GPG key
+    ansible.builtin.get_url:
+      url: https://repos.influxdata.com/influxdb.key
+      dest: /etc/apt/keyrings/influxdb.key
+      # yamllint disable-line rule:line-length
+      checksum: sha256:23a1c8836f0afc5ed24e0486339d7cc8f6790b83886c4c96995b88a061c5bb5d
+
+  - name: add Influxdata's repository
+    apt_repository:
+      # yamllint disable-line rule:line-length
+      repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/influxdb.key] https://repos.influxdata.com/debian stable main"
+      filename: influxdata
+
+  - name: install influxdb2
     ansible.builtin.apt:
       name:
-        - influxdb
+        - influxdb2
       update_cache: true
       cache_valid_time: 3600
-
-  - name: install /etc/influxdb/influxdb.conf
-    ansible.builtin.template:
-      src: etc/influxdb/influxdb.conf.j2
-      dest: /etc/influxdb/influxdb.conf
-      owner: root
-      group: root
-      mode: "0644"
-    notify: systemctl restart influxdb
 
   - name: ensure influxdb is running
     ansible.builtin.systemd:
