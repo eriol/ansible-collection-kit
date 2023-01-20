@@ -17,7 +17,7 @@
   - name: add Influxdata's repository
     apt_repository:
       # yamllint disable-line rule:line-length
-      repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/influxdb.key] https://repos.influxdata.com/debian stable main"
+      repo: "deb [signed-by=/etc/apt/keyrings/influxdb.key] https://repos.influxdata.com/debian stable main"
       filename: influxdata
 
   - name: install influxdb2
