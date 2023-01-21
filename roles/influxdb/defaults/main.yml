@@ -1,12 +1,3 @@
 ---
 influxdb_become: true
 influxdb_become_user: root
-
-influxdb_http_enabled: "true"
-influxdb_bind_hostname: ""
-influxdb_http_port: 8086
-influxdb_http_auth_enabled: "false"
-influxdb_http_log_enabled: "false"
-influxdb_http_https_enabled: "false"
-influxdb_http_https_certificate: ""
-influxdb_http_https_certificate_key: ""
