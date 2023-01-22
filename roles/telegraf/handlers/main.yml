@@ -1,0 +1,7 @@
+---
+- name: systemctl restart telegraf
+  ansible.builtin.systemd:
+    name: telegraf
+    state: restarted
+  become: "{{ telegraf_become }}"
+  become_user: "{{ telegraf_become_user }}"

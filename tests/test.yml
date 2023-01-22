@@ -95,8 +95,8 @@
     # - ../roles/nginx
     # - ../roles/headscale
     # - ../roles/admin
-    - ../roles/docker
-    - ../roles/docker_nvidia
+    # - ../roles/docker
+    # - ../roles/docker_nvidia
     # - ../roles/diun
     # - ../roles/mailserver
     # - {role: ../roles/weechat}
@@ -111,6 +111,7 @@
     #    beehive_canonical_url: http://10.10.10.10:8181}
     # - ../roles/mosquitto
     # - ../roles/influxdb
+    - ../roles/telegraf
     # - ../roles/homeassistant
     # - {role: ../roles/generate_ca, become: true}
     # - {role: ../roles/generate_certificate, become: true}

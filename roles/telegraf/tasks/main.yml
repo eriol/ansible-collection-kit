@@ -1,0 +1,36 @@
+---
+- block:
+
+  - name: ensure /etc/apt/keyrings exists
+    ansible.builtin.file:
+      dest: /etc/apt/keyrings/
+      state: directory
+      mode: 0755
+
+  - name: add Influxdb GPG key
+    ansible.builtin.get_url:
+      url: https://repos.influxdata.com/influxdb.key
+      dest: /etc/apt/keyrings/influxdb.key
+      # yamllint disable-line rule:line-length
+      checksum: sha256:23a1c8836f0afc5ed24e0486339d7cc8f6790b83886c4c96995b88a061c5bb5d
+
+  - name: add Influxdata's repository
+    apt_repository:
+      # yamllint disable-line rule:line-length
+      repo: "deb [signed-by=/etc/apt/keyrings/influxdb.key] https://repos.influxdata.com/debian stable main"
+      filename: influxdata
+
+  - name: install telegraf
+    ansible.builtin.apt:
+      name:
+        - telegraf
+      update_cache: true
+      cache_valid_time: 3600
+
+  - name: ensure telegraf is running
+    ansible.builtin.systemd:
+      state: started
+      name: telegraf
+
+  become: "{{ telegraf_become }}"
+  become_user: "{{ telegraf_become_user }}"
