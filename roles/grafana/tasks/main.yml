@@ -1,0 +1,36 @@
+---
+- block:
+
+  - name: ensure /etc/apt/keyrings exists
+    ansible.builtin.file:
+      dest: /etc/apt/keyrings/
+      state: directory
+      mode: 0755
+
+  - name: add Influxdb GPG key
+    ansible.builtin.get_url:
+      url: https://apt.grafana.com/gpg.key
+      dest: /etc/apt/keyrings/grafana.key
+      # yamllint disable-line rule:line-length
+      checksum: sha256:ecb3d77aa13d94e1e1abc6b77f6af96665bd62a8255c774ffa0c330fcee8eed4
+
+  - name: add grafana stable repository
+    apt_repository:
+      # yamllint disable-line rule:line-length
+      repo: "deb [signed-by=/etc/apt/keyrings/grafana.key] https://apt.grafana.com stable main"
+      filename: influxdata
+
+  - name: install grafana
+    ansible.builtin.apt:
+      name:
+        - grafana
+      update_cache: true
+      cache_valid_time: 3600
+
+  - name: ensure grafana is running
+    ansible.builtin.systemd:
+      state: started
+      name: grafana-server
+
+  become: "{{ grafana_become }}"
+  become_user: "{{ grafana_become_user }}"

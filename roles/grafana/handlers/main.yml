@@ -1,0 +1,7 @@
+---
+- name: systemctl restart grafana
+  ansible.builtin.systemd:
+    name: grafana
+    state: restarted
+  become: "{{ grafana_become }}"
+  become_user: "{{ grafana_become_user }}"

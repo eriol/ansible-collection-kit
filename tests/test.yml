@@ -111,7 +111,8 @@
     #    beehive_canonical_url: http://10.10.10.10:8181}
     # - ../roles/mosquitto
     # - ../roles/influxdb
-    - ../roles/telegraf
+    # - ../roles/telegraf
+    - ../roles/grafana
     # - ../roles/homeassistant
     # - {role: ../roles/generate_ca, become: true}
     # - {role: ../roles/generate_certificate, become: true}

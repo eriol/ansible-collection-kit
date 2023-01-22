@@ -1,0 +1,3 @@
+---
+grafana_become: true
+grafana_become_user: root
