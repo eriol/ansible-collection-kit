@@ -27,10 +27,10 @@
       update_cache: true
       cache_valid_time: 3600
 
-  - name: ensure telegraf is running
-    ansible.builtin.systemd:
-      state: started
-      name: telegraf
+  # - name: ensure telegraf is running
+  #   ansible.builtin.systemd:
+  #     state: started
+  #     name: telegraf
 
   become: "{{ telegraf_become }}"
   become_user: "{{ telegraf_become_user }}"
