@@ -81,6 +81,16 @@
       providers:
         docker:
           watchStopped: true
+    telegraf_configs:
+      - name: system_performance.conf
+        content: |
+          [[inputs.cpu]]
+            percpu = true
+            totalcpu = true
+      - name: diskio.conf
+        content: |
+          [[input.diskio]]
+
   roles:
     # - ../roles/apt_dist_upgrade
     # - ../roles/common
@@ -111,8 +121,8 @@
     #    beehive_canonical_url: http://10.10.10.10:8181}
     # - ../roles/mosquitto
     # - ../roles/influxdb
-    # - ../roles/telegraf
-    - ../roles/grafana
+    - ../roles/telegraf
+    # - ../roles/grafana
     # - ../roles/homeassistant
     # - {role: ../roles/generate_ca, become: true}
     # - {role: ../roles/generate_certificate, become: true}
