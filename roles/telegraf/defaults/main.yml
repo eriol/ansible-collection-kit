@@ -1,3 +1,5 @@
 ---
 telegraf_become: true
 telegraf_become_user: root
+
+telegraf_configs: []
