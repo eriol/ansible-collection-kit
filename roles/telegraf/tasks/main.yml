@@ -27,10 +27,12 @@
       update_cache: true
       cache_valid_time: 3600
 
-  # - name: ensure telegraf is running
-  #   ansible.builtin.systemd:
-  #     state: started
-  #     name: telegraf
+  - name: install configurations
+    ansible.builtin.copy:
+      dest: "/etc/telegraf/telegraf.d/{{ item.name }}"
+      content: "{{ item.content }}"
+    loop: "{{ telegraf_configs|flatten(levels=1) }}"
+    notify: systemctl restart telegraf
 
   become: "{{ telegraf_become }}"
   become_user: "{{ telegraf_become_user }}"
