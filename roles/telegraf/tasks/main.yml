@@ -27,12 +27,20 @@
       update_cache: true
       cache_valid_time: 3600
 
+  - name: install telegraf.conf
+    template:
+      src: etc/telegraf.telegraf.conf.j2
+      dest: /etc/telegraf/telegraf.conf
+    notify:
+      - systemctl restart telegraf
+
   - name: install configurations
     ansible.builtin.copy:
       dest: "/etc/telegraf/telegraf.d/{{ item.name }}"
       content: "{{ item.content }}"
     loop: "{{ telegraf_configs|flatten(levels=1) }}"
-    notify: systemctl restart telegraf
+    notify:
+      - systemctl restart telegraf
 
   become: "{{ telegraf_become }}"
   become_user: "{{ telegraf_become_user }}"

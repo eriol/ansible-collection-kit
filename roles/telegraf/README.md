@@ -8,11 +8,9 @@ Install telegref from influxdata.com repository.
   functionality.
 * `telegraf_become_user` - Default: root. When using become functionality for
   privilege escalation, this is the user with desired privileges you become.
+* `telegraf_interval` - Default: 10s.
 * `telegraf_configs` - Default: []. List of configuration files with name and
   content. See example below.
-
-**NOTE:** For the agent configuration the default is used, no override at the
-moment is provided.
 
 ## Example Playbook
 

@@ -2,4 +2,5 @@
 telegraf_become: true
 telegraf_become_user: root
 
+telegraf_interval: "10s"
 telegraf_configs: []
