@@ -27,6 +27,13 @@
       update_cache: true
       cache_valid_time: 3600
 
+  - name: adding telegraf user to group {{ item }}
+    user:
+      name: telegraf
+      groups: "{{ item }}"
+      append: true
+    loop: "{{ telegraf_additional_groups }}"
+
   - name: install telegraf.conf
     template:
       src: etc/telegraf/telegraf.conf.j2
