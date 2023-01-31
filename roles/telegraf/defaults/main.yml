@@ -4,3 +4,4 @@ telegraf_become_user: root
 
 telegraf_interval: "10s"
 telegraf_configs: []
+telegraf_additional_groups: []
