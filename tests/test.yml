@@ -89,7 +89,8 @@
             totalcpu = true
       - name: diskio.conf
         content: |
-          [[input.diskio]]
+          [[inputs.diskio]]
+    telegraf_additional_groups: ["adm"]
 
   roles:
     # - ../roles/apt_dist_upgrade
