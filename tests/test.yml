@@ -84,11 +84,15 @@
     telegraf_configs:
       - name: system_performance.conf
         content: |
+          [[outputs.discard]]
+
           [[inputs.cpu]]
             percpu = true
             totalcpu = true
       - name: diskio.conf
         content: |
+          [[outputs.discard]]
+
           [[inputs.diskio]]
     telegraf_additional_groups: ["adm"]
 
