@@ -104,10 +104,11 @@
     # - ../roles/iptables
     # - ../roles/sshd
     # - ../roles/fail2ban
-    # - ../roles/snake_oil_cert
+    - ../roles/snake_oil_cert
     # - ../roles/users
     # - ../roles/dehydrated
-    # - ../roles/nginx
+    - ../roles/telegraf
+    - ../roles/nginx
     # - ../roles/headscale
     # - ../roles/admin
     # - ../roles/docker
@@ -126,7 +127,6 @@
     #    beehive_canonical_url: http://10.10.10.10:8181}
     # - ../roles/mosquitto
     # - ../roles/influxdb
-    - ../roles/telegraf
     # - ../roles/grafana
     # - ../roles/homeassistant
     # - {role: ../roles/generate_ca, become: true}

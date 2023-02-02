@@ -16,5 +16,9 @@
         endscript
         postrotate
                 invoke-rc.d nginx rotate >/dev/null 2>&1
+{# Because of https://github.com/influxdata/telegraf/issues/1829 #}
+{% if telegraf_service_status.status.ActiveState == "active" %}
+                /bin/systemctl restart telegraf.service
+{% endif %}
         endscript
 }
