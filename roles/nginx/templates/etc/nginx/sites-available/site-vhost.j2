@@ -71,8 +71,10 @@ server {
     location / {
         proxy_pass {{ item.proxy_pass }};
         proxy_http_version 1.1;
+        {% if item.need_websocket is defined %}
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
+        {% endif %}
         proxy_set_header Host $server_name;
         proxy_redirect http:// https://;
         proxy_buffering off;
