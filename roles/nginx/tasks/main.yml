@@ -49,6 +49,16 @@
           line: "\tgzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml;"
       notify: systemctl reload nginx
 
+    - name: add geoip2 config
+      ansible.builtin.copy:
+        src: etc/nginx/conf.d/geoip2.conf
+        dest: /etc/nginx/conf.d/geoip2.conf
+        owner: root
+        group: root
+        mode: 0640
+      when: nginx_enable_geoip2
+      notify: systemctl reload nginx
+
     - import_tasks: create-vhosts.yml
 
   become: "{{ nginx_become }}"

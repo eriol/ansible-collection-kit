@@ -7,3 +7,4 @@ nginx_become_user: root
 nginx_default_package: nginx
 nginx_root: /var/www
 nginx_vhosts: []
+nginx_enable_geoip2: false

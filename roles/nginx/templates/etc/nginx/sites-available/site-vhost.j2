@@ -94,6 +94,6 @@ server {
 
     error_page 404 /404.html;
 
-    access_log {{ nginx_root }}/{{ item.servername }}/logs/access.log;
+    access_log {{ nginx_root }}/{{ item.servername }}/logs/access.log{% if nginx_enable_geoip2 %} custom{% endif %};
     error_log {{ nginx_root }}/{{ item.servername }}/logs/error.log;
 }
