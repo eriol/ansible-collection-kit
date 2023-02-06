@@ -1,0 +1,33 @@
+---
+- block:
+
+  - name: install geoipupdate
+    ansible.builtin.apt:
+      name:
+        - geoipupdate
+      update_cache: true
+      cache_valid_time: 3600
+
+  - name: configure geoipupdate
+    ansible.builtin.lineinfile:
+      path: /etc/GeoIP.conf
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+      state: present
+    loop:
+      - {regexp: "^#?\\s?AccountID", line: "AccountID {{ geoipupdate_account_id }}"}
+      - {regexp: "^#?\\s?LicenseKey", line: "LicenseKey {{ geoipupdate_license_key }}"}
+
+  - name: install geoipupdate systemd unit files
+    ansible.builtin.copy:
+      src: etc/systemd/system/geoipupdate.service
+      dest: /etc/systemd/system/gitea.service
+    loop:
+      - {src: "etc/systemd/system/geoipupdate.service", dest: "/etc/systemd/system/geoipupdate.service"}
+      - {src: "etc/systemd/system/geoipupdate.timer", dest: "/etc/systemd/system/geoipupdate.timer"}
+    notify:
+      - systemctl daemon-reload
+
+
+  become: "{{ geoipupdate_become }}"
+  become_user: "{{ geoipupdate_become_user }}"

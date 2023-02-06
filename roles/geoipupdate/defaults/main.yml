@@ -1,0 +1,6 @@
+---
+geoipupdate_become: true
+geoipupdate_become_user: root
+
+geoipupdate_account_id: user
+geoipupdate_license_key: secret

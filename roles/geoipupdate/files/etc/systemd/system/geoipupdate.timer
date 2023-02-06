@@ -1,0 +1,9 @@
+[Unit]
+Description=MaxMind GeoIP/GeoIP2 database updates timer
+
+[Timer]
+OnCalendar=Sun,Thu 08:00
+Unit=geoipupdate.service
+
+[Install]
+WantedBy=timers.target

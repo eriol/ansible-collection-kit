@@ -1,0 +1,9 @@
+[Unit]
+Description=MaxMind GeoIP/GeoIP2 database updates
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/geoipupdate
+
+[Install]
+WantedBy=default.target

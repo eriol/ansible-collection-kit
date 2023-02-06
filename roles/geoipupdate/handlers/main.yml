@@ -1,0 +1,9 @@
+---
+- block:
+
+  - name: systemctl daemon-reload
+    systemd:
+      daemon_reload: true
+
+  become: "{{ geoipupdate_become }}"
+  become_user: "{{ geoipupdate_become_user }}"
