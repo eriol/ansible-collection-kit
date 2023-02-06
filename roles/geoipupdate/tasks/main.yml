@@ -20,8 +20,8 @@
 
   - name: install geoipupdate systemd unit files
     ansible.builtin.copy:
-      src: etc/systemd/system/geoipupdate.service
-      dest: /etc/systemd/system/gitea.service
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
     loop:
       - {src: "etc/systemd/system/geoipupdate.service", dest: "/etc/systemd/system/geoipupdate.service"}
       - {src: "etc/systemd/system/geoipupdate.timer", dest: "/etc/systemd/system/geoipupdate.timer"}
