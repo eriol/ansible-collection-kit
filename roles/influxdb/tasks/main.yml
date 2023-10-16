@@ -9,15 +9,15 @@
 
   - name: add Infuxdb GPG key
     ansible.builtin.get_url:
-      url: https://repos.influxdata.com/influxdb.key
-      dest: /etc/apt/keyrings/influxdb.key
+      url: https://repos.influxdata.com/influxdata-archive_compat.key
+      dest: /etc/apt/keyrings/influxdata-archive_compat.key
       # yamllint disable-line rule:line-length
-      checksum: sha256:23a1c8836f0afc5ed24e0486339d7cc8f6790b83886c4c96995b88a061c5bb5d
+      checksum: sha256:393e8779c89ac8d958f81f942f9ad7fb82a25e133faddaf92e15b16e6ac9ce4c
 
   - name: add Influxdata's repository
     apt_repository:
       # yamllint disable-line rule:line-length
-      repo: "deb [signed-by=/etc/apt/keyrings/influxdb.key] https://repos.influxdata.com/debian stable main"
+      repo: "deb [signed-by=/etc/apt/keyrings/influxdata-archive_compat.key] https://repos.influxdata.com/debian stable main"
       filename: influxdata
 
   - name: install influxdb2
