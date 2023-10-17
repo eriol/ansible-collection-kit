@@ -3,6 +3,5 @@ pipeline:
   lint:
     image: debian:12-slim
     commands:
-      - apt update && apt install -y ansible python3-pip podman
-      - python3 -m pip install --break-system-packages "molecule[lint,podman]"
-      - molecule lint
+      - apt update && apt install -y yamllint
+      - yamllint
