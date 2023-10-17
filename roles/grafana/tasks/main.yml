@@ -12,7 +12,7 @@
       url: https://apt.grafana.com/gpg.key
       dest: /etc/apt/keyrings/grafana.key
       # yamllint disable-line rule:line-length
-      checksum: sha256:ecb3d77aa13d94e1e1abc6b77f6af96665bd62a8255c774ffa0c330fcee8eed4
+      checksum: sha256:58052c148058ace26dbd01ce057afa5709fb9d39c8a8ab16800be3f42fc02ab2
 
   - name: add grafana stable repository
     apt_repository:
