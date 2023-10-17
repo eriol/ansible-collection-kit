@@ -1,7 +1,7 @@
 ---
 pipeline:
   lint:
-    image: debian:11-slim
+    image: debian:12-slim
     commands:
       - apt update && apt install -y ansible python3-pip podman
       - python3 -m pip install "molecule[lint,podman]"
