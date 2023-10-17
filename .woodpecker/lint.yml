@@ -4,4 +4,4 @@ pipeline:
     image: debian:12-slim
     commands:
       - apt update && apt install -y yamllint
-      - yamllint
+      - yamllint roles
