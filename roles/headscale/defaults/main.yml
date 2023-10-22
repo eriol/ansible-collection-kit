@@ -2,10 +2,10 @@
 headscale_become: true
 headscale_become_user: root
 
-headscale_version: v0.18.0
-headscale_binary: headscale_0.18.0_linux_amd64
+headscale_version: v0.22.3
+headscale_binary: headscale_0.22.3_linux_amd64
 # yamllint disable-line rule:line-length
-headscale_tarball_sha256: eedaff1af1e79b10a2ab7256118600b3b6528604be1c8c32d851a32bf3c48cea
+headscale_tarball_sha256: 41eb475ba94d2f4efdd5b90ca76d3926a0fc0b561baabf6190ca32335c9102d2
 
 # yamllint disable-line rule:line-length
 headscale_download_url: "https://github.com/juanfont/headscale/releases/download/{{ headscale_version }}/{{ headscale_binary }}"
