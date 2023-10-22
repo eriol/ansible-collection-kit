@@ -9,7 +9,7 @@
     - name: ensure headscale user exists and has restrictive settings
       ansible.builtin.user:
         name: headscale
-        groups: headscale
+        group: headscale
         password: "*"
         home: /var/lib/headscale
         system: true
