@@ -1,8 +1,11 @@
 ---
-- block:
+- name: Setup tailscale.
+  become: "{{ tailscale_become }}"
+  become_user: "{{ tailscale_become_user }}"
+  block:
 
-  - name: install tailscale dependencies
-    apt:
+  - name: Install tailscale dependencies
+    ansible.builtin.apt:
       name:
         - apt-transport-https
         - ca-certificates
@@ -10,23 +13,23 @@
       update_cache: true
       cache_valid_time: 3600
 
-  - name: add Tailscale's GPG key
-    apt_key:
+  - name: Add Tailscale's GPG key
+    ansible.builtin.get_url:
       # yamllint disable-line rule:line-length
-      url: https://pkgs.tailscale.com/stable/debian/{{ ansible_distribution_release }}.noarmor.gpg
+      url: "https://pkgs.tailscale.com/stable/debian/{{ ansible_distribution_release }}.noarmor.gpg"
+      dest: /usr/share/keyrings/tailscale-archive-keyring.gpg
+      mode: "0644"
 
-  - name: add Tailscale's repository
-    apt_repository:
+  - name: Add Tailscale's repository
+    ansible.builtin.get_url:
       # yamllint disable-line rule:line-length
-      repo: "deb https://pkgs.tailscale.com/stable/debian {{ ansible_distribution_release }} main"
-      filename: tailscale
+      url: "https://pkgs.tailscale.com/stable/debian/{{ ansible_distribution_release }}.tailscale-keyring.list"
+      dest: /etc/apt/sources.list.d/tailscale.list
+      mode: "0644"
 
-  - name: install tailscale
-    apt:
+  - name: Install tailscale
+    ansible.builtin.apt:
       name:
         - tailscale
       update_cache: true
       cache_valid_time: 3600
-
-  become: "{{ tailscale_become }}"
-  become_user: "{{ tailscale_become_user }}"
