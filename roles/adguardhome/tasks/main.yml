@@ -1,12 +1,15 @@
 ---
-- block:
+- name: Deploy AdGuardHome.
+  become: "{{ adguardhome_become }}"
+  become_user: "{{ adguardhome_become_user }}"
+  block:
 
-  - name: ensure adguardhome group exits
+  - name: Ensure adguardhome group exits
     ansible.builtin.group:
       name: adguardhome
       system: true
 
-  - name: ensure adguardhome user exists and has restrictive settings
+  - name: Ensure adguardhome user exists and has restrictive settings
     ansible.builtin.user:
       name: adguardhome
       groups: adguardhome
@@ -15,18 +18,18 @@
       system: true
       shell: /usr/sbin/nologin
 
-  - name: get available groups
+  - name: Get available groups
     ansible.builtin.getent:
       database: group
 
-  - name: add adguardhome user to ssl-cert group
+  - name: Add adguardhome user to ssl-cert group
     ansible.builtin.user:
       name: adguardhome
       groups: ssl-cert
       append: true
     when: adguardhome_add_to_ssl_cert_group and "ssl-cert" in ansible_facts.getent_group
 
-  - name: ensure that the directory where we deploy AdGuard Home exists
+  - name: Ensure that the directory where we deploy AdGuard Home exists
     ansible.builtin.file:
       path: "{{ adguardhome_dir }}"
       state: directory
@@ -36,7 +39,7 @@
 
   # TODO: download only if not installed or a new version.
 
-  - name: download locally AdGuard Home in /tmp
+  - name: Download locally AdGuard Home in /tmp
     ansible.builtin.get_url:
       url: "{{ adguardhome_download_url }}"
       dest: /tmp
@@ -44,7 +47,7 @@
     delegate_to: localhost
     become: false
 
-  - name: unarchive locally AdGuard Home
+  - name: Unarchive locally AdGuard Home
     ansible.builtin.unarchive:
       src: "/tmp/{{ adguardhome_tarball }}"
       dest: /tmp
@@ -52,7 +55,7 @@
     delegate_to: localhost
     become: false
 
-  - name: copy AdGuard Home binary
+  - name: Copy AdGuard Home binary
     ansible.builtin.copy:
       src: /tmp/AdGuardHome/AdGuardHome
       dest: "{{ adguardhome_dir }}"
@@ -61,13 +64,13 @@
       mode: "0750"
     notify: systemctl restart adguardhome
 
-  - name: check if the AdGuardHome.yaml configuration exists
+  - name: Check if the AdGuardHome.yaml configuration exists
     ansible.builtin.stat:
       path: "{{ adguardhome_dir }}/AdGuardHome.yaml"
     register: adguardhome_yaml_config
 
   # NOTE: python3-passlib must be installed or this will fail silently.
-  - name: set the AdGuardHome config file
+  - name: Set the AdGuardHome config file
     ansible.builtin.template:
       src: templates/AdGuardHome.yaml.j2
       dest: "{{ adguardhome_dir }}/AdGuardHome.yaml"
@@ -77,27 +80,24 @@
     when: not adguardhome_yaml_config.stat.exists
     notify: systemctl restart adguardhome
 
-  - name: set cap_net_bind_service=+ep on AdGuardHome binary
+  - name: Set cap_net_bind_service=+ep on AdGuardHome binary
     ansible.builtin.capabilities:
       path: "{{ adguardhome_dir }}/AdGuardHome"
       capability: cap_net_bind_service=+ep
 
-  - name: install adguardhome systemd unit file
+  - name: Install adguardhome systemd unit file
     ansible.builtin.template:
       src: etc/systemd/system/adguardhome.service.j2
       dest: /etc/systemd/system/adguardhome.service
     notify:
       - systemctl daemon-reload
 
-  - name: systemctl enable adguardhome
+  - name: Systemctl enable adguardhome
     ansible.builtin.systemd:
       name: adguardhome
       enabled: true
 
-  - name: ensure AdGuard Home is running
+  - name: Ensure AdGuard Home is running
     ansible.builtin.systemd:
       name: adguardhome
       state: started
-
-  become: "{{ adguardhome_become }}"
-  become_user: "{{ adguardhome_become_user }}"
