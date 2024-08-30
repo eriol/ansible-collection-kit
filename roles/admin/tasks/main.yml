@@ -1,26 +1,26 @@
 ---
 - block:
 
-  - name: ensure sudo is installed
+  - name: Ensure sudo is installed
     ansible.builtin.apt:
       name: sudo
       state: present
       update_cache: true
       cache_valid_time: 3600
 
-  - name: ensure admin user ({{ admin_user }}) exists
+  - name: Ensure admin user ({{ admin_user }}) exists
     ansible.builtin.user:
       name: "{{ admin_user }}"
       password: "{{ admin_password | password_hash('sha512') }}"
       groups: sudo
 
-  - name: restrict $HOME permissions for ({{ admin_user }})
+  - name: Restrict $HOME permissions for ({{ admin_user }})
     ansible.builtin.file:
       path: "/home/{{ admin_user }}"
       mode: u=rwX,g=rX,o=
 
-  - name: set authorized key for the admin user ({{ admin_user }})
-    ansible.builtin.authorized_key:
+  - name: Set authorized key for the admin user ({{ admin_user }})
+    ansible.posix.authorized_key:
       user: "{{ admin_user }}"
       key: "{{ lookup('file', admin_key_file) }}"
       state: present
