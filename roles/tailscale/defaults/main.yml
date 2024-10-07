@@ -1,3 +1,5 @@
 ---
 tailscale_become: true
 tailscale_become_user: root
+
+tailscale_use_nftables: true

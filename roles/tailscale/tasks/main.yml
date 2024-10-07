@@ -33,3 +33,9 @@
         - tailscale
       update_cache: true
       cache_valid_time: 3600
+
+  - name: Make tailscale use nftables
+    ansible.builtin.lineinfile:
+      path: /etc/default/tailscaled
+      line: 'TS_DEBUG_FIREWALL_MODE=nftables'
+    when: tailscale_use_nftables
