@@ -106,12 +106,12 @@
     # - ../roles/iptables
     # - ../roles/sshd
     # - ../roles/fail2ban
-    - ../roles/snake_oil_cert
+    # - ../roles/snake_oil_cert
     # - ../roles/users
     # - ../roles/dehydrated
     # - ../roles/telegraf
-    - ../roles/geoipupdate
-    - ../roles/nginx
+    # - ../roles/geoipupdate
+    # - ../roles/nginx
     # - ../roles/headscale
     # - ../roles/admin
     # - ../roles/docker
@@ -146,3 +146,4 @@
     # The easy ports sequece is just for test. Also don't disable strict IP
     # filtering on production.
     # - {role: ../roles/knockd, ports: [3333, 4444, 5555], network_interface: eth1, filter_ip: ""}
+    - ../roles/syncthing

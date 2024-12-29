@@ -1,0 +1,48 @@
+---
+
+- block:
+
+    - name: Install syncthing
+      ansible.builtin.apt:
+        name:
+          - syncthing
+          - acl  # needed by ansible to become an unprivileged user
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: ensure syncthing group exits
+      ansible.builtin.group:
+        name: syncthing
+
+    - name: ensure syncthing user exists and has restrictive settings
+      ansible.builtin.user:
+        name: syncthing
+        groups: syncthing
+        password: "*"
+        home: "{{ syncthing_dir }}"
+        shell: /usr/sbin/nologin
+
+    - name: check if syncthing user is lingering
+      ansible.builtin.stat:
+        path: "/var/lib/systemd/linger/syncthing"
+      register: syncthing_user_lingering
+
+    - name: enable linger for syncthing user
+      ansible.builtin.command: "loginctl enable-linger syncthing"
+      when: not syncthing_user_lingering.stat.exists
+
+  become: "{{ syncthing_become }}"
+  become_user: "{{ syncthing_become_user }}"
+
+- block:
+
+    - name: syncthing container must be started and enabled on systemd
+      ansible.builtin.systemd:
+        name: syncthing
+        daemon_reload: true
+        state: started
+        enabled: true
+        scope: user
+
+  become: true
+  become_user: syncthing

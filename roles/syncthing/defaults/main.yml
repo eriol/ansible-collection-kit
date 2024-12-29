@@ -1,0 +1,5 @@
+---
+syncthing_become: true
+syncthing_become_user: root
+
+syncthing_dir: /srv/syncthing
