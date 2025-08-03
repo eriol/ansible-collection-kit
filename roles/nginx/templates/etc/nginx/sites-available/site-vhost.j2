@@ -31,8 +31,8 @@ map $http_upgrade $connection_upgrade {
 server {
     server_name {{ item.servername }}{% if item.serveralias is defined %}{% for alias in item.serveralias %} {{ alias }}{% endfor %}{% endif %};
 
-    listen 443 ssl;
-    listen [::]:443 ssl;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
 
     add_header Content-Security-Policy {% if item.header_csp is defined %}{{ item.header_csp | trim }}{% else -%}"default-src 'self'; img-src *; style-src 'self' 'unsafe-inline'"{% endif %} always;
     add_header Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), notifications=(), payment=(), usb=()" always;
