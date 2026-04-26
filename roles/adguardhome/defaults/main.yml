@@ -14,9 +14,9 @@ adguardhome_tarball_aarch64: AdGuardHome_linux_arm64.tar.gz
 adguardhome_tarball_aarch64_sha256: 57dfb53c3bc9007207596de1221b9540e6e4cff7ba043f839e5499621f3f1d77
 
 # yamllint disable-line rule:line-length
-adguardhome_tarball: "{{ lookup('vars', 'adguardhome_tarball_'+ansible_architecture|lower, default=adguardhome_tarball_x86_64) }}"
+adguardhome_tarball: "{{ lookup('vars', 'adguardhome_tarball_'+ansible_facts['architecture']|lower, default=adguardhome_tarball_x86_64) }}"
 # yamllint disable-line rule:line-length
-adguardhome_tarball_sha256: "{{ lookup('vars', 'adguardhome_tarball_'+ansible_architecture|lower+'_sha256', default=adguardhome_tarball_x86_64_sha256) }}"
+adguardhome_tarball_sha256: "{{ lookup('vars', 'adguardhome_tarball_'+ansible_facts['architecture']|lower+'_sha256', default=adguardhome_tarball_x86_64_sha256) }}"
 
 # yamllint disable-line rule:line-length
 adguardhome_download_url: "https://github.com/AdguardTeam/AdGuardHome/releases/download/{{ adguardhome_version }}/{{ adguardhome_tarball }}"
