@@ -4,6 +4,19 @@
 
 flush ruleset
 
+{% if nftables_nat_prerouting_rules %}
+table ip nat {
+    chain prerouting {
+        type nat hook prerouting priority dstnat; policy accept;
+
+    {% for rule in nftables_nat_prerouting_rules %}
+    {{ rule }}
+    {% endfor %}
+
+    }
+}
+
+{% endif %}
 table inet filter {
     chain input {
         type filter hook input priority 0; policy {{ nftables_input_policy }};
