@@ -12,8 +12,8 @@
     - name: Assert that sshd is running
       assert:
         that:
-          - ansible_facts.services['sshd.service'].state is defined
-          - ansible_facts.services['sshd.service'].state == 'active'
+          - ansible_facts.services['ssh.service'].state is defined
+          - ansible_facts.services['ssh.service'].state == 'active'
 
     - name: Get sshd configuration
       command:

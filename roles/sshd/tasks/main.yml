@@ -10,14 +10,14 @@
     - name: ensure openssh-server is running
       ansible.builtin.systemd:
         state: started
-        name: sshd
+        name: ssh
 
     - name: set the sshd port
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: "^#?Port"
         line: "Port {{ sshd_port }}"
-      notify: systemctl restart sshd
+      notify: systemctl restart ssh
 
     - name: harden openssh-server
       ansible.builtin.lineinfile:
@@ -46,7 +46,7 @@
           line: "UseDNS no"
         - regexp: "^#?X11Forwarding"
           line: "X11Forwarding no"
-      notify: systemctl restart sshd
+      notify: systemctl restart ssh
 
   become: "{{ sshd_become }}"
   become_user: "{{ sshd_become_user }}"

@@ -1,7 +1,7 @@
 ---
-- name: systemctl restart sshd
+- name: systemctl restart ssh
   ansible.builtin.systemd:
-    name: sshd.service
+    name: ssh.service
     state: restarted
   become: "{{ sshd_become }}"
   become_user: "{{ sshd_become_user }}"
