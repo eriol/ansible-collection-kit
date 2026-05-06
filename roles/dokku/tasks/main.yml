@@ -7,7 +7,7 @@
 
   - name: add Dokku's repository
     apt_repository:
-      repo: "deb https://packagecloud.io/dokku/dokku/debian/ {{ ansible_distribution_release }} main"
+      repo: "deb https://packagecloud.io/dokku/dokku/{{ dokku_os }}/ {{ ansible_distribution_release }} main"
       filename: dokku
 
   - name: Set dokku debconf options

@@ -2,4 +2,5 @@
 docker_become: true
 docker_become_user: root
 
+docker_os: "{{ ansible_distribution | lower }}"
 docker_distribution_release: "{{ ansible_distribution_release }}"
