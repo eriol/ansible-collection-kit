@@ -1,13 +1,20 @@
 ---
 - block:
 
-  - name: add dokku's GPG keys
-    apt_key:
+  - name: ensure /etc/apt/keyrings exists
+    ansible.builtin.file:
+      dest: /etc/apt/keyrings/
+      state: directory
+      mode: 0755
+
+  - name: add dokku's GPG key
+    ansible.builtin.get_url:
       url: https://packagecloud.io/dokku/dokku/gpgkey
+      dest: /etc/apt/keyrings/dokku.asc
 
   - name: add Dokku's repository
     apt_repository:
-      repo: "deb https://packagecloud.io/dokku/dokku/{{ dokku_os }}/ {{ ansible_distribution_release }} main"
+      repo: "deb [signed-by=/etc/apt/keyrings/dokku.asc] https://packagecloud.io/dokku/dokku/{{ dokku_os }}/ {{ ansible_distribution_release }} main"
       filename: dokku
 
   - name: Set dokku debconf options
