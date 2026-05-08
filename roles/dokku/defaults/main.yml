@@ -1,7 +1,7 @@
 ---
 dokku_become: true
 dokku_become_user: root
-dokku_os: "{{ ansible_distribution | lower }}"
+dokku_os: "{{ ansible_facts['distribution'] | lower }}"
 
 dokku_hostname: dokku.me
 dokku_key_file: /root/.ssh/id_rsa.pub
