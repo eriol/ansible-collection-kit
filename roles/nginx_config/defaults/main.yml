@@ -1,0 +1,9 @@
+---
+nginx_config_become: true
+nginx_config_become_user: root
+
+nginx_config_files: []
+nginx_config_sites: []
+
+nginx_config_sites_available_dir: /etc/nginx/sites-available
+nginx_config_sites_enabled_dir: /etc/nginx/sites-enabled

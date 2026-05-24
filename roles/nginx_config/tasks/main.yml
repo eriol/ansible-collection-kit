@@ -1,0 +1,32 @@
+---
+- name: Add and enable sites.
+  become: "{{ nginx_config_become }}"
+  become_user: "{{ nginx_config_become_user }}"
+  block:
+    - name: Add nginx config file {{ item.path }}
+      ansible.builtin.copy:
+        content: "{{ item.content }}"
+        dest: "{{ item.path }}"
+        owner: root
+        group: root
+        mode: "0640"
+      loop: "{{ nginx_config_files }}"
+      notify: systemctl reload nginx
+
+    - name: Add nginx site configuration {{ item.name }}
+      ansible.builtin.copy:
+        content: "{{ item.content }}"
+        dest: "{{ nginx_config_sites_available_dir }}/{{ item.name }}.vhost"
+        owner: root
+        group: root
+        mode: "0640"
+      loop: "{{ nginx_config_sites }}"
+      notify: systemctl reload nginx
+
+    - name: Enable nginx site configuration {{ item.name }}
+      ansible.builtin.file:
+        src: "{{ nginx_config_sites_available_dir }}/{{ item.name }}.vhost"
+        dest: "{{ nginx_config_sites_enabled_dir }}/{{ item.name }}.vhost"
+        state: link
+      loop: "{{ nginx_config_sites }}"
+      notify: systemctl reload nginx

@@ -1,0 +1,7 @@
+---
+- name: systemctl reload nginx
+  ansible.builtin.systemd:
+    name: nginx.service
+    state: reloaded
+  become: "{{ nginx_config_become }}"
+  become_user: "{{ nginx_config_become_user }}"
