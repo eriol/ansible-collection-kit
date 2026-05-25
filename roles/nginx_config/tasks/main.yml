@@ -13,6 +13,24 @@
       loop: "{{ nginx_config_files }}"
       notify: systemctl reload nginx
 
+    - name: Create nginx site directory {{ item.name }}
+      ansible.builtin.file:
+        path: "{{ nginx_config_root }}/{{ item.name }}"
+        state: directory
+        owner: root
+        group: www-data
+        mode: "0755"
+      loop: "{{ nginx_config_sites }}"
+
+    - name: Create nginx site log directory {{ item.name }}
+      ansible.builtin.file:
+        path: "{{ nginx_config_root }}/{{ item.name }}/logs"
+        state: directory
+        owner: root
+        group: www-data
+        mode: "0755"
+      loop: "{{ nginx_config_sites }}"
+
     - name: Add nginx site configuration {{ item.name }}
       ansible.builtin.copy:
         content: "{{ item.content }}"
