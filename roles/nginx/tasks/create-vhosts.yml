@@ -1,43 +1,58 @@
 ---
 - name: create vhost directories
   ansible.builtin.file:
-    path: "{{ nginx_root }}/{{ item.servername }}"
+    path: "{{ nginx_root }}/{{ vhost.servername }}"
     state: directory
     owner: root
     group: www-data
-  with_items: "{{ nginx_vhosts }}"
+  loop: "{{ nginx_vhosts }}"
+  loop_control:
+    loop_var: vhost
+    label: "{{ vhost.servername }}"
 
 - name: create vhost content directories
   ansible.builtin.file:
-    path: "{{ nginx_root }}/{{ item.servername }}/html"
+    path: "{{ nginx_root }}/{{ vhost.servername }}/html"
     state: directory
     owner: root
     group: www-data
     mode: 0775
-  with_items: "{{ nginx_vhosts }}"
+  loop: "{{ nginx_vhosts }}"
+  loop_control:
+    loop_var: vhost
+    label: "{{ vhost.servername }}"
 
 - name: create vhost logs directories
   ansible.builtin.file:
-    path: "{{ nginx_root }}/{{ item.servername }}/logs"
+    path: "{{ nginx_root }}/{{ vhost.servername }}/logs"
     state: directory
-  with_items: "{{ nginx_vhosts }}"
+  loop: "{{ nginx_vhosts }}"
+  loop_control:
+    loop_var: vhost
+    label: "{{ vhost.servername }}"
 
-- name: add vhost configuration file for {{ item.servername }}
+- name: add vhost configuration file
   ansible.builtin.template:
     src: etc/nginx/sites-available/site-vhost.j2
-    dest: "/etc/nginx/sites-available/{{ item.servername }}.vhost"
+    dest: "/etc/nginx/sites-available/{{ vhost.servername }}.vhost"
     owner: root
     group: root
     mode: 0640
-  with_items: "{{ nginx_vhosts }}"
+  loop: "{{ nginx_vhosts }}"
+  loop_control:
+    loop_var: vhost
+    label: "{{ vhost.servername }}"
   notify: systemctl restart nginx
 
-- name: add vhost configuration symlink for {{ item.servername }}
+- name: add vhost configuration symlink
   ansible.builtin.file:
-    src: "/etc/nginx/sites-available/{{ item.servername }}.vhost"
-    dest: "/etc/nginx/sites-enabled/{{ item.servername }}.vhost"
+    src: "/etc/nginx/sites-available/{{ vhost.servername }}.vhost"
+    dest: "/etc/nginx/sites-enabled/{{ vhost.servername }}.vhost"
     state: link
-  with_items: "{{ nginx_vhosts }}"
+  loop: "{{ nginx_vhosts }}"
+  loop_control:
+    loop_var: vhost
+    label: "{{ vhost.servername }}"
   notify: systemctl reload nginx
 
 - name: check if telegraf is running
@@ -48,11 +63,14 @@
 - debug:
     var: telegraf_service_status.status.ActiveState
 
-- name: add logrotate configuration for {{ item.servername }}
+- name: add logrotate configuration
   ansible.builtin.template:
     src: etc/logrotate.d/nginx.j2
-    dest: "/etc/logrotate.d/{{ item.servername }}"
+    dest: "/etc/logrotate.d/{{ vhost.servername }}"
     owner: root
     group: root
     mode: 0644
-  with_items: "{{ nginx_vhosts }}"
+  loop: "{{ nginx_vhosts }}"
+  loop_control:
+    loop_var: vhost
+    label: "{{ vhost.servername }}"

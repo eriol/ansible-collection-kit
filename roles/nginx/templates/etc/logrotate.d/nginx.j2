@@ -1,6 +1,6 @@
 # {{ ansible_managed }}
 
-{{ nginx_root }}/{{ item.servername }}/logs/*.log {
+{{ nginx_root }}/{{ vhost.servername }}/logs/*.log {
         daily
         missingok
         rotate 14

@@ -11,12 +11,14 @@
 
     - name: remove the default site
       ansible.builtin.file:
-        path: "{{ item }}"
+        path: "{{ default_site_path }}"
         state: absent
-      with_items:
+      loop:
         - /etc/nginx/sites-enabled/default
         - /etc/nginx/sites-available/default
         - /var/www/html
+      loop_control:
+        loop_var: default_site_path
       notify: systemctl reload nginx
 
     - name: add default server for clients who not send correct Host header
@@ -38,15 +40,17 @@
     - name: gzip compression
       ansible.builtin.lineinfile:
         path: /etc/nginx/nginx.conf
-        regexp: "{{ item.regexp }}"
-        line: "{{ item.line }}"
+        regexp: "{{ gzip_setting.regexp }}"
+        line: "{{ gzip_setting.line }}"
         state: present
-      with_items:
+      loop:
         - regexp: "^(.*)gzip_comp_level"
           line: "\tgzip_comp_level 5;"
         - regexp: "^(.*)gzip_types"
           # yamllint disable-line rule:line-length
           line: "\tgzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml;"
+      loop_control:
+        loop_var: gzip_setting
       notify: systemctl reload nginx
 
     - name: add geoip2 config
