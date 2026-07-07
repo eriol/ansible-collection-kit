@@ -4,9 +4,10 @@
 
 destroy table inet filter
 destroy table inet nat
+destroy table ip nat
 
 {% if nftables_nat_prerouting_rules %}
-table ip nat {
+table inet nat {
     chain prerouting {
         type nat hook prerouting priority dstnat; policy accept;
 
@@ -25,6 +26,8 @@ table inet filter {
         iif lo accept comment "Accept any localhost traffic"
         ct state invalid drop comment "Drop invalid connections"
         ct state established,related accept comment "Accept traffic originated from us"
+
+        icmpv6 type { nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } accept comment "Accept IPv6 neighbor discovery, required for IPv6 to work"
 
         tcp flags & (fin|syn|rst|psh|ack|urg) == fin|syn|rst|psh|ack|urg counter drop comment "Drop XMAS packets"
         tcp flags & (fin|syn|rst|psh|ack|urg) == 0x0 counter drop comment "Drop NULL packets"
