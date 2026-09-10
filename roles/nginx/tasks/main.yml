@@ -63,6 +63,20 @@
       when: nginx_enable_geoip2
       notify: systemctl reload nginx
 
+    - name: check if /var/lib/dehydrated/hook.d exists
+      ansible.builtin.stat:
+        path: /var/lib/dehydrated/hook.d
+      register: nginx_dehydrated_hook_dir
+
+    - name: install /var/lib/dehydrated/hook.d/10-nginx.sh
+      ansible.builtin.copy:
+        src: var/lib/dehydrated/hook.d/10-nginx.sh
+        dest: /var/lib/dehydrated/hook.d/10-nginx.sh
+        owner: root
+        group: root
+        mode: 0750
+      when: nginx_dehydrated_hook_dir.stat.isdir | default(false)
+
     - import_tasks: create-vhosts.yml
 
   become: "{{ nginx_become }}"
