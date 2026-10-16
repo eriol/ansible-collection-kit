@@ -1,7 +1,7 @@
 ---
-- name: systemctl restart nftables
+- name: Call systemctl reload nftables
   ansible.builtin.systemd:
     name: nftables.service
-    state: restarted
+    state: reloaded
   become: "{{ nftables_become }}"
   become_user: "{{ nftables_become_user }}"

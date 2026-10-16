@@ -15,7 +15,7 @@
       owner: root
       group: root
       mode: 0644
-    notify: systemctl restart nftables
+    notify: systemctl reload nftables
 
   # - name: ensure nftables is enabled
   #   systemd:
