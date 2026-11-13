@@ -2,16 +2,16 @@
 adguardhome_become: true
 adguardhome_become_user: root
 
-adguardhome_version: v0.107.77
+adguardhome_version: v0.107.80
 adguardhome_tarball_armv7l: AdGuardHome_linux_armv7.tar.gz
 # yamllint disable-line rule:line-length
-adguardhome_tarball_armv7l_sha256: 163ca7ec37096fc9197bf139c0c745f869a6a55703be6c1b4de63fbd0ca7a10f
+adguardhome_tarball_armv7l_sha256: 760b941d49eaf92c3fd85ddd47f81530382f5cab8054165fd7f4089e1e9389dc
 adguardhome_tarball_x86_64: AdGuardHome_linux_amd64.tar.gz
 # yamllint disable-line rule:line-length
-adguardhome_tarball_x86_64_sha256: 9d77af61881fbcef04ba50d53fa80af16ce8dd9b02fdb4faea154b741d08c72b
+adguardhome_tarball_x86_64_sha256: 28593bc761d71469abdbc6f39ca42cbed763ec92b63082c729177b037ed51d18
 adguardhome_tarball_aarch64: AdGuardHome_linux_arm64.tar.gz
 # yamllint disable-line rule:line-length
-adguardhome_tarball_aarch64_sha256: e095d38e67cd72e0190fbe5f23177c0bdafd35ba83cf387b8147cd70d842b9d2
+adguardhome_tarball_aarch64_sha256: d5e17d0d724418ddef8b7723ed8ade7eef4e621ec5b0e43a341859cca71a3d8f
 
 # yamllint disable-line rule:line-length
 adguardhome_tarball: "{{ lookup('vars', 'adguardhome_tarball_'+ansible_facts['architecture']|lower, default=adguardhome_tarball_x86_64) }}"
